@@ -38,7 +38,7 @@
     
     
         
-            <div class="description">lang essentials module.</div>
+            <div class="description"><p>lang essentials module.</p></div>
         
         
         
@@ -101,7 +101,10 @@
 <dd>
     
     <div class="description">
-        Base class like John Resig's "Simple JavaScript Inheritance" tehnique. <br />In addition, when the inherited class contains a property that name starts from '#',then the property adds to the class without '#', and the property value is the base class property value, but the base class property name used is the rest of the initial property name (after the '#').
+        <p>Base class like John Resig's &quot;Simple JavaScript Inheritance&quot; tehnique. </p>
+<p>In addition, when the inherited class contains a property that name starts from '#',
+then the property adds to the class without '#', and the property value is the base class property value, 
+but the base class property name used is the rest of the initial property name (after the '#').</p>
     </div>
     
     
@@ -135,7 +138,7 @@
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="http://ejohn.org/blog/simple-javascript-inheritance/">John Resig's "Simple JavaScript Inheritance"</a></li>
+            <li><p><a href="http://ejohn.org/blog/simple-javascript-inheritance/">John Resig's &quot;Simple JavaScript Inheritance&quot;</a></p></li>
         </ul>
     </dd>
     
@@ -157,7 +160,7 @@
 <dd>
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
     
@@ -206,7 +209,7 @@
 <dd>
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
     
@@ -255,7 +258,7 @@
 <dd>
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
     
@@ -311,7 +314,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -367,7 +370,7 @@
         
             
 <dt>
-    <h4 class="name" id="arr_like_to_arr"><span class="type-signature">&lt;static> </span>arr_like_to_arr<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="arr_like_to_arr"><span class="type-signature">&lt;static> </span>arr_like_to_arr<span class="signature">(arr_like)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -375,7 +378,7 @@
     
     
     <div class="description">
-        description...
+        <p>Returns an array created from the given &quot;array-like&quot; object (e.g. <code>arguments</code>).</p>
     </div>
     
 
@@ -383,6 +386,57 @@
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>arr_like</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>the array-like object</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -425,6 +479,11 @@
     
     
     
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>function example(){   var arguments_array = arr_like_to_arr(arguments);   console.log(arguments_array);}</code></pre>
+
     
 </dd>
 
@@ -439,7 +498,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -503,7 +562,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -567,7 +626,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -631,7 +690,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -695,7 +754,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -759,7 +818,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -823,7 +882,18 @@
     
     
     <div class="description">
-        Iterates over a collection of elements. Each element is passed to an iterator function. The iterator function is bound to the context object, if passed.The collection parameter can be:- a Collection object (the Collection.each() method is used in this case)- an array- an objectThe iteration function parameters are:index, element, stopFunction (for array)key, value, stopFunction (for object)The stopFunction breaks the iteration if called.
+        <p>Iterates over a collection of elements. Each element is passed to an iterator function. 
+The iterator function is bound to the context object, if passed.
+The collection parameter can be:</p>
+<ul>
+<li>a Collection object (the Collection.each() method is used in this case)</li>
+<li>an array (iterate over array elements)</li>
+<li>an object (iterate over object properties)</li>
+</ul>
+<p>The iteration function parameters are:
+index, element, stopFunction (for array)
+key, value, stopFunction (for object)</p>
+<p>The stopFunction breaks the iteration if called.</p>
     </div>
     
 
@@ -889,7 +959,7 @@
             
             
             
-            <td class="description last">collection of elements</td>
+            <td class="description last"><p>collection of elements</p></td>
         </tr>
 	
 	
@@ -923,7 +993,7 @@
             
             
             
-            <td class="description last">iterator function</td>
+            <td class="description last"><p>iterator function</p></td>
         </tr>
 	
 	
@@ -956,7 +1026,7 @@
             
             
             
-            <td class="description last">context object</td>
+            <td class="description last"><p>context object</p></td>
         </tr>
 	
 	
@@ -1018,7 +1088,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -1082,7 +1152,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -1146,7 +1216,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -1210,7 +1280,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -1274,7 +1344,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -1338,7 +1408,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -1394,7 +1464,7 @@
         
             
 <dt>
-    <h4 class="name" id="get_map_from_arr"><span class="type-signature">&lt;static> </span>get_map_from_arr<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="get_map_from_arr"><span class="type-signature">&lt;static> </span>get_map_from_arr<span class="signature">(arr)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1402,7 +1472,8 @@
     
     
     <div class="description">
-        description...
+        <p>Returns a map created from the given array.</p>
+<p>The map is an object containing key/value pairs; the keys are the array elements, the values are the array indexes.</p>
     </div>
     
 
@@ -1410,6 +1481,54 @@
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>arr</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>source array</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -1452,13 +1571,18 @@
     
     
     
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>get_map_from_arr(["a", "b", "c"]) ==> { a: 0, b: 1, c: 2}</code></pre>
+
     
 </dd>
 
         
             
 <dt>
-    <h4 class="name" id="get_truth_map_from_arr"><span class="type-signature">&lt;static> </span>get_truth_map_from_arr<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="get_truth_map_from_arr"><span class="type-signature">&lt;static> </span>get_truth_map_from_arr<span class="signature">(arr)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1466,7 +1590,8 @@
     
     
     <div class="description">
-        description...
+        <p>Returns a truth map created from the given array.</p>
+<p>The truth map is an object containing key/value pairs; the keys are the array elements, the values are all true.</p>
     </div>
     
 
@@ -1474,6 +1599,54 @@
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>arr</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>source array</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -1516,6 +1689,11 @@
     
     
     
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>get_truth_map_from_arr(["a", "b", "c"]) ==> { a: true, b: true, c: true}</code></pre>
+
     
 </dd>
 
@@ -1530,7 +1708,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -1594,7 +1772,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -1658,7 +1836,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -1714,7 +1892,7 @@
         
             
 <dt>
-    <h4 class="name" id="is_array"><span class="type-signature">&lt;static> </span>is_array<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="is_array"><span class="type-signature">&lt;static> </span>is_array<span class="signature">(obj)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1722,7 +1900,7 @@
     
     
     <div class="description">
-        description...
+        <p>Returns <code>true</code> if the passed <code>obj</code> is an <code>Array</code>. Delegates to the native <code>Array.isArray()</code> function if it exists.</p>
     </div>
     
 
@@ -1730,6 +1908,54 @@
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>obj</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>object to check</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -1786,7 +2012,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -1850,7 +2076,7 @@
     
     
     <div class="description">
-        description...
+        <p><mark>description...</mark></p>
     </div>
     
 
@@ -1914,7 +2140,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -1970,7 +2196,7 @@
         
             
 <dt>
-    <h4 class="name" id="is_dom_node"><span class="type-signature">&lt;static> </span>is_dom_node<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="is_dom_node"><span class="type-signature">&lt;static> </span>is_dom_node<span class="signature">(obj)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1978,7 +2204,7 @@
     
     
     <div class="description">
-        description...
+        <p>Returns <code>true</code> if the passed <code>obj</code> is a DOM node. Uses the duck typing.</p>
     </div>
     
 
@@ -1986,6 +2212,54 @@
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>obj</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>object to check</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -2042,7 +2316,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -2106,7 +2380,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -2170,7 +2444,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -2234,7 +2508,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -2298,7 +2572,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -2362,7 +2636,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -2426,7 +2700,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -2490,7 +2764,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -2554,7 +2828,24 @@
     
     
     <div class="description">
-        description...
+        <p>Returns the type of the given object as a string. If the t1 parameter is passed, then returns t1 for all the t1 values excepting 'object' one.
+Possible results are:</p>
+<ul>
+<li>&quot;number&quot;</li>
+<li>&quot;string&quot;</li>
+<li>&quot;function&quot;</li>
+<li>&quot;boolean&quot;</li>
+<li>&quot;object&quot;</li>
+<li>&quot;undefined&quot;</li>
+<li>&quot;null&quot;</li>
+<li>obj.__type</li>
+<li>&quot;array&quot;</li>
+<li>&quot;control&quot;</li>
+<li>&quot;regex&quot; (obj instanceof RegExp)</li>
+<li>&quot;buffer&quot; (obj instanceof Buffer)</li>
+<li>&quot;readable_stream&quot; (obj instanceof Stream.Readable)</li>
+<li>&quot;writable_stream&quot; (obj instanceof Stream.Writable)</li>
+</ul>
     </div>
     
 
@@ -2618,7 +2909,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -2682,7 +2973,7 @@
     
     
     <div class="description">
-        description...
+        <p>description...</p>
     </div>
     
 
@@ -2752,7 +3043,7 @@
     
     
     <div class="description">
-        Array iterator callback function.
+        <p>Array iterator callback function.</p>
     </div>
     
 
@@ -2910,7 +3201,7 @@
     
     
     <div class="description">
-        Object iterator callback function.
+        <p>Object iterator callback function.</p>
     </div>
     
 
@@ -3068,7 +3359,7 @@
     
     
     <div class="description">
-        Break iteration callback function.
+        <p>Break iteration callback function.</p>
     </div>
     
 
@@ -3121,7 +3412,7 @@
     
         <h5>Example</h5>
         
-    <pre class="prettyprint"><code>jsgui.each([1,2,3,4,5], function(index, element, stop){   if (element > 3) stop();});</code></pre>
+    <pre class="prettyprint"><code>jsgui.each([1, 2, 3, 4, 5], function(index, element, **stop**){   if (element > 3) **stop();**});</code></pre>
 
     
 </dd>
@@ -3146,7 +3437,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Thu Mar 13 2014 20:53:56 GMT+0600 (Уральское время (зима))
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Fri Mar 14 2014 21:16:34 GMT+0600 (Уральское время (зима))
 </footer>
 
 <script> prettyPrint(); </script>
