@@ -618,7 +618,7 @@ but the base class property name used is the rest of the initial property name (
         
             
 <dt>
-    <h4 class="name" id="atof"><span class="type-signature">&lt;static> </span>atof<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="atof"><span class="type-signature">&lt;static> </span>atof<span class="signature">(arr)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -626,7 +626,7 @@ but the base class property name used is the rest of the initial property name (
     
     
     <div class="description">
-        <p>description...</p>
+        <p>Returns an array containing type strings for the passed array elements. The type strings are made using the <a href="jsgui-lang-essentials.html#tof">tof()</a> function.</p>
     </div>
     
 
@@ -634,6 +634,54 @@ but the base class property name used is the rest of the initial property name (
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>arr</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>source array</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -676,6 +724,11 @@ but the base class property name used is the rest of the initial property name (
     
     
     
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>atof([1, "", null]) ==> ["number", "string", "null"]</code></pre>
+
     
 </dd>
 
@@ -1400,7 +1453,7 @@ key, value, stopFunction (for object)</p>
         
             
 <dt>
-    <h4 class="name" id="get_item_sig"><span class="type-signature">&lt;static> </span>get_item_sig<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="get_item_sig"><span class="type-signature">&lt;static> </span>get_item_sig<span class="signature">(i, <span class="optional">arr_depth</span>)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1408,7 +1461,30 @@ key, value, stopFunction (for object)</p>
     
     
     <div class="description">
-        <p>description...</p>
+        <p>Returns a type signature for the given value. 
+Possible results are:</p>
+<ul>
+<li>&quot;s&quot; (string)</li>
+<li>&quot;n&quot; (number)</li>
+<li>&quot;b&quot; (boolean)</li>
+<li>&quot;f&quot; (function)</li>
+<li>&quot;a&quot; (array)</li>
+<li>&quot;o&quot; (object)</li>
+<li>&quot;u&quot; (undefined)</li>
+<li>&quot;!&quot; (null)</li>
+<li>&quot;c&quot; (control)</li>
+<li>&quot;r&quot; (RegEx)</li>
+<li>&quot;B&quot; (Buffer)</li>
+<li>&quot;R&quot; (readable_stream)</li>
+<li>&quot;W&quot; (writable_stream)</li>
+<li>&quot;X&quot; (collection_index)</li>
+<li>&quot;D&quot; (data_object)</li>
+<li>&quot;~D&quot; (abstract data_object)</li>
+<li>&quot;V&quot; (data_value)</li>
+<li>&quot;~V&quot; (abstract data_value)</li>
+<li>&quot;C&quot; (collection)</li>
+<li>&quot;~C&quot; (abstract collection)</li>
+</ul>
     </div>
     
 
@@ -1416,6 +1492,97 @@ key, value, stopFunction (for object)</p>
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>i</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>value to get the type signature</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>arr_depth</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>array nesting depth to include the array element signatures</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -1458,6 +1625,11 @@ key, value, stopFunction (for object)</p>
     
     
     
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>get_item_sig(1) ==> 'n'get_item_sig("1") ==> 's'get_item_sig([1, 2]) ==> 'a'get_item_sig([1, 2], 1) ==> '[n,n]'</code></pre>
+
     
 </dd>
 
@@ -2132,7 +2304,7 @@ key, value, stopFunction (for object)</p>
         
             
 <dt>
-    <h4 class="name" id="is_defined"><span class="type-signature">&lt;static> </span>is_defined<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="is_defined"><span class="type-signature">&lt;static> </span>is_defined<span class="signature">(value)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -2140,7 +2312,7 @@ key, value, stopFunction (for object)</p>
     
     
     <div class="description">
-        <p>description...</p>
+        <p>Returns true if the value is defined (e.g. not equals to undefined)</p>
     </div>
     
 
@@ -2148,6 +2320,54 @@ key, value, stopFunction (for object)</p>
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>value to check</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -2190,6 +2410,11 @@ key, value, stopFunction (for object)</p>
     
     
     
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>is_defined(Math.PI) ==> trueis_defined(Math.PI_PI_PI) ==> false</code></pre>
+
     
 </dd>
 
@@ -2756,7 +2981,7 @@ key, value, stopFunction (for object)</p>
         
             
 <dt>
-    <h4 class="name" id="stringify"><span class="type-signature">&lt;static> </span>stringify<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="stringify"><span class="type-signature">&lt;static> </span>stringify<span class="signature">(obj, <span class="optional">includeFunctions</span>, <span class="optional">excludingProps</span>)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -2764,7 +2989,7 @@ key, value, stopFunction (for object)</p>
     
     
     <div class="description">
-        <p>description...</p>
+        <p>Converts a value to JSON string.</p>
     </div>
     
 
@@ -2772,6 +2997,130 @@ key, value, stopFunction (for object)</p>
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>obj</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>value to convert</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>includeFunctions</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">bool</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>if true, then include functions to the result</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>excludingProps</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array(string)</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>exclude the listed object properties from the result</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -2815,12 +3164,17 @@ key, value, stopFunction (for object)</p>
     
     
     
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>stringify(1) ==> '1'stringify("1") ==> '"1"'stringify([1, "a", null]) ==> '[1, "a", null]'stringify({p1:1, p2:"a", p3:null}) ==> '{"p1": 1, "p2": "a", "p3": null}'</code></pre>
+
+    
 </dd>
 
         
             
 <dt>
-    <h4 class="name" id="tof"><span class="type-signature">&lt;static> </span>tof<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="tof"><span class="type-signature">&lt;static> </span>tof<span class="signature">(obj, <span class="optional">t1</span>)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -2838,7 +3192,7 @@ Possible results are:</p>
 <li>&quot;object&quot;</li>
 <li>&quot;undefined&quot;</li>
 <li>&quot;null&quot;</li>
-<li>obj.__type</li>
+<li><mark>obj.__type</mark></li>
 <li>&quot;array&quot;</li>
 <li>&quot;control&quot;</li>
 <li>&quot;regex&quot; (obj instanceof RegExp)</li>
@@ -2853,6 +3207,97 @@ Possible results are:</p>
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>obj</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>object to inspect type</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>t1</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>type to return (?)</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -2895,6 +3340,11 @@ Possible results are:</p>
     
     
     
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>tof(1) ==> "number"tof([]) ==> "array"tof(1, "myType") ==> "myType"tof(1, "object") ==> "object"tof([], "object") ==> "array"</code></pre>
+
     
 </dd>
 
@@ -3437,7 +3887,7 @@ Possible results are:</p>
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Fri Mar 14 2014 21:16:34 GMT+0600 (Уральское время (зима))
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Mon Mar 17 2014 19:44:48 GMT+0600 (Уральское время (зима))
 </footer>
 
 <script> prettyPrint(); </script>
