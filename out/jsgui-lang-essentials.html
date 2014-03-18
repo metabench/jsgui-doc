@@ -490,7 +490,7 @@ but the base class property name used is the rest of the initial property name (
         
             
 <dt>
-    <h4 class="name" id="arr_trim_undefined"><span class="type-signature">&lt;static> </span>arr_trim_undefined<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="arr_trim_undefined"><span class="type-signature">&lt;static> </span>arr_trim_undefined<span class="signature">(arr_like)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -498,7 +498,7 @@ but the base class property name used is the rest of the initial property name (
     
     
     <div class="description">
-        <p>description...</p>
+        <p>Returns an array without the trailing undefined values, made from the array-like source.</p>
     </div>
     
 
@@ -506,6 +506,54 @@ but the base class property name used is the rest of the initial property name (
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>arr_like</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array-like</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>the source</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -548,6 +596,11 @@ but the base class property name used is the rest of the initial property name (
     
     
     
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>arr_trim_undefined([undefined, 1, undefined]) ==> [undefined, 1]</code></pre>
+
     
 </dd>
 
@@ -1269,7 +1322,7 @@ key, value, stopFunction (for object)</p>
     
     
     <div class="description">
-        <p>description...</p>
+        <p>A shortcut for the <a href="jsgui-lang-essentials.html#functional_polymorphism">functional_polymorphism()</a> function.</p>
     </div>
     
 
@@ -1325,7 +1378,7 @@ key, value, stopFunction (for object)</p>
         
             
 <dt>
-    <h4 class="name" id="functional_polymorphism"><span class="type-signature">&lt;static> </span>functional_polymorphism<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="functional_polymorphism"><span class="type-signature">&lt;static> </span>functional_polymorphism<span class="signature">(<span class="optional">options</span>, fn)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1333,7 +1386,10 @@ key, value, stopFunction (for object)</p>
     
     
     <div class="description">
-        <p>description...</p>
+        <p>Helps to create a polymorphic version of the passed function. The function will get 2 parameters: <code>a</code> and <code>sig</code>. 
+Array <code>a</code> will contains the actual parameters, <code>a.l</code> property will contains the parameters count.
+The <code>sig</code> parameter will contains the parameter types array signature. The function will use these parameters
+to select a required polymorphic code branch to execute.</p>
     </div>
     
 
@@ -1341,6 +1397,97 @@ key, value, stopFunction (for object)</p>
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>not used</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>the function</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -1383,6 +1530,11 @@ key, value, stopFunction (for object)</p>
     
     
     
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var myFunc = functional_polymorphism(function(a, sig){   return stringify(a) + ": " + sig;});myFunc(1, "a", [null])  ==>  '[1, "a", [null]]: [n,s,a]'</code></pre>
+
     
 </dd>
 
@@ -3351,7 +3503,7 @@ Possible results are:</p>
         
             
 <dt>
-    <h4 class="name" id="trim_sig_brackets"><span class="type-signature">&lt;static> </span>trim_sig_brackets<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="trim_sig_brackets"><span class="type-signature">&lt;static> </span>trim_sig_brackets<span class="signature">(sig)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -3359,7 +3511,7 @@ Possible results are:</p>
     
     
     <div class="description">
-        <p>description...</p>
+        <p>Removes the leading and trailing square brackets from the signature, if the brackets are presented.</p>
     </div>
     
 
@@ -3367,6 +3519,54 @@ Possible results are:</p>
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>sig</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>the signature</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -3409,6 +3609,11 @@ Possible results are:</p>
     
     
     
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>trim_sig_brackets("[n]") ==> "n"trim_sig_brackets("n") ==> "n"</code></pre>
+
     
 </dd>
 
@@ -3887,7 +4092,7 @@ Possible results are:</p>
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Mon Mar 17 2014 19:44:48 GMT+0600 (Уральское время (зима))
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Tue Mar 18 2014 18:00:03 GMT+0600 (Уральское время (зима))
 </footer>
 
 <script> prettyPrint(); </script>
