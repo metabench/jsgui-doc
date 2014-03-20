@@ -916,7 +916,7 @@ but the base class property name used is the rest of the initial property name (
         
             
 <dt>
-    <h4 class="name" id="clone"><span class="type-signature">&lt;static> </span>clone<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="clone"><span class="type-signature">&lt;static> </span>clone<span class="signature">(obj, <span class="optional">count</span>)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -924,7 +924,15 @@ but the base class property name used is the rest of the initial property name (
     
     
     <div class="description">
-        <p>description...</p>
+        <p>Creates a clone of the given value. The result depends of the input value type:</p>
+<ul>
+<li>array: an array containing reference-copies of the input array elements</li>
+<li>undefined: undefined</li>
+<li>string: same string</li>
+<li>object: deep copy of the object</li>
+<li><mark>other (number, boolean, null etc.): empty object (i.e. {})</mark></li>
+</ul>
+<p>If the second parameter is passed, then returns an array containing the requested number of the clones.</p>
     </div>
     
 
@@ -932,6 +940,97 @@ but the base class property name used is the rest of the initial property name (
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>obj</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>source value</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>count</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>number of the output values</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -974,6 +1073,11 @@ but the base class property name used is the rest of the initial property name (
     
     
     
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>clone("abc") ==> "abc"clone("abc", 3) ==> ["abc", "abc", "abc"]clone([1, undefined]) ==> [1, undefined]clone({a: 1, b:{c:2}}) ==> {a: 1, b:{c:2}}clone(1) ==> {}</code></pre>
+
     
 </dd>
 
@@ -1194,7 +1298,7 @@ key, value, stopFunction (for object)</p>
     
     
     <div class="description">
-        <p>description...</p>
+        <p>Alias to the <a href="jsgui-lang-essentials.html#jq_extend">jq_extend()</a> function.</p>
     </div>
     
 
@@ -2749,6 +2853,208 @@ Possible results are:</p>
         
             
 <dt>
+    <h4 class="name" id="jq_extend"><span class="type-signature">&lt;static> </span>jq_extend<span class="signature">(<span class="optional">deep</span>, <span class="optional">target</span>, extender)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Merge the contents of two or more objects together into the first object. Returns the updated object.
+If only one parameter is passed, the extends <code>this</code>.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>deep</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>if true, performs recursive deep copy. if false or omitted, performs simple reference copy.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+|
+
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>target object; if omitted then <code>this</code> is used.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>extender</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+|
+
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last"><p>object(s) to add the content</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>jq_extend({a:1}, {b:2})  ==> {a:1, b:2}jq_extend([1,2,3], [4,5])  ==> [4,5,3]  var ext = {sub2:{prop2:2}};var result1 = jq_extend(true, {}, ext)  ==> {sub2:{prop2:2}}var result2 = jq_extend(false, {}, ext)  ==> {sub2:{prop2:2}}ext.sub2.prop2 = 20;  ==> (result1.sub2.prop2 == 2) &amp; (result2.sub2.prop2 == 20)</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="ll_get"><span class="type-signature">&lt;static> </span>ll_get<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
@@ -4092,7 +4398,7 @@ Possible results are:</p>
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Tue Mar 18 2014 18:00:03 GMT+0600 (Уральское время (зима))
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Fri Mar 21 2014 00:21:16 GMT+0600 (Уральское время (зима))
 </footer>
 
 <script> prettyPrint(); </script>
