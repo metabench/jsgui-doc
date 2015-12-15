@@ -1,0 +1,30 @@
+                    <pre class="prettyprint"><code>var presidents = new jsgui.Collection(
+    Data_Object.extend({
+        'fields': [
+            ['name', 'indexed text(32)'],
+            ['party', 'indexed text(32)'],
+            ['y1', 'int'],
+            ['y2', 'int'],
+        ],
+    }),
+    [
+        { 'name': 'George Washington', 'y1': 1789, 'y2': 1797 },
+        { 'name': 'John Adams', 'y1': 1797, 'y2': 1801, 'party': 'Federalist' },
+        { 'name': 'Thomas Jefferson', 'y1': 1801, 'y2': 1809, 'party': 'Democratic-Republican' },
+    ]
+);
+//
+var find_result = null;
+//
+find_result = presidents.find({ 'name': 'George Washington' });
+stringify(find_result)  ==>  '[Data_Object({"name": "George Washington", "y1": 1789, "y2": 1797, "party": undefined})]'
+//
+find_result = presidents.find({ 'party': '' });
+stringify(find_result)  ==>  '[Data_Object({"name": "George Washington", "y1": 1789, "y2": 1797, "party": undefined})]'
+//
+presidents.find({ 'party': undefined })  ==>  undefined
+//
+presidents.find({ 'name': '' })  ==>  []
+//
+// presidents.find({ 'name': 'George Washington', 'party': '' }); // throws "stop"
+// presidents.find({ 'name': 'George Washington', 'y1': 1789 });  // throws "stop"</code></pre>

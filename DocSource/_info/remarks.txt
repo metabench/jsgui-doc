@@ -1,0 +1,29 @@
+﻿
+===========================================================
+
+call_multiple_callback_functions():
+
+at the end of the function:
+
+		if (arr_functions_params_pairs.length > 0) {
+			...
+		} else {
+		    if (callback) {
+		        //callback(null, null);
+            }
+		}
+
+The "callback(null, null)" call is commented for unknown reason. So, if the tasks array parameter is empty, then the callback function
+will be not called. It breaks the first unit test ("should call the callback when the arr_functions_params_pairs array is empty").
+
+This behaviour seems wrong from my point of view. But, probably there are some code somewhere on the jsgui library, that relies on this behaviour.
+I've turned off the unit test temporary.
+
+===========================================================
+
+call_multiple_callback_functions():
+
+Call signatures with "delay" parameter are added to the unit tests (and such tests are passed).
+But the real delay effect is not tested.
+
+===========================================================

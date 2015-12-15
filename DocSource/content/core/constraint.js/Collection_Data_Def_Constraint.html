@@ -1,0 +1,181 @@
+    
+<h1 class="page-title">Class: Collection_Data_Def_Constraint</h1>
+
+<section>
+<header>
+    <h2>
+        <span class="ancestors"><a href="@link:/core/constraint.js.html">core/constraint</a>.</span>
+    
+    Collection_Data_Def_Constraint
+    </h2>
+    
+    <div class="container-overview">
+        <div class="class-description">
+            <p>Collection fields definition constraint.</p>
+            <p>The class public name is <strong>Collection_Data_Def</strong> (e.g. <code>new Constraint.Collection_Data_Def({})</code>).</p>
+        </div>
+    </div>
+</header>  
+
+<article>
+<dt>
+    <h4 class="name" id="Collection_Data_Def_Constraint"><span class="type-signature"></span>new Collection_Data_Def_Constraint<span class="signature">(spec)</span><span class="type-signature"></span></h4>
+</dt>
+<dd>
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		<th>Name</th>
+		<th>Type</th>
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	<tbody>
+        <tr>
+                <td class="name"><code>spec</code></td>
+            <td class="type">
+<span class="param-type">object</span>
+            </td>
+            <td class="description last"><p>data definition</p></td>
+        </tr>
+	</tbody>
+</table>
+<dl class="details">
+</dl>
+</dd>
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="match"><span class="type-signature"></span>match<span class="signature">(value)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Returns <code>true</code> if the <code>value</code> matches the fields constraint.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>object to check</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var c = new Constraint.Collection_Data_Def({ name: "string", age: "number" });
+c.match({ name: "John", age: 25 })  ==> true
+c.match({ name: "John", age: "25" })  ==> false
+c.match({ name: "John" })  ==> false</code></pre>
+
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+</article>
+
+</section>  
+
+

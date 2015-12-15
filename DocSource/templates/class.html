@@ -1,0 +1,65 @@
+﻿
+<h1 class="page-title">Class: xxxxxxxxxxxxxxxxxxx</h1>
+
+<section>
+
+    <!--==================================================
+    =                   Overview
+    ===================================================-->
+
+    <header>
+        <h2>
+            <span class="ancestors"><a href="@link:/core/xxxxxxxxxxxxxxxxxxx.js.html">core/xxxxxxxxxxxxxxxxxxx</a>.</span>
+            xxxxxxxxxxxxxxxxxxxClassName
+        </h2>
+
+        <div class="container-overview">
+            <div class="class-description">
+                <p>
+                    Represents xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.
+                </p>
+            </div>
+            <p>Base class: <span class="ancestors"><a href="@link:/core/evented-class.js/Evented_Class.html">core/evented-class.js:Evented_Class</a></span></p>
+        </div>
+    </header>
+
+    <article>
+
+        <!--==================================================
+        =                   Members
+        ===================================================-->
+
+        <@section title="Members">
+
+            <@item title="Overview" class="overview" id="feature-chained-fields">
+                <p>
+                    The <strong>Chained Fields</strong> feature allows to pre-define fields at a class level.
+                </p>
+                <@codeblock>
+                    var Data_Object_Ex = Data_Object.extend({
+                    fields: { Field1: "int", Field2: "text" }
+                    });
+                    //
+                    var data_object = new Data_Object_Ex();
+                    data_object.fields()  ==>  [["Field1", "int", { data_type: "int" }], ["Field2", "text", { data_type: "text" }]]
+                </@codeblock>
+            </@item>
+
+            <!-----------------------------------------
+            |   ___get_fields_chain()
+            ------------------------------------------>
+
+            <@item title="___get_fields_chain()">
+                <div class="description">
+                    <p>
+                        Does nothing, returns <code>undefined</code>.
+                    </p>
+                </div>
+            </@item>
+
+        </@section>
+
+</article>
+
+</section>
+

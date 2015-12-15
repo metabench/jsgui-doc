@@ -1,0 +1,2535 @@
+﻿
+<h1 class="page-title">Class: Collection</h1>
+
+<section>
+
+    <!--==================================================
+    =                   Overview
+    ===================================================-->
+
+    <header>
+        <h2>
+            <span class="ancestors"><a href="@link:/core/collection.js.html">core/collection.js</a>.</span>
+            Collection
+        </h2>
+
+        <div class="container-overview">
+            <div class="class-description">
+                <p>
+                    Represents a collection class.
+                </p>
+            </div>
+            <p>Base class: <span class="ancestors"><a href="@link:/core/data-object.js/Data_Object.html">core/data-object.js:Data_Object</a></span></p>
+        </div>
+    </header>
+
+    <article>
+
+        <!--==================================================
+        =                   Creation
+        ===================================================-->
+
+        <@section title="Creation">
+
+            <!-----------------------------------------
+            |          new Collection(spec, arr_values-opt)
+            ------------------------------------------>
+
+            <@item title="new Collection(spec, arr_values-opt)">
+                <div class="description">
+                    <p>
+                        Creates the Collection instance.
+                    </p>
+                    
+                    <p>Sets <code>this.__type = 'collection';</code></p>
+                    
+                    <p>
+                        if <code>spec.abstract === true</code> and <code>spec</code> is function, then adds a constraint (calls <code>this.constraint(spec);</code>)
+                    </p>
+                    
+                    <p>
+                        If the <code>spec</code> is constructor (e.g. <code>Data_Object</code> descendant class), then processes the class chained fields 
+                        (creates indexes for indexing fields), and sets the class as constraint. 
+                        If the class is <code>String</code>, then sets <code>'value'</code> index.
+                    </p>
+                    
+                    <p>
+                        If the <code>spec</code> is string, then uses the <code>spec</code> value as a native type name for collection items.
+                        Possible values are: <code>'array', 'boolean', 'number', 'string', 'object'</code> (case-sensitive). 
+                        Sets a type constraint. If the type is <code>'string'</code>, then index by <code>'value'</code>.
+                    </p>
+                    
+                    <p>If <code>spec</code> is array, then converts it to an initialization property: <code>spec = { 'load_array': spec };</code></p>
+                    
+                    <p>
+                        If <code>spec.items</code> is set, and <code>spec.load_arr</code> is not set, then <code>spec.load_arr</code> will be set to <code>spec.items</code>. 
+                        But if <code>spec.load_arr</code> is set too, then <code>spec.items</code> will be ignored.
+                    </p>
+                    <p>
+                        If <code>arr_values</code> parameter passed, then sets <code>spec.load_array = arr_values;</code>
+                    </p>
+                    <p>
+                       Calls the base class (Data_Object) initialization code: <code>this._super(spec);</code>
+                       <br/>
+                        In particular, it processes the <code>spec.load_arr</code> property thanks to Data_Object "call methods listed in spec" feature.
+                    </p>
+                    
+                    <div>
+                        <h6>Side effect:</h6>
+                        <p>
+                            If the constructor called as a function (without the <code>new</code> keyword), then, then sets <code>spec.abstract = true;</code> in the <code>Data_Object.init()</code> code.
+                        </p>
+                        <@codeblock>
+                            String.abstract === undefined
+                            var collection = Collection(String);
+                            String.abstract === true // !!!
+                            collection.stringify() ==> "~Collection(String)"
+                        </@codeblock>
+                    </div>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var collection = new Collection();
+                </@codeblock>
+            </@item>
+
+            <!-----------------------------------------
+            |          static extend(args)
+            ------------------------------------------>
+
+            <@item title="static extend(args)">
+                <div class="description">
+                    <p>
+                        Creates a derived class. In general, the base class is extended by the properties and methods specified in the <code>args</code> parameter.
+                    </p>
+                    <p>
+                        In fact, it calls the base class <code><a href="@link:/core/data-object.js/Data_Object.html#extend__prop_post_init">Data_Object.extend()</a></code> method, but also tries to perform the following additional processing:
+                    </p>
+                    <p>
+                        If <code>args.data_object</code> is set, then set a <strong>data_object</strong> constraint 
+                        using a post_init feature of the <code><a href="@link:/core/data-object.js/Data_Object.html#extend__prop_post_init">Data_Object.extend()</a></code> method. 
+                        <mark>But it does not works because the post_init parameter is not used now.</mark>
+                    </p>
+                </div>
+                   
+                <h5>Example</h5>
+                <@codeblock>
+	                var data_object = new Data_Object();
+                    //
+	                var CollectionEx = Collection.extend({
+	                    data_object: data_object, // try to set a data_object constraint
+	                    hello: function () { return "hello!";} // extend the Collection class adding hello() method
+	                });
+                    //
+	                var collection = new CollectionEx();
+	                //
+	                collection.constraint()  ==>  null // the constraint is not set
+	                collection.hello()  ==>  "hello!"
+                </@codeblock>
+            </@item>
+            
+        </@section>
+
+        <!--==================================================
+        =                   Context
+        ===================================================-->
+
+        <@section title="Context">
+            
+            <!-----------------------------------------
+            |          _id()
+            ------------------------------------------>
+
+            <@item title="_id()">
+                <div class="description">
+                    <p>
+                        Generates and returns an object id.
+                    </p>
+                    <p>
+                        The id is assigned by the context.new_id() method. If the context was not set, then _id() returns <code>undefined</code>.
+                    </p>
+                    <p>
+                        <mark>In contrast to Data_Value and Data_Object, the Collection._id() method generates new id each time!</mark>
+                    </p>
+                </div>
+                   
+                <h5>Example</h5>
+                <@codeblock>
+                    var collection = null;
+                    //
+                    collection = new Collection();
+                    collection._id()  ==>  undefined
+                    //
+                    var nextId = 7;
+                    var context = { new_id: function (prefix) { return prefix + "_00" + nextId++; } };
+                    //
+                    collection = new Collection({ context: context });
+                    collection._id()  ==>  "collection_008" // "collection_007" was generated in the constructor!
+                    collection._id()  ==>  "collection_009" // new ID generated !!!
+                </@codeblock>
+            </@item>
+            
+        </@section>
+
+        <!--==================================================
+        =                   Fields
+        ===================================================-->
+
+        <@section title="Fields">
+            
+            <!-----------------------------------------
+            |          Overview
+            ------------------------------------------>           
+            
+            <@item title="Overview - TODO" class="overview">
+                <p>
+                    xxx
+                </p>
+            </@item>
+            
+            <!-----------------------------------------
+            |          fields(...)
+            ------------------------------------------>
+            
+            <@overloads title="fields()">
+
+                <@item title="fields()  // []">
+                    <div class="description">
+                        <p>
+                            Returns the collection data_object constraint fields array.
+                        </p>
+                        <p>
+                            <mark>If the fields was not set previously, then throws an exception.</mark>
+                        </p>
+                    </div>
+                
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var collection = new Collection();
+	                    //
+	                    // collection.fields(); - exception!
+                        //
+	                    collection.fields({ "Field1": "int" });
+                        //
+	                    collection.fields() ==>  [["Field1", "int", { data_type: "int" }]]
+                    </@codeblock>                
+                </@item>
+            
+                <@item title="fields(fieldsDefArray)  // [a]">
+                    <div class="description">
+                        <p>
+                            Adds the collection data_object constraint fields calling <a href="@link:/core/data-object-fields-collection.js/Fields_Collection.html#set__array">Fields_Collection.set(fieldsDefArray)</a> method.
+                        </p>
+                        <p>
+                            <mark>If the fields was not set previously (e.g. using <a href="#fields__fieldsdefobject">fields(fieldsDefObject)</a> call), then throws an exception.</mark>
+                        </p>
+                        <p>
+                            <mark>Does not update the collection data def constraint.</mark>
+                        </p>
+                    </div>
+                
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="fieldsDefArray" type="array" description="see <a href='@link:/core/data-object-fields-collection.js/Fields_Collection.html#set__array'>Fields_Collection.set(array)</a> method description" />
+                    </@parms>
+                    
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var collection = new Collection();
+	                    //
+	                    // collection.fields(["Field1", "int"]); - exception!
+	                    //
+                        // call the fields(fieldsDefObject) overload to create initial fields:
+	                    collection.fields({ "Field1": "int" });
+	                    collection.fields()  ==>  [["Field1", "int", { data_type: "int" }]]
+	                    //
+                        // now it works:
+	                    collection.fields(["Field2", "text"]);
+	                    collection.fields()  ==>  [["Field1", "int", { data_type: "int" }], ["Field2", "text", { data_type: "text" }]]
+                    </@codeblock>
+                </@item>
+            
+                <@item title="fields(fieldsDefObject)  // [o]">
+                    <div class="description">
+                        <p>
+                            Adds the collection data_object constraint fields calling the <a href="#set_field__field_name_field_def">set_field()</a> for each key/value pair from the <code>fieldsDefObject</code> object.
+                        </p>
+                        <p>
+                            In addition, sets the collection data def constraint calling <a href="#constraint__data_def_object">constraint(data_def_object)</a> method.
+                        </p>
+                        <p>
+                            <mark>The collection data_def constraint possibly set previously will be lost.</mark>
+                        </p>
+                    </div>
+                
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="fieldsDefObject" type="object" description="fields definition object" />
+                    </@parms>
+                    
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var collection = new Collection();
+	                    //
+                        // the constraint is not set (will be set during the fields({...}) call):
+	                    collection._data_def_constraint  ==>  undefined
+	                    //
+                        // set fields:
+	                    collection.fields({ "Field1": "int" });
+	                    collection.fields()  ==>  [["Field1", "int", { data_type: "int" }]]
+                        //
+                        // the constraint is set:
+	                    collection._data_def_constraint ==>  new Constraint.Collection_Data_Def({ "Field1": "int" })
+	                    //
+                        // add fields:
+	                    collection.fields(["Field2", "text"]);
+	                    collection.fields()  ==>  [["Field1", "int", { data_type: "int" }], ["Field2", "text", { data_type: "text" }]]
+                        //
+                        // the constraint was not updated:
+	                    collection._data_def_constraint  ==>  new Constraint.Collection_Data_Def({ "Field1": "int" })
+                    </@codeblock>                
+                </@item>
+            
+            </@overloads>
+        
+            <!-----------------------------------------
+            |          set_field(field_name, field_def)
+            ------------------------------------------>
+            
+            <@item title="set_field(field_name, field_def)">
+                <div class="description">
+                    <p>
+                        Adds the collection field calling <a href="@link:/core/data-object-fields-collection.js/Fields_Collection.html#set__array">Fields_Collection.set([field_name, field_def])</a> method.
+                    </p>
+                </div>
+                
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="field_name" type="string" description="field name" />
+                    <@parm name="field_def" type="*" description="field definition (see <a href='@link:/core/data-object-fields-collection.js/Fields_Collection.html#set__array'>Fields_Collection.set(array)</a> method description)" />
+                </@parms>
+                    
+                <h5>Example</h5>
+                <@codeblock>
+	                var collection = new Collection();
+	                //
+	                collection.set_field("Field1", "int");
+	                collection.fields()  ==>  [["Field1", "int", { data_type: "int" }]]
+	                //
+	                collection.set_field("Field2", "text");
+	                collection.fields()  ==>  [["Field1", "int", { data_type: "int" }], ["Field2", "text", { data_type: "text" }]]
+                </@codeblock>                
+            </@item>
+        
+            <!-----------------------------------------
+            |          remove_field(field_name)
+            ------------------------------------------>
+            
+            <@item title="remove_field(field_name)">
+                <div class="description">
+                    <p>
+                        Removes the field <code>field_name</code> from the collection fields.
+                    </p>
+                </div>
+                
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="field_name" type="string" description="field name" />
+                </@parms>
+                    
+                <h5>Example</h5>
+                <@codeblock>
+	                var collection = new Collection();
+	                //
+	                collection.set_field("Field1", "int");
+	                collection.fields()  ==>  [["Field1", "int", { data_type: "int" }]]
+	                //
+	                collection.remove_field("Field1");
+	                collection.fields()  ==>  []
+                </@codeblock>                
+            </@item>
+        
+        </@section>       
+        
+        <!--==================================================
+        =                   Items: Change
+        ===================================================-->
+
+        <@section title="Items: Change">
+            
+            <!-----------------------------------------
+            |          clear()
+            ------------------------------------------>
+
+            <@item title="clear()">
+                <div class="description">
+                    <p>
+                        Clears the collection, recreates the index. 
+                    </p>
+                    <p>
+                        Raises a <a href="#change">change</a> event with <code>{ type: "clear" }</code> parameter.
+                    </p>
+                </div>
+                   
+                <h5>Example</h5>
+                <@codeblock>
+                    var collection = new Collection();
+                    //
+                    collection.set([1, "2"]);
+                    collection.values()  ==>  [new Data_Value({ value: 1 }), new Data_Value({ value: "2" })]
+                    //
+                    collection.clear();
+                    collection.values()  ==>  []
+                </@codeblock>
+            </@item>
+            
+            <!-----------------------------------------
+            |          set(...)
+            ------------------------------------------>
+            
+            <@overloads title="set()">
+
+                <!-----------------------------------------
+                |          set(data_object)
+                ------------------------------------------>
+
+                <@item title="set(data_object)">
+                    <div class="description">
+                        <p>
+                            Clears the collection, then adds the <code>data_object</code> into the collection 
+                            using <code><a href="#push__value_data_object">push(data_object)</a></code> call.
+                        </p>
+                    </div>
+
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="value" type="Data_Object" description="data object to set" />
+                    </@parms>
+
+                    <h5>Example</h5>
+                    <@codeblock>
+                        var collection = new Collection();
+                        //
+                        var data_object = new Data_Object();
+                        data_object.set("Field1", 111);
+                        //
+                        collection.set(data_object);
+                        collection.stringify()  ==>  'Collection(Data_Object({"Field1": 111}))'
+                    </@codeblock>
+                </@item>
+                
+                <!-----------------------------------------
+                |          set(array)
+                ------------------------------------------>
+
+                <@item title="set(array)">
+                    <div class="description">
+                        <p>
+                            Clears the collection, then calls <code><a href="#push__">push(item)</a></code> for each array item.
+                        </p>
+                    </div>
+
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="value" type="array" description="array to set values" />
+                    </@parms>
+                    
+                    <h5>Example</h5>
+                    <@codeblock>
+                        var collection = new Collection();
+                        collection.set([1, "2"]);
+                        collection.values()  ==>  [new Data_Value({ value: 1 }), new Data_Value({ value: "2" })]
+                    </@codeblock>
+                </@item>
+                
+                <!-----------------------------------------
+                |          set(collection)
+                ------------------------------------------>
+
+                <@item title="set(collection)">
+                    <div class="description">
+                        <p>
+                            <mark>Throws "stop".</mark>
+                        </p>
+                    </div>
+
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="value" type="Collection" description="value to set" />
+                    </@parms>
+                    
+                    <h5>Example</h5>
+                    <@codeblock>
+                        var collection = new Collection();
+                        //
+                        var collection_value = new Collection();
+                        //
+                        // collection.set(collection_value);  - throw "stop"
+                    </@codeblock>
+                </@item>
+                
+                <!-----------------------------------------
+                |          set(other)
+                ------------------------------------------>
+
+                <@item title="set(other)">
+                    <div class="description">
+                        <p>
+                            <mark>Tries to call set(value) of the parent class (Data_Object), but passes one parameter only. As result it does nothig.</mark> 
+                        </p>
+                    </div>
+
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="value" type="other than Data_Object, Array, Collection" description="value to set?" />
+                    </@parms>
+                    
+                    <h5>Example</h5>
+                    <@codeblock>
+                        var collection = new Collection();
+                        //
+                        collection.set({ "Field1": [111] });
+                        // most probably it calls Data_Object.set({"Field1": [111]}), then Collection.set("Field1", [111]), then Data_Object.set("Field1");
+                        // nothing is done as result
+                        //
+                        collection.values()  ==>  []
+                        collection.get()  ==>  undefined
+                        //collection.get("Field1")  // - does not works because of get() method error
+                        collection._  ==>  {}
+                    </@codeblock>
+                </@item>
+                               
+            </@overloads>
+
+            <!-----------------------------------------
+            |          push(...)
+            ------------------------------------------>
+            
+            <@overloads title="push()">
+                
+                <@item title="push(value_object)">
+                    <div class="description">
+                        <p>
+                            Converts the <code>value_object</code> into a class instance (e.g. <code>Data_Object</code>), then adds it to the collection using other overloads code (e.g. <code>push(value_data_object)</code>).
+                        </p>
+                        <p>
+                            If <strong>data_type</strong> or <strong>data_def</strong> constraint is set for the collection, 
+                            then uses the constraint for the conversion.
+                        </p>
+                        <p>
+                            Returns the converted value.
+                        </p>
+                        <p>
+                            <mark>
+                                If the <strong>data_type</strong> constraint is set to a non-supported class, then the converted value will be 
+                                not added to the collection.
+                            </mark>
+                        </p>
+                    </div>
+                
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="value_object" type="object" description="source object" />
+                    </@parms>
+                
+                    <h5>Examples</h5>
+                    
+                    <h6 class="content-part-header collapsed">data_type constraint</h6>
+                    <@codeblock>
+	                    var President = Data_Object.extend({
+	                        'fields': [
+                                ['name', 'indexed text(32)'],
+                                ['party', 'indexed text(32)'],
+                                ['y1', 'int'],
+                                ['y2', 'int'],
+	                        ],
+	                    });
+	                    //
+	                    var presidents = new jsgui.Collection(
+                            President,
+                            [
+                                { 'name': 'George Washington', 'y1': 1789, 'y2': 1797 },
+                                { 'name': 'John Adams', 'y1': 1797, 'y2': 1801, 'party': 'Federalist' },
+                                { 'name': 'Thomas Jefferson', 'y1': 1801, 'y2': 1809, 'party': 'Democratic-Republican' },
+                            ]
+                        );
+	                    //
+	                    var value = presidents.push({ "name": "John Tyler", "y1": 1841, "y2": 1845, "party": "Whig" });
+	                    stringify(value)  ==>  'Data_Object({"name": "John Tyler", "y1": 1841, "y2": 1845, "party": "Whig"})'
+	                    stringify(presidents.values()[3])  ==>  'Data_Object({"name": "John Tyler", "y1": 1841, "y2": 1845, "party": "Whig"})'
+	                    presidents.values()[3]  ==>  value
+                    </@codeblock>
+                    
+                    <h6 class="content-part-header collapsed">data_type constraint, not supported class</h6>
+                    <@codeblock>
+	                    var collection = new Collection();
+	                    //
+	                    var Book = function (obj) { this.title = obj.bookTitle; this.objtype = "Book"; };
+	                    //
+	                    collection.constraint(Book);
+	                    //
+	                    //
+	                    var value = collection.push({ bookTitle: "The Little Prince" });
+	                    //
+	                    // the value is converted into Book, but not added to the collection:
+	                    //
+	                    value  ==>  new Book({ bookTitle: "The Little Prince" })
+	                    stringify(collection)  ==>  'Collection()'
+	                    collection.length()  ==>  0
+                    </@codeblock>
+                    
+                    <h6 class="content-part-header collapsed">data_def constraint</h6>
+                    <@codeblock>
+	                    var collection = new Collection();
+	                    collection.constraint({ name: "string", age: "number" });
+	                    //
+	                    // collection.push({ name: "John", age: "25" }); - throw "Does not match data_def constraint"
+	                    // collection.push({ name: "John" }); - throw "Does not match data_def constraint"
+	                    // collection.push({ name: null, age: "25" }); - throw "Does not match data_def constraint"
+	                    //
+	                    var value = collection.push({ name: "John", age: 25 });
+	                    stringify(value)  ==>  'Data_Object({"name": "John", "age": 25})'
+	                    stringify(collection)  ==>  'Collection(Data_Object({"name": "John", "age": 25}))'
+	                    collection.values()[0]  ==>  value
+                    </@codeblock>
+                    
+                    <h6 class="content-part-header collapsed">no constraint</h6>
+                    <@codeblock>
+	                    var collection = new Collection();
+	                    //
+	                    var value = collection.push({ name: "John", age: 25 });
+                        //
+	                    stringify(value)  ==>  'Data_Object({"name": "John", "age": 25})'
+	                    stringify(collection)  ==>  'Collection(Data_Object({"name": "John", "age": 25}))'
+	                    collection.values()[0]  ==>  value
+                    </@codeblock>
+                </@item>
+            
+                <@item title="push(value_collection)">
+                    <div class="description">
+                        <p>
+                            Adds the <code>value_collection</code> to the collection. 
+                        </p>
+                        <p>
+                            If there are constraint(s) set for the collection, then checks the constraint(s).
+                        </p>
+                        <p>
+                            Raises a <code>'change'</code> event with the following argument: 
+                            <code>{ 'target': this, 'item': value_collection, 'position': pos, 'type': 'insert' }</code>
+                        </p>
+                        <ul>
+                            <li><code>this</code> - the collection</li>
+                            <li><code>value_collection</code> - the added value</li>
+                            <li><code>pos</code> - position of the added value in the collection</li>
+                        </ul>
+                        <p>
+                            Returns the added value, i.e. <code>value_collection</code>.
+                        </p>
+                    </div>
+                
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="value_collection" type="Collection" description="value to add" />
+                    </@parms>
+                
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var collection = new Collection();
+	                    //
+	                    var value_collection = new Collection([1, 2]);
+	                    //
+	                    var event_args = null;
+	                    collection.on('change', function (e) { event_args = e; });
+	                    //
+	                    // without constraints:
+	                    //
+	                    var value = collection.push(value_collection);
+	                    stringify(value)  ==>  'Collection(1, 2)'
+	                    stringify(collection)  ==>  'Collection(Collection(1, 2))'
+	                    collection.values()[0]  ==>  value
+	                    event_args  ==>  { 'target': collection, 'item': value_collection, 'position': 0, 'type': 'insert' }
+	                    //
+	                    // passed constraint:
+	                    //
+	                    event_args = null;
+	                    collection.constraint(new Collection());
+	                    value = collection.push(value_collection);
+	                    stringify(value)  ==>  'Collection(1, 2)'
+	                    stringify(collection)  ==>  'Collection(Collection(1, 2), Collection(1, 2))'
+	                    collection.values()[1]  ==>  value
+	                    event_args  ==>  { 'target': collection, 'item': value_collection, 'position': 1, 'type': 'insert' }
+	                    //
+	                    // failed constraint:
+	                    //
+	                    collection.constraint(Number);
+	                    // collection.push(value_collection); - throw "Collection constraint(s) not satisfied"
+                    </@codeblock>
+                </@item>
+        
+                <@item title="push(value_data_object)">
+                    <div class="description">
+                        <p>
+                            Adds the <code>value_data_object</code> to the collection. 
+                        </p>
+                        <p>
+                            If there are constraint(s) set for the collection, then checks the constraint(s).
+                        </p>
+                        <p>
+                            Raises a <code>'change'</code> event with the following argument: 
+                            <code>{ 'target': this, 'item': value_data_object, 'position': pos, 'type': 'insert' }</code>
+                        </p>
+                        <ul>
+                            <li><code>this</code> - the collection</li>
+                            <li><code>value_data_object</code> - the added value</li>
+                            <li><code>pos</code> - position of the added value in the collection</li>
+                        </ul>
+                        <p>
+                            Returns the added value, i.e. <code>value_data_object</code>.
+                        </p>
+                    </div>
+                
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="value_data_object" type="Data_Object" description="value to add" />
+                    </@parms>
+                
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var collection = new Collection();
+	                    //
+	                    var value_data_object = Data_Object.dobj({ "name": "John", "age": 25 });
+	                    //
+	                    var event_args = null;
+	                    collection.on('change', function (e) { event_args = e; });
+	                    //
+	                    // without constraints:
+	                    //
+	                    var value = collection.push(value_data_object);
+	                    stringify(value)  ==>  'Data_Object({"name": "John", "age": 25})'
+	                    stringify(collection)  ==>  'Collection(Data_Object({"name": "John", "age": 25}))'
+	                    collection.values()[0]  ==>  value
+	                    event_args  ==>  { 'target': collection, 'item': value_data_object, 'position': 0, 'type': 'insert' }
+	                    //
+	                    // passed constraint:
+	                    //
+	                    event_args = null;
+	                    collection.constraint(new Data_Object());
+	                    value = collection.push(value_data_object);
+	                    stringify(value)  ==>  'Data_Object({"name": "John", "age": 25})'
+	                    stringify(collection)  ==>  'Collection(Data_Object({"name": "John", "age": 25}), Data_Object({"name": "John", "age": 25}))'
+	                    collection.values()[1]  ==>  value
+	                    event_args  ==>  { 'target': collection, 'item': value_data_object, 'position': 1, 'type': 'insert' }
+	                    //
+	                    // failed constraint:
+	                    //
+	                    collection.constraint(Number);
+	                    // collection.push(value_data_object);  - throw "Collection constraint(s) not satisfied"
+                    </@codeblock>
+                </@item>
+        
+                <@item title="push(value_control)">
+                    <div class="description">
+                        <p>
+                            Performs the same processing as <code>push(value_data_object)</code>
+                        </p>
+                        <p>
+                            <mark>TODO: add test and detailed description</mark>
+                        </p>
+                    </div>               
+                </@item>
+        
+                <@item title="push(value_array)">
+                    <div class="description">
+                        <p>
+                            Just returns <code>push(new Collection(value_array));</code>
+                        </p>
+                        <p>
+                            See <code>push(value_collection)</code> overload for detailed description.
+                        </p>
+                    </div>
+                
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="value_array" type="array" description="adding collection values" />
+                    </@parms>
+                
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    //
+	                    // the only difference from the "push(value_collection)" test
+	                    // is the value passed to the push() method:
+	                    // [1, 2] instead of new Collection([1, 2])
+                        //
+	                    var collection = new Collection();
+	                    //
+	                    var value_array = [1, 2];
+	                    //
+	                    var event_args = null;
+	                    collection.on('change', function (e) { event_args = e; });
+	                    //
+	                    // without constraints:
+	                    //
+	                    var value = collection.push(value_array);
+	                    stringify(value)  ==>  'Collection(1, 2)'
+	                    stringify(collection)  ==>  'Collection(Collection(1, 2))'
+	                    collection.values()[0]  ==>  value
+	                    event_args  ==>  { 'target': collection, 'item': value, 'position': 0, 'type': 'insert' }
+	                    //
+	                    // passed constraint:
+	                    //
+	                    event_args = null;
+	                    collection.constraint(new Collection());
+	                    value = collection.push(value_array);
+	                    stringify(value)  ==>  'Collection(1, 2)'
+	                    stringify(collection)  ==>  'Collection(Collection(1, 2), Collection(1, 2))'
+	                    collection.values()[1]  ==>  value
+	                    event_args  ==>  { 'target': collection, 'item': value, 'position': 1, 'type': 'insert' }
+                        //
+	                    // failed constraint:
+	                    //
+	                    collection.constraint(Number);
+	                    // collection.push(value_array);  - throw "Collection constraint(s) not satisfied"
+                    </@codeblock>
+                
+                </@item>
+        
+                <@item title="push(value_string)">
+                    <div class="description">
+                        <p>
+                            Converts the <code>value_string</code> to <code>Data_Value</code>, and adds it to the collection. 
+                        </p>
+                        <p>
+                            If there are constraint(s) set for the collection, then checks the constraint(s).
+                        </p>
+                        <p>
+                            Raises a <code>'change'</code> event with the following argument: 
+                            <code>{ 'target': this, 'item': converted_value, 'position': pos, 'type': 'insert' }</code>
+                        </p>
+                        <ul>
+                            <li><code>this</code> - the collection</li>
+                            <li><code>converted_value</code> - the added Data_Value wrapper</li>
+                            <li><code>pos</code> - position of the added value in the collection</li>
+                        </ul>
+                        <p>
+                            <mark>Returns the source value, i.e. <code>value_string</code>.</mark>
+                        </p>
+                    </div>
+                
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="value_string" type="string" description="source string to add" />
+                    </@parms>
+                
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var collection = new Collection();
+	                    //
+	                    var value_string = "text";
+	                    //
+	                    var event_args = null;
+	                    collection.on('change', function (e) { event_args = e; });
+	                    //
+	                    // without constraints:
+	                    //
+	                    var value = collection.push(value_string);
+	                    value  ==>  "text"  // !!! instead of new Data_Value({ 'value': "text" })
+	                    stringify(collection)  ==>  'Collection("text")'
+	                    collection.values()[0]  ==>  new Data_Value({ 'value': value })
+	                    event_args  ==>  { 'target': collection, 'item': new Data_Value({ 'value': value }), 'position': 0, 'type': 'insert' }
+	                    //
+	                    // passed constraint:
+	                    //
+	                    event_args = null;
+	                    collection.constraint(String);
+	                    value = collection.push(value_string);
+	                    value  ==>  "text"  // !!! instead of new Data_Value({ 'value': "text" })
+	                    stringify(collection)  ==>  'Collection("text", "text")'
+	                    collection.values()[1]  ==>  new Data_Value({ 'value': value })
+	                    event_args  ==>  { 'target': collection, 'item': new Data_Value({ 'value': value }), 'position': 1, 'type': 'insert' }
+	                    //
+	                    // failed constraint:
+	                    //
+	                    collection.constraint(Number);
+	                    // collection.push(value_string);  - throw "wrong data type"
+                    </@codeblock>
+                </@item>
+        
+                <@item title="push(value_number)">
+                    <div class="description">
+                        <p>
+                            Converts the <code>value_number</code> to <code>Data_Value</code>, and adds it to the collection. 
+                        </p>
+                        <p>
+                            If there are constraint(s) set for the collection, then checks the constraint(s).
+                        </p>
+                        <p>
+                            Raises a <code>'change'</code> event with the following argument: 
+                            <code>{ 'target': this, 'item': converted_value, 'position': pos, 'type': 'insert' }</code>
+                        </p>
+                        <ul>
+                            <li><code>this</code> - the collection</li>
+                            <li><code>converted_value</code> - the added Data_Value wrapper</li>
+                            <li><code>pos</code> - position of the added value in the collection</li>
+                        </ul>
+                        <p>
+                            <mark>Returns the source value, i.e. <code>value_number</code>.</mark>
+                        </p>
+                    </div>
+                
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="value_number" type="number" description="source number to add" />
+                    </@parms>
+                
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var collection = new Collection();
+	                    //
+	                    var value_number = 123;
+	                    //
+	                    var event_args = null;
+	                    collection.on('change', function (e) { event_args = e; });
+	                    //
+	                    // without constraints:
+	                    //
+	                    var value = collection.push(value_number);
+	                    value  ==>  123  // !!! instead of new Data_Value({ 'value': 123 })
+	                    stringify(collection)  ==>  'Collection(123)'
+	                    collection.values()[0]  ==>  new Data_Value({ 'value': value })
+	                    event_args  ==>  { 'target': collection, 'item': new Data_Value({ 'value': value }), 'position': 0, 'type': 'insert' }
+	                    //
+	                    // passed constraint:
+	                    //
+	                    event_args = null;
+	                    collection.constraint(Number);
+	                    value = collection.push(value_number);
+	                    value  ==>  123  // !!! instead of new Data_Value({ 'value': 123 })
+	                    stringify(collection)  ==>  'Collection(123, 123)'
+	                    collection.values()[1]  ==>  new Data_Value({ 'value': value })
+	                    event_args  ==>  { 'target': collection, 'item': new Data_Value({ 'value': value }), 'position': 1, 'type': 'insert' }
+	                    //
+	                    // failed constraint:
+	                    //
+	                    collection.constraint(String);
+	                    // collection.push(value_number);  - throw "wrong data type"
+                    </@codeblock>
+                </@item>
+        
+            </@overloads>
+        
+            <!-----------------------------------------
+            |          add(...)
+            ------------------------------------------>
+            
+            <@item title="add(...)">
+                <div class="description">
+                    <p>
+                        Just an alias for the <code><a href="#push__">push(...)</a></code> method.
+                    </p>
+                </div>               
+            </@item>
+            
+            <!-----------------------------------------
+            |          insert(item, pos)
+            ------------------------------------------>
+            
+            <@item title="insert(item, pos)">
+                <div class="description">
+                    <p>
+                        Inserts the <code>item</code> into the collection at <code>pos</code> position.
+                    </p>
+                    <p>
+                        Raises a <a href="#change">change</a> event with <code>{ 'name': 'insert', 'item': item, 'pos': pos }</code> parameter.
+                    </p>
+                    <p>
+                        The <code>item</code> will be inserted "as is" without Data_Object wrapping or something similar.
+                    </p>
+                    <p>
+                        <mark>The method calls <code>this.index_system.notify_insertion(pos);</code>, but <code>notify_insertion()</code> does nothing. Indexes are not updating.</mark>
+                    </p>
+                </div>
+                
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="item" type="object" description="item to insert" />
+                    <@parm name="pos" type="number" description="zero-based inserted item index" />
+                </@parms>
+                    
+                <h5>Example</h5>
+                <@codeblock>
+	                var presidents = new jsgui.Collection(
+                        Data_Object.extend({
+                            'fields': [
+                                ['name', 'indexed text(32)'],
+                                ['party', 'indexed text(32)'],
+                                ['y1', 'int'],
+                                ['y2', 'int'],
+                            ],
+                        }),
+                        [
+                            { 'name': 'George Washington', 'y1': 1789, 'y2': 1797 },
+                            // { 'name': 'John Adams', 'y1': 1797, 'y2': 1801, 'party': 'Federalist' },
+                            { 'name': 'Thomas Jefferson', 'y1': 1801, 'y2': 1809, 'party': 'Democratic-Republican' },
+                        ]
+                    );
+	                //
+	                presidents.insert({ 'name': 'John Adams', 'y1': 1797, 'y2': 1801, 'party': 'Federalist' }, 1);
+                    //
+	                var item0 = presidents.get(0);
+	                stringify(item0)  ==> 'Data_Object({"name": "George Washington", "y1": 1789, "y2": 1797, "party": undefined})'
+                    //
+	                var item1 = presidents.get(1);
+	                stringify(item1)  ==>  '{"name": "John Adams", "y1": 1797, "y2": 1801, "party": "Federalist"}' // without "Data_Object(...)" wrapping
+                </@codeblock>
+                
+            </@item>
+            
+            <!-----------------------------------------
+            |          remove(...)
+            ------------------------------------------>
+            
+            <@overloads title="remove()">
+
+                <@item title="remove(pos)  // [n]">
+                    <div class="description">
+                        <p>
+                            Removes an item from the <code>pos</code> position.
+                        </p>
+                        <p>
+                            <mark>
+                                In fact, it works for the very last item only. When removing other items it tries to update relationships for the items 
+                                after removing one, but the items have no <code>relationships</code> property. An exception throws as result.
+                            </mark>
+                        </p>
+                        <p>
+                            <mark>Tries to raise <code>'remove'</code> event, but passes <code>that</code> as first parameter instead of the event name. As result, the event does not works properly.</mark>
+                        </p>
+                    </div>
+                
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="pos" type="number" description="zero-based removing item index" />
+                    </@parms>
+                    
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var collection = new Collection(String);
+	                    //
+	                    var event_args = null;
+	                    collection.on("remove", function (args) { event_args = args; });
+	                    //
+	                    collection.push("1");
+	                    collection.push("2");
+	                    collection.push("3");
+	                    //
+	                    collection.values()  ==>  [new Data_Value({ value: "1" }), new Data_Value({ value: "2" }), new Data_Value({ value: "3" })]
+	                    //
+	                    // remove(pos) works for the very last item only
+                        //
+	                    // remove last:
+	                    collection.remove(2);
+	                    collection.values()  ==>  [new Data_Value({ value: "1" }), new Data_Value({ value: "2" })]
+	                    event_args  ==>  null // event not raised properly
+	                    //
+	                    // remove not last:
+	                    // collection.remove(0); - exception!
+                    </@codeblock>
+                
+                </@item>
+            
+                <@item title="remove(key)  // [s]">
+                    <div class="description">
+                        <p>
+                            Removes an item with the specified item key.
+                        </p>
+                        <p>
+                            <mark>
+                                Tries to use item <code>_relationships[this.__id]</code> property, but it is <code>undefined</code>. 
+                                As result, removes very first item.
+                            </mark>
+                        </p>
+                        <p>
+                            <mark>Uses <code>'value'</code> index only (hard-coded)</mark>
+                        </p>
+                        <p>
+                            <mark>Tries to raise <code>'remove'</code> event, but passes <code>that</code> as first parameter instead of the event name. As result, the event does not works properly.</mark>
+                        </p>
+                    </div>
+                
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="key" type="string" description="primary key of the removing item" />
+                    </@parms>
+                    
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var collection = new Collection(String);
+	                    //
+	                    var event_args = null;
+	                    collection.on("remove", function (args) { event_args = args; });
+	                    //
+	                    collection.push("1");
+	                    collection.push("2");
+	                    //
+	                    collection.values()  ==>  [new Data_Value({ value: "1" }), new Data_Value({ value: "2" })]
+	                    //
+	                    // remove(key) removes very first item always
+	                    //
+	                    collection.remove("2");
+	                    collection.values()  ==>  [new Data_Value({ value: "2" })] // item "1" removed instead !!!
+	                    event_args  ==>  null // event not raised properly
+                    </@codeblock>
+                
+                </@item>
+            
+            </@overloads>
+                
+            <!-----------------------------------------
+            |          load_array(arr)
+            ------------------------------------------>
+            
+            <@item title="load_array(arr)">
+                <div class="description">
+                    <p>
+                        Adds the <code>arr</code> array items into the collection calling <code>push(arr[i])</code>.
+                    </p>
+                    <p>
+                        The <code>push()</code> method can perform additional item conversion and constraint(s) check.
+                    </p>
+                </div>
+                
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="arr" type="array" description="items to add" />
+                </@parms>
+                
+                <h5>Example</h5>
+                <@codeblock>
+	                var collection = new Collection();
+	                //
+	                collection.load_array([1, 2, 3]);
+	                //
+	                stringify(collection)  ==>  'Collection(1, 2, 3)'
+	                collection.values()[0]  ==>  new Data_Value({ value: 1 })
+                </@codeblock>
+            </@item>
+        
+        </@section>       
+        
+        <!--==================================================
+        =                   Items: Read
+        ===================================================-->
+
+        <@section title="Items: Read">
+            
+            <!-----------------------------------------
+            |          length()
+            ------------------------------------------>
+
+            <@item title="length()">
+                <div class="description">
+                    <p>
+                        Returns the collection length (i.e. items count).
+                    </p>
+                </div>
+                   
+                <h5>Example</h5>
+                <@codeblock>
+                    var collection = new Collection();
+                    collection.length()  ==>  0
+                    //
+                    collection.set([1, "2"]);
+                    collection.length()  ==>  2
+                </@codeblock>
+            </@item>
+            
+            <!-----------------------------------------
+            |          each(collection_index-opt, callback, context-opt)
+            ------------------------------------------>
+
+            <@item title="each(collection_index-opt, callback, context-opt)">
+                <div class="description">
+                    <p>
+                        Iterates over the collection items, calling the <code>callback(index, value)</code> function for each item.
+                    </p>
+                    <p>
+                        If the <code>collection_index</code> parameter is passed, then iterates using the index.
+                    </p>
+                </div>
+                   
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="collection_index" type="Collection_Index" description="collection index to specify the iteration order" optional />
+                    <@parm name="callback" type="function" description="function to perform" />
+                    <@parm name="context" type="Object" description="context object" optional />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var collection = new Collection();
+                    collection.set([1, "2"]);
+                    //
+                    var dump = [];
+                    var callback = function (key, value) { dump.push([key, value]) };
+                    //
+                    collection.each(callback);
+                    dump  ==>  [[0, new Data_Value({ value: 1 })], [1, new Data_Value({ value: "2" })]]
+                </@codeblock>
+            </@item>
+            
+            <!-----------------------------------------
+            |          eac(collection_index-opt, callback, context-opt)
+            ------------------------------------------>
+
+            <@item title="eac(collection_index-opt, callback, context-opt)">
+                <div class="description">
+                    <p>
+                        Iterates over the collection items, calling the <code>callback(value, index)</code> function for each item.
+                    </p>
+                    <p>
+                        The difference from <code>each()</code> method is the callback function parameters order: (value, index) instead of (index, value).
+                    </p>
+                    <p>
+                        If the <code>collection_index</code> parameter is passed, then iterates using the index.
+                    </p>
+                </div>
+                   
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="collection_index" type="Collection_Index" description="collection index to specify the iteration order" optional />
+                    <@parm name="callback" type="function" description="function to perform" />
+                    <@parm name="context" type="Object" description="context object" optional />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var collection = new Collection();
+                    collection.set([1, "2"]);
+                    //
+                    var dump = [];
+                    var callback = function (value, key) { dump.push([key, value]) }; // as opposed to each() callback parameters (key, value)
+                    //
+                    collection.eac(callback);
+                    dump  ==>  [[0, new Data_Value({ value: 1 })], [1, new Data_Value({ value: "2" })]]
+                </@codeblock>
+            </@item>
+            
+            <!-----------------------------------------
+            |          find(...)
+            ------------------------------------------>
+            
+            <@overloads title="find()">
+
+                <div class="description">
+                    <p>
+                        Searches collection items matching search criteries. Usually returns an array of the found items, 
+                        but <code>find([s,o])</code> overload returns <code>Collection</code>.
+                    </p>
+                </div>
+                
+                <@item title="find(objQuery)  // [o]">
+                    <div class="description">
+                        <p>
+                            The <code>objQuery</code> parameter is a key/value object; keys are field names, and values are field values to match. 
+                            <mark>Only one key/value pair is allowed for now.</mark>
+                        </p>
+                        <p>
+                            Search uses collection indexes. Non-indexed fields cannot be used for the search.
+                        </p>
+                    </div>
+                
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var presidents = new jsgui.Collection(
+                            Data_Object.extend({
+                                'fields': [
+                                    ['name', 'indexed text(32)'],
+                                    ['party', 'indexed text(32)'],
+                                    ['y1', 'int'],
+                                    ['y2', 'int'],
+                                ],
+                            }),
+                            [
+                                { 'name': 'George Washington', 'y1': 1789, 'y2': 1797 },
+                                { 'name': 'John Adams', 'y1': 1797, 'y2': 1801, 'party': 'Federalist' },
+                                { 'name': 'Thomas Jefferson', 'y1': 1801, 'y2': 1809, 'party': 'Democratic-Republican' },
+                            ]
+                        );
+                        //
+	                    var find_result = null;
+	                    //
+	                    find_result = presidents.find({ 'name': 'George Washington' });
+	                    stringify(find_result)  ==>  '[Data_Object({"name": "George Washington", "y1": 1789, "y2": 1797, "party": undefined})]'
+	                    //
+	                    find_result = presidents.find({ 'party': '' });
+	                    stringify(find_result)  ==>  '[Data_Object({"name": "George Washington", "y1": 1789, "y2": 1797, "party": undefined})]'
+	                    //
+	                    presidents.find({ 'party': undefined })  ==>  undefined
+	                    //
+            	        // presidents.find({ 'y1': 1789 }); // throws "stop": no index for 'y1' field
+                        //
+	                    presidents.find({ 'name': '' })  ==>  []
+	                    //
+	                    // presidents.find({ 'name': 'George Washington', 'party': '' }); // throws "stop": 2 key/value pairs
+	                    // presidents.find({ 'name': 'George Washington', 'y1': 1789 });  // throws "stop": 2 key/value pairs
+                    </@codeblock>
+                
+                </@item>
+            
+                <@item title="find(arrQuery)  // [a]">
+                    
+                    <div class="description">
+                        <p>
+                            The <code>arrQuery</code> parameter is an array containing <code>[key, value]</code> subarrays; keys are field names, and values are field values to match. 
+                        </p>
+                        <p>
+                            Search uses collection indexes. Non-indexed fields cannot be used for the search.
+                        </p>
+                    </div>
+                
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var presidents = new jsgui.Collection(
+                            Data_Object.extend({
+                                'fields': [
+                                    ['name', 'indexed text(32)'],
+                                    ['party', 'indexed text(32)'],
+                                    ['y1', 'int'],
+                                    ['y2', 'int'],
+                                ],
+                            }),
+                            [
+                                { 'name': 'George Washington', 'y1': 1789, 'y2': 1797 },
+                                { 'name': 'John Adams', 'y1': 1797, 'y2': 1801, 'party': 'Federalist' },
+                                { 'name': 'Thomas Jefferson', 'y1': 1801, 'y2': 1809, 'party': 'Democratic-Republican' },
+                                { 'name': 'William Henry Harrison', 'y1': 1841, 'y2': 1841, 'party': 'Whig' },
+                                { 'name': 'John Tyler', 'y1': 1841, 'y2': 1845, 'party': 'Whig' },
+                                { 'name': 'James K. Polk', 'y1': 1845, 'y2': 1849, 'party': 'Democratic' },
+                                { 'name': 'Zachary Taylor', 'y1': 1849, 'y2': 1850, 'party': 'Whig' },
+                                { 'name': 'Millard Fillmore', 'y1': 1850, 'y2': 1853, 'party': 'Whig' },
+                            ]
+                        );
+	                    //
+	                    var find_result = null;
+	                    //
+	                    // name field, found:
+	                    find_result = presidents.find([['name', 'George Washington']]);
+	                    stringify(find_result)  ==>  '[Data_Object({"name": "George Washington", "y1": 1789, "y2": 1797, "party": undefined})]'
+	                    //
+	                    // name field, not found:
+	                    presidents.find([['name', 'Nobody']])  ==>  []
+	                    //
+	                    // party field, found:
+	                    find_result = presidents.find([['party', 'Whig']]);
+	                    find_result.length  ==>  4
+	                    //
+	                    // party, undefined found:
+	                    find_result = presidents.find([['party', undefined]]);
+	                    stringify(find_result)  ==>  '[Data_Object({"name": "George Washington", "y1": 1789, "y2": 1797, "party": undefined})]'
+	                    //
+	                    // party field, empty string instead of undefined, found:
+	                    find_result = presidents.find([['party', '']]);
+	                    stringify(find_result)  ==>  '[Data_Object({"name": "George Washington", "y1": 1789, "y2": 1797, "party": undefined})]'
+	                    //
+	                    // party field, not found:
+	                    presidents.find([['party', 'xxx']])  ==>  []
+	                    //
+	                    // non-indexed field:
+	                    presidents.find([['y1', '1789']]  ==>  undefined
+	                    //
+	                    // indexed + indexed (different indexes), not work:
+	                    presidents.find([['name', 'George Washington'], ['party', undefined]])  ==>  undefined
+	                    //
+	                    // indexed + indexed (different indexes), not work again:
+	                    presidents.find([['name', 'William Henry Harrison'], ['party', 'Whig']])  ==>  undefined
+	                    //
+	                    // indexed + non-indexed, not work (it's expected):
+	                    presidents.find([['name', 'George Washington'], ['y1', '1789']])  ==>  undefined
+                        //
+                        // add 2 fields index:
+                        //
+                        presidents.index(['name', 'party']);
+                        //
+                        // indexed + indexed, works now:
+                        find_result = presidents.find([['name', 'George Washington'], ['party', undefined]]);
+                        stringify(find_result)  ==>  '[Data_Object({"name": "George Washington", "y1": 1789, "y2": 1797, "party": undefined})]'
+                        //
+                        // indexed + indexed, works now:
+                        find_result = presidents.find([['name', 'William Henry Harrison'], ['party', 'Whig']]);
+                        stringify(find_result)  ==>  '[Data_Object({"name": "William Henry Harrison", "y1": 1841, "y2": 1841, "party": "Whig"})]'
+                    </@codeblock>
+                
+                </@item>
+            
+                <@item title="find(fieldDef, search_term)  // [o,s]">
+                    
+                    <div class="description">
+                        <p>
+                            <mark>Does nothing in fact. When <code>Collection_Index_System.search_for_index_with_fields()</code> method tries
+                            to select an appropriate index, it compares an object (<code>fieldDef</code>) and an array (<code>[i_fields]</code>) using an <code>are_equal()</code> function. 
+                            In this case the function result is never true.</mark>
+                        </p>
+                    </div>
+                
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var presidents = new jsgui.Collection(
+                            Data_Object.extend({
+                                'fields': [
+                                    ['name', 'indexed text(32)'],
+                                    ['party', 'indexed text(32)'],
+                                    ['y1', 'int'],
+                                    ['y2', 'int'],
+                                ],
+                            }),
+                            [
+                                { 'name': 'George Washington', 'y1': 1789, 'y2': 1797 },
+                                { 'name': 'John Adams', 'y1': 1797, 'y2': 1801, 'party': 'Federalist' },
+                                { 'name': 'Thomas Jefferson', 'y1': 1801, 'y2': 1809, 'party': 'Democratic-Republican' },
+                            ]
+                        );
+	                    //
+	                    // seems not possible to pass an object to be found successfully...
+	                    //
+	                    // When Collection_Index_System.search_for_index_with_fields() method tries
+	                    // to select an appropriate index, it compares an object and an array using an are_equal() function. 
+	                    // In this case the function result is never true.
+                        //
+	                    presidents.find({}, 'George Washington')  ==>  undefined
+                    </@codeblock>
+                
+                </@item>
+            
+                <@item title="find(fieldName, search_term)  // [s,s]">
+                    
+                    <div class="description">
+                        <p>
+                            The parameters are field name and field value to find.
+                        </p>
+                        <p>
+                            Search uses collection indexes. Non-indexed fields cannot be used for the search.
+                        </p>
+                    </div>
+                
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var presidents = new jsgui.Collection(
+                            Data_Object.extend({
+                                'fields': [
+                                    ['name', 'indexed text(32)'],
+                                    ['party', 'indexed text(32)'],
+                                    ['y1', 'int'],
+                                    ['y2', 'int'],
+                                ],
+                            }),
+                            [
+                                { 'name': 'George Washington', 'y1': 1789, 'y2': 1797 },
+                                { 'name': 'John Adams', 'y1': 1797, 'y2': 1801, 'party': 'Federalist' },
+                                { 'name': 'Thomas Jefferson', 'y1': 1801, 'y2': 1809, 'party': 'Democratic-Republican' },
+                                { 'name': 'William Henry Harrison', 'y1': 1841, 'y2': 1841, 'party': 'Whig' },
+                                { 'name': 'John Tyler', 'y1': 1841, 'y2': 1845, 'party': 'Whig' },
+                                { 'name': 'James K. Polk', 'y1': 1845, 'y2': 1849, 'party': 'Democratic' },
+                                { 'name': 'Zachary Taylor', 'y1': 1849, 'y2': 1850, 'party': 'Whig' },
+                                { 'name': 'Millard Fillmore', 'y1': 1850, 'y2': 1853, 'party': 'Whig' },
+                            ]
+                        );
+	                    //
+	                    var find_result = null;
+	                    //
+	                    find_result = presidents.find('name', 'George Washington');
+	                    stringify(find_result)  ==>  '[Data_Object({"name": "George Washington", "y1": 1789, "y2": 1797, "party": undefined})]'
+	                    //
+	                    presidents.find('name', '')  ==>  []
+	                    //
+	                    find_result = presidents.find('party', '');
+	                    stringify(find_result)  ==>  '[Data_Object({"name": "George Washington", "y1": 1789, "y2": 1797, "party": undefined})]'
+	                    //
+	                    presidents.find('party', undefined)  ==>  undefined
+	                    //
+	                    find_result = presidents.find('party', 'Whig');
+	                    find_result.length  ==>  4  // found 4 items
+	                    //
+	                    presidents.find('y1', '1789')  ==>  undefined  // "y1" field not indexed
+                    </@codeblock>
+                
+                </@item>
+            
+                <@item title="find(fieldsDef, search_term)  // [a,s]">
+                    
+                    <div class="description">
+                        <p>
+                            <mark>Does nothing in fact. <code>Collection_Index_System.find()</code> passing the first parameter (<code>fieldsDef</code> array) 
+                            into the <code>Collection_Index_System.search_for_index_with_fields()</code> method 
+                            wraps it into an additional array, so it is unable to find an appropriate collection index.</mark>
+                        </p>
+                    </div>
+                
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var presidents = new jsgui.Collection(
+                            Data_Object.extend({
+                                'fields': [
+                                    ['name', 'indexed text(32)'],
+                                    ['party', 'indexed text(32)'],
+                                    ['y1', 'int'],
+                                    ['y2', 'int'],
+                                ],
+                            }),
+                            [
+                                { 'name': 'George Washington', 'y1': 1789, 'y2': 1797 },
+                                { 'name': 'John Adams', 'y1': 1797, 'y2': 1801, 'party': 'Federalist' },
+                                { 'name': 'Thomas Jefferson', 'y1': 1801, 'y2': 1809, 'party': 'Democratic-Republican' },
+                            ]
+                        );
+	                    //
+	                    // seems not possible to pass such parameters to be found successfully...
+	                    //
+	                    // Collection_Index_System.find() passing the first parameter (array) into the 
+                        // Collection_Index_System.search_for_index_with_fields() method wraps it 
+                        // into an additional array, so it is unable to find an appropriate collection index.
+                        //
+	                    presidents.find(['name'], 'George Washington')  ==>  undefined
+                    </@codeblock>
+                
+                </@item>
+            
+                <@item title="find(propertyName, query)  // [s,o]">
+                    <div class="description">
+                        <p>
+                            Performs search for array fields. <strong>Collection indexes are not used.</strong>
+                        </p>
+                        <p>
+                            The <code>propertyName</code> parameter is a name of a field containing array data.
+                        </p>
+                        <p>
+                            The <code>query</code> parameter is a key/value pairs object containing property names/values for the array items.
+                        </p>
+                        <p>
+                            Returns a Collection filled by found values.
+                        </p>
+                    
+                    </div>
+                
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="propertyName" type="string" description="array field name" />
+                        <@parm name="query" type="object" description="search query" />
+                    </@parms>
+                    
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var order_items = new jsgui.Collection(
+                            Data_Object.extend({
+                                'fields': [
+                                    ['order_id', 'indexed text(10)'],
+                                    ['items', 'array']
+                                ],
+                            }),
+                            [
+                                { 'order_id': '101', items: [{ name: 'pencil', cost: 1 }, { name: 'book', cost: 15 }, { name: 'watercolour', cost: 7 }] },
+                                { 'order_id': '102', items: [{ name: 'stick notes', cost: 3 }, { name: 'mark pen', cost: 4 }] },
+                                { 'order_id': '103', items: [{ name: 'drawing set', cost: 10 }, { name: 'protractor', cost: 1 }, { name: 'book', cost: 20 }] }
+                            ]
+                        );
+	                    //
+	                    var find_result = null;
+	                    //
+	                    find_result = order_items.find('items', { name: 'book' });
+	                    stringify(find_result)  ==>  'Collection(Data_Object({"name": "book", "cost": 15}), Data_Object({"name": "book", "cost": 20}))'
+	                    //
+	                    find_result = order_items.find('items', { name: 'book', cost: 20 });
+	                    stringify(find_result)  ==>  'Collection(Data_Object({"name": "book", "cost": 20}))'
+                    </@codeblock>
+                
+                </@item>
+                        
+            </@overloads>
+
+            <!-----------------------------------------
+            |          get(...)
+            ------------------------------------------>
+            
+            <@overloads title="get()">
+            
+                <@item title="get(item_index)  // [n]">
+                    <div class="description">
+                        <p>
+                            Returns a collection item specified by the <code>item_index</code>.
+                        </p>
+                    </div>
+                
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="item_index" type="number" description="item index" />
+                    </@parms>
+                    
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var presidents = new jsgui.Collection(
+                            Data_Object.extend({
+                                'fields': [
+                                    ['name', 'indexed text(32)'],
+                                    ['party', 'indexed text(32)'],
+                                    ['y1', 'int'],
+                                    ['y2', 'int'],
+                                ],
+                            }),
+                            [
+                                { 'name': 'George Washington', 'y1': 1789, 'y2': 1797 },
+                                { 'name': 'John Adams', 'y1': 1797, 'y2': 1801, 'party': 'Federalist' },
+                                { 'name': 'Thomas Jefferson', 'y1': 1801, 'y2': 1809, 'party': 'Democratic-Republican' },
+                            ]
+                        );
+	                    //
+	                    var item = presidents.get(0);
+	                    stringify(item)  ==>  'Data_Object({"name": "George Washington", "y1": 1789, "y2": 1797, "party": undefined})'
+                    </@codeblock>
+                
+                </@item>
+            
+                <@item title="get(primary_key)  // [s]">
+                    <div class="description">
+                        <p>
+                            <mark>Throws an exception (tries to use <code>_primary_unique_index</code> property of the index system, but the property is not set anywhere).</mark>
+                        </p>
+                    </div>
+                
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="primary_key" type="string" description="primary key value" />
+                    </@parms>
+                    
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var presidents = new jsgui.Collection(
+                            Data_Object.extend({
+                                'fields': [
+                                    ['name', 'indexed text(32)'],
+                                    ['party', 'indexed text(32)'],
+                                    ['y1', 'int'],
+                                    ['y2', 'int'],
+                                ],
+                            }),
+                            [
+                                { 'name': 'George Washington', 'y1': 1789, 'y2': 1797 },
+                                { 'name': 'John Adams', 'y1': 1797, 'y2': 1801, 'party': 'Federalist' },
+                                { 'name': 'Thomas Jefferson', 'y1': 1801, 'y2': 1809, 'party': 'Democratic-Republican' },
+                            ]
+                        );
+	                    //
+	                    // presidents.get("George Washington"); - exception!
+                    </@codeblock>
+                
+                </@item>
+                        
+            </@overloads>
+        
+            <!-----------------------------------------
+            |          has(obj_key)
+            ------------------------------------------>
+            
+            <@item title="has(obj_key)">
+                <div class="description">
+                    <p>
+                        Returns <code>true</code> if the collection contains the <code>obj_key</code> item, <code>false</code> otherwise.
+                    </p>
+                    <p>
+                        <mark>
+                            Works for native String collections only. For other collections returns <code>undefined</code>.
+                        </mark>
+                    </p>
+                </div>
+                
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="obj_key" type="string" description="item key (string item value in fact)" />
+                </@parms>
+                    
+                <h5>Example</h5>
+                <@codeblock>
+	                //
+	                // works for native String collections only:
+                    //
+	                var collection = new Collection(String);
+	                //
+	                collection.push("1");
+	                collection.push("2");
+	                //
+	                collection.has("1")  ==>  true
+	                collection.has("2")  ==>  true
+	                collection.has("3")  ==>  false
+	                //
+	                // non-String collection:
+                    //
+	                var presidents = new jsgui.Collection(
+                        Data_Object.extend({
+                            'fields': [
+                                ['name', 'indexed text(32)'],
+                                ['party', 'indexed text(32)'],
+                                ['y1', 'int'],
+                                ['y2', 'int'],
+                            ],
+                        }),
+                        [
+                            { 'name': 'George Washington', 'y1': 1789, 'y2': 1797 },
+                            { 'name': 'John Adams', 'y1': 1797, 'y2': 1801, 'party': 'Federalist' },
+                            { 'name': 'Thomas Jefferson', 'y1': 1801, 'y2': 1809, 'party': 'Democratic-Republican' },
+                        ]
+                    );
+                    //
+	                presidents.has("1")  ==>  undefined
+	                presidents.has("George Washington")  ==>  undefined
+                </@codeblock>
+                
+            </@item>
+
+            <!-----------------------------------------
+            |          values()
+            ------------------------------------------>
+            
+            <@item title="values()">
+                <div class="description">
+                    <p>
+                        Returns the collection items array. The items will be returned "as is" (as the collection keep them).
+                    </p>
+                </div>
+                
+                <h5>Example</h5>
+                <@codeblock>
+	                var collection = new Collection([1, 2, 3]);
+	                //
+	                collection.values()  ==>  [new Data_Value({ value: 1 }), new Data_Value({ value: 2 }), new Data_Value({ value: 3 })]
+	                collection.value()  ==>  [1, 2, 3]
+                </@codeblock>
+            </@item>
+        
+            <!-----------------------------------------
+            |          value()
+            ------------------------------------------>
+            
+            <@item title="value()">
+                <div class="description">
+                    <p>
+                        Returns the collection items array. In contrast to <code>values()</code> method, it applies <code>value()</code> call to each item in turn 
+                        (if the item contains <code>value()</code> method).
+                    </p>
+                </div>
+                
+                <h5>Example</h5>
+                <@codeblock>
+	                var collection = new Collection([1, 2, 3]);
+	                //
+	                collection.values()  ==>  [new Data_Value({ value: 1 }), new Data_Value({ value: 2 }), new Data_Value({ value: 3 })]
+	                collection.value()  ==>  [1, 2, 3]
+                </@codeblock>
+            </@item>
+                
+        </@section>
+
+        <!--==================================================
+        =                   Constraints
+        ===================================================-->
+
+        <@section title="Constraints">
+            
+            <!-----------------------------------------
+            |          Overview
+            ------------------------------------------>           
+            
+            <@item title="Overview - TODO" class="overview">
+                <p>
+                    xxx
+                </p>
+            </@item>
+            
+            <!-----------------------------------------
+            |          constraint(...)
+            ------------------------------------------>
+            
+            <@overloads title="constraint()">
+        
+                <@item title="constraint()  // []">
+                    <div class="description">
+                        <p>
+                            Returns an object containing constraints present in the collection.
+                        </p>
+                        <p>
+                            The resulting object can contain up to the following properties: <code>{ data_type: x, data_object: y, data_def: z }</code>
+                        </p>
+                        <p>
+                            Returns null if no constraints was set for the collection.
+                        </p>
+                    </div>
+                
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var collection = new Collection();
+	                    //
+	                    var expected = null;
+	                    collection.constraint()  ==>  expected
+	                    //
+	                    collection.constraint(Number);
+	                    expected = {
+	                        data_type: new Constraint.Collection_Data_Type(Number)
+	                    };
+	                    collection.constraint()  ==>  expected
+	                    //
+	                    collection.constraint({ Field1: "int", Field2: "text" });
+	                    expected = {
+	                        data_type: new Constraint.Collection_Data_Type(Number),
+	                        data_def: new Constraint.Collection_Data_Def({ Field1: "int", Field2: "text" })
+	                    };
+	                    collection.constraint()  ==>  expected
+                        //
+	                    collection.constraint(new Data_Object());
+	                    expected = {
+	                        data_type: new Constraint.Collection_Data_Type(Number),
+	                        data_def: new Constraint.Collection_Data_Def({ Field1: "int", Field2: "text" }),
+	                        data_object: Constraint.from_obj(new Data_Object())
+	                    };
+	                    collection.constraint()  ==>  expected
+                    </@codeblock>                
+                </@item>
+            
+                <@item title="constraint(data_def_object)  // [o]">
+                    <div class="description">
+                        <p>
+                            Sets collection data def constraint (<a href='@link:/core/constraint.js/Collection_Data_Def_Constraint.html'>Collection_Data_Def_Constraint</a>) created using <code>data_def_object</code> parameter.
+                        </p>
+                    </div>
+                
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="data_def_object" type="object" description="new <a href='@link:/core/constraint.js/Collection_Data_Def_Constraint.html'>Collection_Data_Def()</a> constructor parameter" />
+                    </@parms>
+                    
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var collection = new Collection();
+	                    //
+	                    collection.constraint()  ==>  null
+	                    //
+	                    collection.constraint({ Field1: "int", Field2: "text" });
+	                    collection.constraint()  ==>  { data_def: new Constraint.Collection_Data_Def({ Field1: "int", Field2: "text" }) }
+                    </@codeblock>                
+                </@item>
+            
+                <@item title="constraint(data_type_constructor)  // [f]">
+                    <div class="description">
+                        <p>
+                            Sets collection data type constraint (<a href='@link:/core/constraint.js/Collection_Data_Type_Constraint.html'>Collection_Data_Type_Constraint</a>) created using <code>data_type_constructor</code> parameter.
+                        </p>
+                    </div>
+                
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="data_type_constructor" type="object" description="new <a href='@link:/core/constraint.js/Collection_Data_Type_Constraint.html'>Collection_Data_Type()</a> constructor parameter" />
+                    </@parms>
+                    
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var collection = new Collection();
+	                    //
+	                    collection.constraint()  ==>  null
+	                    //
+	                    collection.constraint(Number);
+	                    collection.constraint()  ==>  { data_type: new Constraint.Collection_Data_Type(Number) }
+	                    //
+	                    collection.constraint(String);
+	                    collection.constraint()  ==>  { data_type: new Constraint.Collection_Data_Type(String) }
+	                    //
+	                    collection.constraint(Date);
+	                    collection.constraint()  ==>  { data_type: new Constraint.Collection_Data_Type(Date) }
+                    </@codeblock>                
+                </@item>
+            
+                <@item title="constraint(data_object)  // [D]">
+                    <div class="description">
+                        <p>
+                            Sets collection data object constraint (<a href='@link:/core/constraint.js/Data_Object_Constraint.html'>Data_Object_Constraint</a>) created using <code>data_object</code> parameter.
+                        </p>
+                    </div>
+                
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="data_object" type="Data_Object" description="<a href='@link:/core/constraint.js.html#from_obj__data_object'>from_obj(data_object)</a> parameter" />
+                    </@parms>
+                    
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var collection = new Collection();
+	                    //
+	                    collection.constraint()  ==>  null
+	                    //
+	                    collection.constraint(new Data_Object());
+	                    collection.constraint()  ==>  { data_object: Constraint.from_obj(new Data_Object()) }
+                    </@codeblock>                
+                </@item>
+            
+                <@item title="constraint([c_type, field_name])  // [[s,s]]">
+                    <div class="description">
+                        <p>
+                            Seems that it tries to create a constraint using the <a href='@link:/core/constraint.js.html#from_obj__arr_of_str_and_str'>from_obj(arr_of_str_and_str)</a> overload.
+                        </p>
+                        <p>
+                            <mark>In fact does nothing because the real method signature is <code>[a]</code> instead of <code>[s,s]</code>.</mark>
+                        </p>
+                    </div>
+                
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="constraint_def" type="array" description="<a href='@link:/core/constraint.js.html#from_obj__arr_of_str_and_str'>from_obj(arr_of_str_and_str)</a> parameter" />
+                    </@parms>
+                    
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var collection = new Collection();
+	                    //
+	                    collection.constraint()  ==>  null
+	                    //
+                        // the "[[s,s]]" branch does not work:
+	                    collection.constraint(["unique", "Field1"]);
+	                    collection._unique_constraints  ==>  undefined
+                    </@codeblock>                
+                </@item>
+            
+            </@overloads>
+                
+            <!-----------------------------------------
+            |          get_data_type_constraint()
+            ------------------------------------------>
+            
+            <@item title="get_data_type_constraint()">
+                <div class="description">
+                    <p>
+                        Returns the collection data type constraint.
+                    </p>
+                </div>
+                
+                <h5>Example</h5>
+                <@codeblock>
+	                var collection = new Collection();
+	                //
+	                collection.get_data_type_constraint()  ==>  undefined
+	                //
+	                collection.constraint(Number);
+	                collection.get_data_type_constraint()  ==>  new Constraint.Collection_Data_Type(Number)
+                </@codeblock>                
+            </@item>
+        
+            <!-----------------------------------------
+            |          unique(fields)
+            ------------------------------------------>
+            
+            <@item title="unique(fields)">
+                <div class="description">
+                    <p>
+                        Adds an unique constraint created for the <code>fields</code> field list.
+                    </p>
+                    <p>
+                        <code>unique("fieldName")</code> equals to <code>unique(["fieldName"])</code>.
+                    </p>
+                </div>
+                
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="fields" type="string or array of string" description="field name(s)" />
+                </@parms>
+                
+                <h5>Example</h5>
+                <@codeblock>
+	                var collection = new Collection();
+	                //
+	                collection.unique(["Field1"]);
+	                collection._unique_constraints  ==>  [new Constraint.Unique({ 'fields': ["Field1"] })]
+	                //
+	                collection.unique("Field2");
+	                collection._unique_constraints  ==>  [new Constraint.Unique({ 'fields': ["Field1"] }), new Constraint.Unique({ 'fields': ["Field2"] })]
+                </@codeblock>                
+            </@item>
+        
+            <!-----------------------------------------
+            |          find_unique_constraint(field)
+            ------------------------------------------>
+            
+            <@item title="find_unique_constraint(fieldName)">
+                <div class="description">
+                    <p>
+                        Tries to find and return an unique constraint for the <code>fieldName</code> field.
+                    </p>
+                    <p>
+                        <mark>In fact the method compares an array and a string (e.g. ["Field1"] and "Field1"), so always return <code>null</code>.</mark>
+                    </p>
+                </div>
+                
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="fieldName" type="string" description="field name" />
+                </@parms>
+                    
+                <h5>Example</h5>
+                <@codeblock>
+	                var presidents = new jsgui.Collection(
+                        Data_Object.extend({
+                            'fields': [
+                                ['name', 'indexed text(32)'],
+                                ['party', 'indexed text(32)'],
+                                ['y1', 'int'],
+                                ['y2', 'int'],
+                            ],
+                        }),
+                        [
+                            { 'name': 'George Washington', 'y1': 1789, 'y2': 1797 },
+                            { 'name': 'John Adams', 'y1': 1797, 'y2': 1801, 'party': 'Federalist' },
+                            { 'name': 'Thomas Jefferson', 'y1': 1801, 'y2': 1809, 'party': 'Democratic-Republican' },
+                        ]
+                    );
+	                //
+	                presidents.unique("name");
+	                presidents._unique_constraints[0].fields  ==>  ["name"]
+	                //
+	                // find_unique_constraint() tries to compare ["name"] and "name", returns null:
+	                presidents.find_unique_constraint("name")  ==>  null
+                </@codeblock>
+                
+            </@item>
+
+            <!-----------------------------------------
+            |          get_unique_constraint(fields)
+            ------------------------------------------>
+            
+            <@item title="get_unique_constraint(fields)">
+                <div class="description">
+                    <p>
+                        Tries to return an unique constraint created for the <code>fields</code> field list.
+                    </p>
+                    <p>
+                        <code>get_unique_constraint("fieldName")</code> equals to <code>get_unique_constraint(["fieldName"])</code>.
+                    </p>
+                    <p>
+                        <mark>In fact returns always undefined because the return operator is inside a nested function call in the each() cycle.</mark>
+                    </p>
+                </div>
+                
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="fields" type="string or array of string" description="field name(s)" />
+                </@parms>
+                
+                <h5>Example</h5>
+                <@codeblock>
+	                var collection = new Collection();
+	                //
+	                collection.unique(["Field1"]);
+	                //
+                    collection._unique_constraints ==> [new Constraint.Unique({ 'fields': ["Field1"] })]
+	                //
+                    // always undefined (tries to return from nested function in each()):
+	                collection.get_unique_constraint(["Field1"])  ==>  undefined
+                </@codeblock>                
+            </@item>
+        
+            <!-----------------------------------------
+            |          test_object_against_constraints(obj)
+            ------------------------------------------>
+            
+            <@item title="test_object_against_constraints(obj)">
+                <div class="description">
+                    <p>
+                        Checks the <code>obj</code> for the collection constraints. Returns <code>true</code> if <code>obj</code> matches the constrains, 
+                        and <code>false</code> in other case.
+                    </p>
+                </div>
+                
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="obj" type="*" description="object to check" />
+                </@parms>
+                
+                <h5>Example</h5>
+                <@codeblock>
+	                var collection = null;
+	                //
+	                // _type_constructor:
+	                //
+	                var Book = function () { }
+	                Book.abstract = true;
+	                //
+	                collection = new Collection(Book);
+	                //
+	                collection._type_constructor  ==>  Book
+	                collection.test_object_against_constraints(new Book())  ==>  true
+	                collection.test_object_against_constraints(new Date())  ==>  false
+	                collection.test_object_against_constraints(123)  ==>  false
+	                //
+	                // _data_def_constraint:
+	                //
+	                collection = new Collection();
+	                //
+	                // data_def constrains not checks:
+	                collection.constraint({ Field1: "number", Field2: "text" });
+                    //
+	                collection.test_object_against_constraints({ Field1: 1, Field2: "2" })  ==>  true
+	                collection.test_object_against_constraints({ Field1: "1", Field2: 2 })  ==>  true
+	                //
+	                // _data_object_constraint:
+                    // 
+	                collection = new Collection();
+	                //
+	                collection.constraint(new Data_Object());
+	                //
+	                collection.test_object_against_constraints(new Data_Object())  ==>  true
+	                collection.test_object_against_constraints({ Field1: "1", Field2: 2 })  ==>  false
+	                collection.test_object_against_constraints(new Data_Value())  ==>  false
+	                collection.test_object_against_constraints("text")  ==>  false
+	                //
+	                // _data_type_constraint:
+	                //
+	                collection = new Collection();
+	                //
+	                collection.constraint(Number);
+	                //
+	                collection.test_object_against_constraints(100)  ==>  true
+	                collection.test_object_against_constraints(new Data_Object())  ==>  false
+	                collection.test_object_against_constraints({ Field1: "1", Field2: 2 })  ==>  false
+	                collection.test_object_against_constraints(new Data_Value())  ==>  false
+	                collection.test_object_against_constraints("text")  ==>  false
+	                //
+	                // unique constraint:
+                    //
+	                var President = Data_Object.extend({
+	                    'fields': [
+                            ['name', 'indexed text(32)'],
+                            ['party', 'indexed text(32)'],
+                            ['y1', 'int'],
+                            ['y2', 'int'],
+	                    ],
+	                });
+	                //
+	                var presidents = new jsgui.Collection(
+                        President,
+                        [
+                            { 'name': 'George Washington', 'y1': 1789, 'y2': 1797 },
+                            { 'name': 'John Adams', 'y1': 1797, 'y2': 1801, 'party': 'Federalist' },
+                            { 'name': 'Thomas Jefferson', 'y1': 1801, 'y2': 1809, 'party': 'Democratic-Republican' },
+                        ]
+                    );
+	                //
+	                presidents.unique("name");
+	                //
+	                var GeorgeWashington = new President({ 'name': 'George Washington', 'y1': 1789, 'y2': 1797 });
+	                var JohnTyler = new President({ 'name': 'John Tyler', 'y1': 1841, 'y2': 1845, 'party': 'Whig' });
+	                //
+	                presidents.test_object_against_constraints(GeorgeWashington)  ==>  false
+	                presidents.test_object_against_constraints(JohnTyler)  ==>  true
+                </@codeblock>
+            </@item>
+                
+        </@section>       
+        
+        <!--==================================================
+        =                   Indexes
+        ===================================================-->
+
+        <@section title="Indexes">
+            
+            <!-----------------------------------------
+            |          Overview
+            ------------------------------------------>           
+            
+            <@item title="Overview - TODO" class="overview">
+                <p>
+                    xxx
+                </p>
+            </@item>
+            
+            <!-----------------------------------------
+            |          indexes()
+            ------------------------------------------>
+            
+            <@item title="indexes()">
+                <div class="description">
+                    <p>
+                        Returns collection indexes array.
+                    </p>
+                </div>
+                
+                <h5>Example</h5>
+                <@codeblock>
+	                var collection = new Collection();
+	                //
+	                collection.index_by(["Field1"]);
+                    //
+	                collection.indexes()  ==>  [new Collection_Index.Sorted({ 'fields': ["Field1"] })]
+                </@codeblock>
+            </@item>
+        
+            <!-----------------------------------------
+            |          index_by(...)
+            ------------------------------------------>
+            
+            <@overloads title="index_by()">
+        
+                <@item title="index_by(field_names)  // [a]">
+                    <div class="description">
+                        <p>
+                            Returns an index for the specified fields. If the index does not exists, then adds it first.
+                        </p>
+                    </div>
+                
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="field_names" type="array of string" description="field name(s)" />
+                    </@parms>
+                
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var collection = new Collection();
+	                    //
+	                    // create an estimated index clone:
+	                    var estimated_index = new Collection_Index.Sorted({ 'fields': ["Field1", "Field2"] });
+                        //
+	                    // create an index:
+	                    var index = collection.index_by(["Field1", "Field2"]);
+	                    //
+	                    index  ==>  estimated_index
+	                    // index !== estimated_index - they are different but equal objects
+	                    //
+	                    // ask for index again - returns already created index
+	                    var index2 = collection.index_by(["Field1", "Field2"]);
+	                    // index === index2 - exactly the same object
+                    </@codeblock>
+                </@item>
+            
+                <@item title="index_by(indexes_spec)  // [a]">
+                    <div class="description">
+                        <p>
+                            Calls the <a href="#index_by__field_names">index_by(field_names)</a> overload for each index spec in the <code>indexes_spec</code> array.
+                        </p>
+                    </div>
+                
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="indexes_spec" type="array of array of string" description="indexes spec" />
+                    </@parms>
+                
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var collection = new Collection();
+	                    //
+	                    collection.index_by([["Field1", "Field2"], ["Field3"]]);
+	                    //
+	                    var estimated_indexes = [
+                            new Collection_Index.Sorted({ 'fields': ["Field1", "Field2"] }),
+                            new Collection_Index.Sorted({ 'fields': ["Field3"] })
+	                    ];
+	                    //
+	                    collection.indexes()  ==>  estimated_indexes
+                    </@codeblock>
+                </@item>
+            
+                <@item title="index_by(index_map)  // [o]">
+                    <div class="description">
+                        <p>
+                            Adds or recreates index(es) specified by the <code>index_map</code> object.
+                        </p>
+                        <p>
+                            The <code>index_map</code> format is the following: <code>{ sorted: [["Index1_Field"], ["Index2_Field"], ...] }</code>.
+                            Other object properties (besides "sorted") will be ignored.
+                        </p>
+                        <p>
+                            <mark>This method can create indexes with 1 index field only because of an internal error.</mark>
+                        </p>
+                    
+                    </div>
+                
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="index_map" type="object" description="an object describing the creating indexes." />
+                    </@parms>
+                
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var collection = new Collection();
+	                    //
+                        //
+	                    // create an index. "sorted2" will be ignored (only "sorted" is used):
+                        //
+	                    collection.index_by({ sorted: [["Field1"]], sorted2: [["Field2"]] });
+	                    //
+	                    var estimated_indexes = [
+                            new Collection_Index.Sorted({ 'fields': ["Field1"] })
+	                    ];
+	                    //
+	                    collection.indexes()  ==>  estimated_indexes
+	                    //
+	                    // do the same again. the index will be re-created:
+	                    //
+	                    var index_old = collection.indexes()[0];
+	                    collection.index_by({ sorted: [["Field1"]], sorted2: [["Field2"]] });
+	                    // collection.indexes()[0] !== index_old - now it equal but different object
+	                    //
+	                    collection.indexes()  ==>  estimated_indexes
+	                    //
+                        //
+	                    // unable to create an index with several fields:
+                        //
+	                    // collection.index_by({ sorted: [["Field2", "Field3"]] }); - exception!
+                        //
+	                    // add 2 indexes:
+                        //
+	                    collection.index_by({ sorted: [["Field2"], ["Field3"]] });
+                        //
+	                    estimated_indexes = [
+                            new Collection_Index.Sorted({ 'fields': ["Field1"] }),
+                            new Collection_Index.Sorted({ 'fields': ["Field2"] }),
+                            new Collection_Index.Sorted({ 'fields': ["Field3"] }),
+	                    ];
+	                    //
+	                    collection.indexes()  ==>  estimated_indexes
+                    </@codeblock>
+                </@item>
+            
+                <@item title="index_by(field_name)  // [s]">
+                    <div class="description">
+                        <p>
+                            Adds or recreates index for the <code>field_name</code> field. In fact it just calls <code>index_by(index_map)</code> overload 
+                            passing <code>index_by({ 'sorted': [[field_name]] })</code>.
+                        </p>
+                    </div>
+                
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="field_name" type="string" description="index field name" />
+                    </@parms>
+                
+                    <h5>Example</h5>
+                    <@codeblock>
+	                    var collection = new Collection();
+	                    //
+	                    collection.index_by("Field1");
+	                    //
+	                    var estimated_indexes = [
+                            new Collection_Index.Sorted({ 'fields': ["Field1"] })
+	                    ];
+	                    //
+	                    collection.indexes()  ==>  estimated_indexes
+                    </@codeblock>
+                </@item>
+                        
+            </@overloads>
+                
+            <!-----------------------------------------
+            |          index(indexes_def)
+            ------------------------------------------>
+            
+            <@item title="index(indexes_def)">
+                <div class="description">
+                    <p>
+                        Just does <code>return index_by(indexes_def)</code>.
+                    </p>
+                </div>
+                
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="indexes_def" type="*" description="index_by() methods parameter" />
+                </@parms>
+                
+                <h5>Example</h5>
+                <@codeblock>
+	                var collection = new Collection();
+	                //
+	                collection.index("Field1");  // the same as collection.index_by("Field1");
+	                //
+	                var estimated_indexes = [
+                        new Collection_Index.Sorted({ 'fields': ["Field1"] })
+	                ];
+	                //
+	                collection.indexes()  ==>  estimated_indexes
+                </@codeblock>
+            </@item>
+        
+            <!-----------------------------------------
+            |          get_index(fields)
+            ------------------------------------------>
+            
+            <@item title="get_index(fields)">
+                <div class="description">
+                    <p>
+                        <mark>
+                            Seems that this method shoul return an index for the passed <code>fields</code>. 
+                            But it calls a <code>search()</code> method of the index system. That method does not exists.
+                            As result an exception throws.
+                        </mark>
+                    </p>
+                </div>
+                
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="fields" type="string?" description="fields list ?" />
+                </@parms>
+                    
+                <h5>Example</h5>
+                <@codeblock>
+	                var collection = new Collection(String);
+	                //
+	                // collection.get_index("value"); - exception!
+                </@codeblock>
+                
+            </@item>
+            
+        </@section>       
+        
+        <!--==================================================
+        =                   Utils
+        ===================================================-->
+
+        <@section title="Utils">
+            
+            <!-----------------------------------------
+            |          stringify()
+            ------------------------------------------>
+
+            <@item title="stringify()">
+                <div class="description">
+                    <p>
+                        Returns a stringified representation of the Collection object:
+                    </p>
+                    <ul>
+                        <li>Abstract collections starts from "~" (e.g. <code>"~Collection()"</code>)</li>
+                        <li>If an abstract collection is intended for a native type, then includes the type (e.g. <code>"~Collection(String)"</code>)</li>
+                        <li>Includes values for non-abstract collections (e.g. <code>"Collection(1, 2, 3)"</code>)</li>
+                    </ul>
+                </div>
+                   
+                <h5>Example</h5>
+                <@codeblock>
+                    var collection = new Collection();
+                    //
+                    collection.set([1, "2"]);
+                    collection.stringify()  ==>  'Collection(1, "2")'
+                    //
+                    // abstract collection:
+                    //
+                    var abstract_collection = new Collection({ abstract: true });
+                    abstract_collection.stringify()  ==>  "~Collection()"
+                    //
+                    // abstract collection for strings:
+                    //
+                    String.abstract = true;
+                    //
+                    var abstract_string_collection = new Collection(String);
+                    abstract_string_collection.stringify()  ==>  "~Collection(String)"                    
+                </@codeblock>
+            </@item>
+            
+            <!-----------------------------------------
+            |          toString()
+            ------------------------------------------>
+
+            <@item title="toString()">
+                <div class="description">
+                    <p>
+                        Returns a stringified representation of the internal items array.
+                    </p>
+                </div>
+                   
+                <h5>Example</h5>
+                <@codeblock>
+                    var collection = new Collection();
+                    collection.toString()  ==>  "[]"
+                    //
+                    collection.set([1, "2"]);
+                    collection.toString()  ==>  '[1, "2"]'
+                    //
+                    var abstract_collection = new Collection({ abstract: true });
+                    abstract_collection.toString()  ==>  "undefined"
+                </@codeblock>
+            </@item>
+            
+            <!-----------------------------------------
+            |          toObject()
+            ------------------------------------------>
+
+            <@item title="toObject()">
+                <div class="description">
+                    <p>
+                        Returns an array of item objects. The array items are <code>.toObject()</code> results of the collection items in turn.
+                    </p>
+                </div>
+                   
+                <h5>Example</h5>
+                <@codeblock>
+                    var collection = new Collection();
+                    collection.toObject()  ==>  []
+                    //
+                    collection.set([1, "2"]);
+                    collection.toObject()  ==>  [1, "2"]
+                    //
+                    var abstract_collection = new Collection({ abstract: true });
+                    abstract_collection.toObject()  ==>  []
+                </@codeblock>
+            </@item>
+            
+        </@section>       
+        
+        <!--==================================================
+        =                   Events
+        ===================================================-->
+
+        <@section title="Events">
+
+            <!-----------------------------------------
+            |          change
+            ------------------------------------------>
+
+            <@item title="change">
+                <div class="description">
+                    <p>
+                        <code>clear()</code> method calls <code>trigger('change', { 'type': 'clear' });</code>
+                    </p>
+                    <p>
+                        <code>insert(item, pos)</code> method calls <code>trigger('change', { 'name': 'insert', 'item': item, 'pos': pos });</code>
+                    </p>
+                    <p>
+                        <code>push(source_value)</code> method calls <code>raise_event('change', { 'target': this, 'item': value, 'position': pos, 'type': 'insert' });</code>
+                    </p>
+                </div>
+
+            </@item>
+
+        </@section>
+                
+        <!--==================================================
+        =                   Other
+        ===================================================-->
+
+        <@section title="Other">
+
+            <!-----------------------------------------
+            |          Side effects
+            ------------------------------------------>
+
+            <@item title="Side effects" class="remark">
+                <div class="description">
+                    <p>
+                        Sets <code>Data_Object.prototype.set_field</code> to its own internal method (<code>new_set_field()</code>). 
+                        The method tries to add <code>'[s,[f]]'</code> signature processing.
+                        But the real signature is <code>'[s,a]'</code> for such arguments. 
+                        <mark>So the additional processing does not works.</mark>
+                        As reault it calls the old <code>Data_Object.prototype.set_field()</code> method always.
+                    </p>
+                    <p>
+                        The <a href="#newcollection__spec_arr_values">Collection constructor</a> can produce a side effect too.
+                    </p>
+                </div>
+
+            </@item>
+
+        </@section>
+                
+    </article>
+
+</section>
+

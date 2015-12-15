@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2ECEB28D-D9CA-4861-99B3-988C4EA91C55}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DocSource</RootNamespace>
+    <AssemblyName>DocSource</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="content\core\collection-index.js.html" />
+    <Content Include="content\core\collection.js\Collection.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="content\core\data-object.js.html" />
+    <Content Include="content\core\data-object.js\Data_Object.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="content\core\data-object.js\Mini_Context.html" />
+    <Content Include="content\core\data-value.js.html" />
+    <Content Include="content\core\data-value.js\Data_Value.html" />
+    <Content Include="content\core\enhanced-data-object.js.html" />
+    <Content Include="content\core\enhanced-data-object.js\Enhanced_Data_Object.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="content\core\evented-class.js.html" />
+    <Content Include="content\core\data-object-fields-collection.js.html" />
+    <Content Include="content\core\data-object-fields-collection.js\Fields_Collection.html" />
+    <Content Include="content\core\evented-class.js\Evented_Class.html" />
+    <Content Include="content\core\jsgui-lang-util.js.html" />
+    <Content Include="content\core\jsgui-lang-enh.js.html" />
+    <Content Include="content\core\jsgui-data-structures-suffix-array.js.html" />
+    <Content Include="packages.config" />
+    <Content Include="_info\changes-log.txt" />
+    <Content Include="_info\doc-log.txt" />
+    <Content Include="_info\remarks.txt" />
+    <Content Include="_temp\temp-enhanced-data-object.js" />
+    <Content Include="_temp\temp-data-object-fields-collection.js" />
+    <Content Include="_temp\temp-collection-index.js" />
+    <Content Include="_temp\temp-collection.js" />
+    <Content Include="_temp\temp-jsgui-lang-util.js" />
+    <Content Include="_temp\temp-jsgui-lang-enh.js" />
+    <Content Include="_temp\temp-data-object.js" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="content\core\collection.js.html" />
+    <Content Include="content\core\constraint.js.html" />
+    <Content Include="content\core\constraint.js\Collection_Constraint.html" />
+    <Content Include="content\core\constraint.js\Collection_Data_Def_Constraint.html" />
+    <Content Include="content\core\constraint.js\Collection_Data_Type_Constraint.html" />
+    <Content Include="content\core\constraint.js\Constraint.html" />
+    <Content Include="content\core\constraint.js\DataObjectConstraint.html" />
+    <Content Include="content\core\constraint.js\Data_Object_Constraint.html" />
+    <Content Include="content\core\constraint.js\Data_Object_Def_Constraint.html" />
+    <Content Include="content\core\constraint.js\Field_Constraint.html" />
+    <Content Include="content\core\constraint.js\Field_Data_Type_Constraint.html" />
+    <Content Include="content\core\constraint.js\Guid.html" />
+    <Content Include="content\core\constraint.js\Guid_Constraint.html" />
+    <Content Include="content\core\constraint.js\Int_Constraint.html" />
+    <Content Include="content\core\constraint.js\Not_Null_Constraint.html" />
+    <Content Include="content\core\constraint.js\Number_Constraint.html" />
+    <Content Include="content\core\constraint.js\Text_Constraint.html" />
+    <Content Include="content\core\constraint.js\Unique_Constraint.html" />
+    <Content Include="content\core\jsgui-data-structures-b-plus-tree.js\B_Plus_Tree.html" />
+    <Content Include="content\core\jsgui-data-structures-b-plus-tree.js\FindInfo.html" />
+    <Content Include="content\core\jsgui-data-structures-b-plus-tree.js.html" />
+    <Content Include="content\core\jsgui-data-structures-doubly-linked-list.js\Doubly_Linked_List.html" />
+    <Content Include="content\core\jsgui-data-structures-doubly-linked-list.js\Doubly_Linked_List.Node.html" />
+    <Content Include="content\core\jsgui-data-structures-doubly-linked-list.js.html" />
+    <Content Include="content\core\jsgui-data-structures-stiffarray.js.html" />
+    <Content Include="content\core\jsgui-data-structures-stiffarray.js\StiffArray.html" />
+    <Content Include="content\core\jsgui-data-structures.js.html" />
+    <Content Include="content\core\jsgui-data-structures.js\Ordered_KVS.html" />
+    <Content Include="content\core\jsgui-data-structures.js\Ordered_String_List.html" />
+    <Content Include="content\core\jsgui-data-structures.js\Sorted_KVS.html" />
+    <Content Include="content\core\jsgui-lang-essentials.js.html" />
+    <Content Include="content\index.html" />
+    <Content Include="templates\class.html" />
+    <Content Include="templates\method.html" />
+    <Content Include="templates\module.html" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>3478</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:3478/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

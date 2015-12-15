@@ -1,0 +1,126 @@
+    'set': (function() {
+      var a = arguments;
+      a.l = arguments.length;
+      var sig = get_a_sig(arguments, 1);
+        if (this._abstract) return false;
+
+        var that = this, res;
+
+        var input_processors;
+        if (this._module_jsgui) {
+            input_processors = this._module_jsgui.input_processors;
+        } else {
+            input_processors = this._get_input_processors();
+        }
+
+        if (is_defined(this._data_type_name) && input_processors[this._data_type_name]) {
+            throw 'stop';
+            console.log('is_defined _data_type_name and input_processors[this._data_type_name]');
+            var raw_input = a;
+            var parsed_input_obj = input_processors[this._data_type_name](raw_input);
+            this._ = parsed_input_obj;
+            this.trigger('change');
+        } else {
+            if (a.l == 2 || a.l == 3) {
+                var property_name = a[0], value = a[1];
+                var ta2 = tof(a[2]);
+                var silent = false;
+                var source;
+                if (ta2 == 'string' || ta2 == 'boolean') {
+                    silent = a[2]
+                }
+                if (ta2 == 'control') {
+                    source = a[2];
+                }
+                if (!this._initializing && this._map_read_only && this._map_read_only[property_name]) {
+                    throw 'Property "' + property_name + '" is read-only.';
+                } else {
+                    var split_pn = property_name.split('.');
+                    if (split_pn.length > 1 && property_name != '.') {
+                        var spn_first = split_pn[0];
+                        var spn_arr_next = split_pn.slice(1);
+                        var data_object_next = this.get(spn_first);
+                        if (data_object_next) {
+                            var res = data_object_next.set(spn_arr_next.join('.'), value);
+                            if (!silent) {
+                                var e_change = {
+                                    'name': property_name,
+                                    'value': value,
+                                    'bubbled': true
+                                };
+                                if (source) {
+                                    e_change.source = source;
+                                }
+                                this.raise_event('change', e_change);
+                            }
+                            return res;
+                        } else {
+                            throw('No data object at this level.');
+                        }
+                        throw('10)stop');
+                    } else {
+                        var data_object_next = this.get(property_name);
+                        if (!is_defined(data_object_next)) {
+                            var tv = typeof value;
+                            var dv;
+                            if (tv == 'string' || tv == 'number' || tv == 'boolean' || tv == 'date') {
+                                dv = new Data_Value({'value': value});
+                            } else {
+                                dv = value;
+                            }
+                            this._[property_name] = dv;
+                            if (!silent) {
+                                var e_change = {
+                                    'name': property_name,
+                                    'value': dv
+                                }
+                                if (source) {
+                                    e_change.source = source;
+                                }
+                                this.raise_event('change', e_change);
+                            }
+                            return value;
+                        } else {
+                            if (is_js_native(data_object_next)) {
+                                this._[property_name] = value;
+                                res = value;
+                            } else {
+                                this._[property_name] = value;
+                                res = value;
+                            }
+                            if (!silent) {
+                                var e_change = {
+                                    'name': property_name,
+                                    'value': value
+                                };
+                                if (source) {
+                                    e_change.source = source;
+                                }
+                                this.trigger('change', e_change);
+                            }
+                            return res;
+                        }
+                    }
+                }
+            } else {
+                if (sig == '[D]') {
+                    this._[property_name] = value;
+                    this.raise_event('change', [property_name, value]);
+                    return value;
+                }
+                if (sig == '[o]') {
+                    var that = this;
+                    var res = {};
+                    each(a[0], function(i, v) {
+                        res[i] = that.set(i, v);
+                    });
+                    return res;
+                }
+                if (sig == '[c]') {
+                    this._[property_name] = value;
+                    this.raise_event('change', [property_name, value]);
+                    return value;
+                }
+            }
+        }
+    }),

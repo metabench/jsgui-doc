@@ -1,0 +1,302 @@
+    
+    <h1 class="page-title">Class: Guid</h1>
+    
+    
+
+
+
+<section>
+    
+<header>
+    <h2>
+        <span class="ancestors"><a href="@link:/core/constraint.js.html">core/constraint</a>.</span>
+    
+    Guid
+    </h2>
+    
+    
+    <div class="container-overview">
+        <div class="class-description"><p>GUID field constraint: checks a value to a GUID string (e.g. <code>&quot;{86DCA9A5-31AC-4F20-B552-4D1503D0D11C}&quot;</code>).</p></div>
+    </div>
+</header>  
+
+<article>
+    
+    
+    
+        
+<dt>
+    <h4 class="name" id="Guid"><span class="type-signature"></span>new Guid<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="match"><span class="type-signature"></span>match<span class="signature">(value)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Returns <code>true</code> if the <code>value</code> matches the constraint (i.e. value is a GUID string).</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>value to check</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var c = new Constraint.Guid();
+c.match("{86DCA9A5-31AC-4F20-B552-4D1503D0D11C}")  ==> true
+c.match("86DCA9A5-31AC-4F20-B552-4D1503D0D11C")  ==> false</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="to_info_obj"><span class="type-signature"></span>to_info_obj<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Returns the constraint information object (i.e. &quot;guid&quot;).</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var c = Constraint.from_obj("guid");
+c.to_info_obj()  ==> "guid"</code></pre>
+
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+</article>
+
+</section>  
+
+

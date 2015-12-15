@@ -1,0 +1,6 @@
+                <pre class="prettyprint"><code>var Data_Object_Ex = Data_Object.extend({
+    fields: { Field1: "int", Field2: "text" }
+});
+//
+var data_object = new Data_Object_Ex();
+data_object.fields()  ==>  [["Field1", "int", { data_type: "int" }], ["Field2", "text", { data_type: "text" }]]</code></pre>

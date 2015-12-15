@@ -1,0 +1,95 @@
+
+
+<h1 class="page-title">Module: core/jsgui-lang-enh</h1>
+
+<section>
+
+    <header>
+        <h2>
+            core/jsgui-lang-enh
+        </h2>
+
+        <div class="container-overview">
+            <div class="description">
+                <p>Language enhance module. Just adds a fromObject() method to the <a href="@link:/core/jsgui-lang-essentials.js.html">jsgui-lang-essentials</a> module. </p>
+            </div>
+            <dl class="details"></dl>
+        </div>
+    </header>
+
+    <article>
+
+        <!--==================================================
+        =                   Members
+        ===================================================-->
+
+        <@section title="Members">
+
+            <!-----------------------------------------
+            |          fromObject(value)
+            ------------------------------------------>
+
+            <@item title="fromObject(value)">
+                <div class="description">
+                    <p>
+                        Creates and returns an enhanced value class instance for the passed <code>value</code>. In other words, it wraps the <code>value</code> into an enhanced class. Depending of the <code>value</code> type,
+                        the result will be following:
+                    </p>
+                    <ul>
+                        <li><strong>array</strong>: <code>new Collection()</code>, and the collection items are the array items passed through fromObject() in turn</li>
+                        <li><strong>object</strong>: <code>new Enhanced_Data_Object()</code>, and the Enhanced_Data_Object values are object fields passed through fromObject() in turn</li>
+                        <li><strong>string</strong>: <code>new Data_Value()</code></li>
+                        <li><strong>number</strong>: <code>new Data_Value()</code></li>
+                        <li><strong>other</strong>: <code>undefined</code></li>
+                    </ul>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="value" type="*" description="value(s) to wrap" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    jsgui_enh.fromObject(111)  ==>  new Data_Value({ 'value': 111 })
+                    jsgui_enh.fromObject("22")  ==>  new Data_Value({ 'value': "22" })
+                    //
+                    var edo = jsgui_enh.fromObject({ Field1: 111, Field2: "22" });
+                    // the fromObject() call above is equivalent to the following:
+                    // var edo = new Enhanced_Data_Object();
+                    // edo.set("Field1", new Data_Value({ 'value': 111 }));
+                    // edo.set("Field2", new Data_Value({ 'value': "22" }));
+                    //
+                    var collection = jsgui_enh.fromObject([111, "22"]);
+                    // the fromObject() call above is equivalent to the following:
+                    // var collection = new Collection();
+                    // collection.push(new Data_Value({ 'value': 111 }));
+                    // collection.push(new Data_Value({ 'value': "22" }));
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          Side effects
+            ------------------------------------------>
+
+            <@item title="Side effects" class="remark">
+                <@codeblock>
+                    var jsgui = require('./jsgui-lang-util');
+                    //
+                    jsgui.Enhanced_Data_Object = Enhanced_Data_Object;
+                    jsgui.Mini_Context = Enhanced_Data_Object.Mini_Context;
+                    //
+                    jsgui.fromObject = fromObject;
+                </@codeblock>
+            </@item>
+
+        </@section>
+
+
+
+    </article>
+
+</section>
+
+

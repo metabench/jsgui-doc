@@ -1,0 +1,403 @@
+﻿
+<h1 class="page-title">Class: Fields_Collection</h1>
+
+<section>
+
+    <!--==================================================
+    =                   Overview
+    ===================================================-->
+
+    <header>
+        <h2>
+            <span class="ancestors"><a href="@link:/core/data-object-fields-collection.js.html">core/data-object-fields-collection.js</a>.</span>
+            Fields_Collection
+        </h2>
+
+        <div class="container-overview">
+            <div class="class-description">
+                <p>
+                    Represents fields definition collection.
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <article>
+
+        <dt>
+            <h4 class="name" id="new_Fields_Collection"><span class="type-signature"></span>new Fields_Collection<span class="signature">()</span><span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+            <div class="description">
+                <p>Creates the Fields_Collection object.</p>
+            </div>
+        </dd>
+
+
+        <!--==================================================
+        =                   Members
+        ===================================================-->
+
+        <h3 class="subsection-title">Members</h3>
+
+        <dl>
+
+            <dt>
+                <h4 class="name" id="parse_field_text"><span class="type-signature">&lt;static> </span>parse_field_text<span class="signature">(field_text)</span><span class="type-signature"></span></h4>
+            </dt>
+            <dd>
+                <div class="description">
+                    <p>Converts the passed field definition text to a field definition object.</p>
+                    <p>
+                        The field definition text have the following format:<br/>
+                        <code>"[unique] [pk] [indexed] [not_null] [read_only] data_type"</code>
+                    </p>
+                    <p>
+                        <ul>
+                            <li><code>not_null</code> word can be "not_null" or "not null"</li>
+                            <li><code>read_only</code> word can be "read_only" or "readonly" or "read-only"</li>
+                            <li><code>data_type</code> is an identifier with optional length parameter in parentheses (e.g. "text" or "text(10)"), see <a href="#parse_data_type">parse_data_type()</a> input parameter</li>
+                        </ul>
+                    </p>
+                    <p>
+                        The resulting field definition object contains the following members:
+                        <ul>
+                            <li>data_type (string or [string, number]), see <a href="#parse_data_type">parse_data_type()</a> returning value</li>
+                            <li>unique (bool, optional)</li>
+                            <li>pk (bool, optional)</li>
+                            <li>indexed (bool, optional)</li>
+                            <li>not_null (bool, optional)</li>
+                            <li>read_only (bool, optional)</li>
+                        </ul>
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <table class="params">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th class="last">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="name"><code>field_text</code></td>
+                            <td class="type"><span class="param-type">String</span></td>
+                            <td class="description last">field type definition text</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h5>Example</h5>
+
+                <pre class="prettyprint"><code>parse_field_text("int")  ==>  { data_type: "int" }
+parse_field_text("float")  ==>  { data_type: "float" }
+parse_field_text("float(3)")  ==>  { data_type: ["float", 3] }
+parse_field_text("not_null int")  ==>  { data_type: "int", not_null: true }
+parse_field_text("unique pk indexed not_null read_only int")  ==>  { data_type: "int", unique: true, pk: true, indexed: true, not_null: true, read_only: true }</code></pre>
+
+            </dd>
+
+            <dt>
+                <h4 class="name" id="parse_data_type"><span class="type-signature">&lt;static> </span>parse_data_type<span class="signature">(data_type_text)</span><span class="type-signature"></span></h4>
+            </dt>
+            <dd>
+                <div class="description">
+                    <p>Converts the passed data type text to a data type value.</p>
+                    <p>The data type text is an identifier with optional length parameter in parentheses (e.g. "text" or "text(10)")</p>
+                    <p>Returning value is a string (the type identifier) or an array containing the type identifier string and length number.</p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <table class="params">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th class="last">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="name"><code>data_type_text</code></td>
+                            <td class="type"><span class="param-type">String</span></td>
+                            <td class="description last">data type text</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h5>Example</h5>
+
+                <pre class="prettyprint"><code>parse_data_type("")  ==>  undefined
+parse_data_type("float")  ==>  "float"
+parse_data_type("float(3)")  ==> ["float", 3]</code></pre>
+
+            </dd>
+
+        </dl>
+
+
+        <!--==================================================
+        =                   Methods
+        ===================================================-->
+
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+
+            <dt>
+                <h4 class="name" id="set__array"><span class="type-signature"></span>set<span class="signature">(array)</span><span class="type-signature"></span></h4>
+            </dt>
+            <dd>
+                <div class="description">
+                    <p>Adds field descriptions to the collection. Depending of the passed array signature it provides different behaviours:</p>
+
+                    <ul>
+                        <li>
+                            <strong>set([s,s])</strong> - set([field_name, field_str_def])
+                            <pre class="prettyprint"><code>fc.set(["field1", "int"]) - adds ["field1", "int", { data_type: "int" }]</code></pre>
+                        </li>
+                        <li>
+                            <strong>set([s,f])</strong> - set([field_name, constructor_function])
+                            <pre class="prettyprint"><code>fc.set(["field1", Number]) - adds ["field1", "Class", Number]</code></pre>
+                        </li>
+                        <li>
+                            <strong>set([s,s,o])</strong> - set([field_name, field_str_def, field_obj])
+                            <pre class="prettyprint"><code>fc.set(["field1", "int", { data_type: "int" }]) - adds ["field1", "int", { data_type: "int" }]
+fc.set(["field1", "int", {}]) - adds ["field1", "int", {}]</code></pre>
+                        </li>
+                        <li>
+                            <strong>set([n,[s,s]])</strong> - set([index, [field_name, field_type_name]])
+                            <br /><mark>The <code>index</code> parameter is not used in fact.</mark>
+                            <pre class="prettyprint"><code>fc.set([0, ["field1", "int"]]) - adds ["field1", "int"]</code></pre>
+                        </li>
+                        <li>
+                            <strong>set([n,[s,s,?]])</strong> - set(index, [field_name, field_type_name, field_default_value])
+                            <br /><mark>The <code>index</code> parameter is not used in fact.</mark>
+                            <pre class="prettyprint"><code>fc.set([0, ["field1", "int", 100]]) - adds ["field1", "int", 100]
+fc.set([0, ["field1", "collection", 100]]) - throws "Default values for Collection not supported"</code></pre>
+                        </li>
+                        <li>
+                            <strong>set([s,[s,s]])</strong> - set(field_name, [field_type_name, field_item_type_name])
+                            <br /><mark>Works when the <code>field_type_name == "collection"</code> only.</mark>
+                            <pre class="prettyprint"><code>fc.set(["field1", ["collection", "int"]]) - adds ["field1", ["collection", "int"]]</code></pre>
+                        </li>
+                        <li>
+                            <mark>It seems that this description is not exhaustive. Please refers data-object-fields-collection.spec.js unit test file ("fieldsCollection.set() cases" test).</mark>
+                        </li>
+                    </ul>
+                </div>
+
+                <h5>Parameters:</h5>
+                <table class="params">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th class="last">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="name"><code>array</code></td>
+                            <td class="type"><span class="param-type">Array</span></td>
+                            <td class="description last">Field definition array</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </dd>
+
+
+            <dt>
+                <h4 class="name" id="set_object"><span class="type-signature"></span>set<span class="signature">(object)</span><span class="type-signature"></span></h4>
+            </dt>
+            <dd>
+                <div class="description">
+                    <p>Calls the <a href="#set_array">set([key, value])</a> overload for each key + value pair from the passed object.</p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <table class="params">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th class="last">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="name"><code>object</code></td>
+                            <td class="type"><span class="param-type">Object</span></td>
+                            <td class="description last">Key/Value pairs object</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h5>Example</h5>
+
+                <pre class="prettyprint"><code>   fieldsCollection.set({ field1: "int", field2: "string" }) 
+==> 
+   fieldsCollection.set([ "field1", "int" ])
+   fieldsCollection.set([ "field2", "string" ])
+                    </code></pre>
+
+            </dd>
+
+
+            <dt>
+                <h4 class="name" id="set_parms"><span class="type-signature"></span>set<span class="signature">(parm1, parm2 [,...])</span><span class="type-signature"></span></h4>
+            </dt>
+            <dd>
+                <div class="description">
+                    <p>Converts the parameters into an array, then calls the <a href="#set_array">set(array)</a>  overload.</p>
+                </div>
+
+                <h5>Example</h5>
+
+                <pre class="prettyprint"><code>fieldsCollection.set("field1", "int") ==> fieldsCollection.set(["field1", "int"])
+fieldsCollection.set("field2", ["collection", "int"]) ==> fieldsCollection.set(["field2", ["collection", "int"]])
+fieldsCollection.set(["field1", "int"], ["field2", "string"]) ==> fieldsCollection.set([["field1", "int"], ["field2", "string"]])</code></pre>
+
+            </dd>
+
+
+            <dt>
+                <h4 class="name" id="get"><span class="type-signature"></span>get<span class="signature">(<span class="optional">field_name</span>)</span><span class="type-signature"></span></h4>
+            </dt>
+            <dd>
+                <div class="description">
+                    <p>Returns a field description for the passed field name, or all the fields description array</p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <table class="params">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Argument</th>
+                            <th class="last">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="name"><code>field_name</code></td>
+                            <td class="type"><span class="param-type">String</span></td>
+                            <td class="attributes">&lt;optional><br></td>
+                            <td class="description last">field name</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h5>Example</h5>
+
+                <pre class="prettyprint"><code>var fieldsCollection = new Fields_Collection();
+fieldsCollection.set([["field1", "int"], ["field2", "string"]]);
+
+fieldsCollection.get()         ==>  [["field1", "int", { data_type: "int" }], ["field2", "string", { data_type: "string" }]]
+fieldsCollection.get("field1")  ==>  ["field1", "int", { data_type: "int" }]</code></pre>
+
+            </dd>
+
+
+            <dt>
+                <h4 class="name" id="fields"><span class="type-signature"></span>fields<span class="signature">(<span class="optional">field_name</span>)</span><span class="type-signature"></span></h4>
+            </dt>
+            <dd>
+                <div class="description">
+                    <p>The same as <a href="#get">get()</a> method.</p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <table class="params">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Argument</th>
+                            <th class="last">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="name"><code>field_name</code></td>
+                            <td class="type"><span class="param-type">String</span></td>
+                            <td class="attributes">&lt;optional><br></td>
+                            <td class="description last">field name</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h5>Example</h5>
+
+                <pre class="prettyprint"><code>var fieldsCollection = new Fields_Collection();
+fieldsCollection.set([["field1", "int"], ["field2", "string"]]);
+
+fieldsCollection.fields()         ==>  [["field1", "int", { data_type: "int" }], ["field2", "string", { data_type: "string" }]]
+fieldsCollection.fields("field1")  ==>  ["field1", "int", { data_type: "int" }]</code></pre>
+
+            </dd>
+
+
+            <dt>
+                <h4 class="name" id="out"><span class="type-signature"></span>out<span class="signature">(field_name)</span><span class="type-signature"></span></h4>
+            </dt>
+            <dd>
+                <div class="description">
+                    <p>Removes the field description from the collection for the passed field name.</p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <table class="params">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th class="last">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="name"><code>field_name</code></td>
+                            <td class="type"><span class="param-type">String</span></td>
+                            <td class="description last">Field name to remove</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h5>Example</h5>
+
+                <pre class="prettyprint"><code>var fieldsCollection = new Fields_Collection();
+fieldsCollection.set([["field1", "int"], ["field2", "string"]]);
+fieldsCollection.get() ==>  [["field1", "int", { data_type: "int" }], ["field2", "string", { data_type: "string" }]]
+
+fieldsCollection.out("field1");
+
+fieldsCollection.get() ==>  [["field2", "string", { data_type: "string" }]]
+fieldsCollection.get("field1")  ==>  undefined</code></pre>
+
+            </dd>
+
+
+            <dt>
+                <h4 class="name" id="clear"><span class="type-signature"></span>clear<span class="signature">()</span><span class="type-signature"></span></h4>
+            </dt>
+            <dd>
+                <div class="description">
+                    <p><mark>Does nothing</mark></p>
+                </div>
+
+
+            </dd>
+
+
+        </dl>
+
+    </article>
+
+</section>
+

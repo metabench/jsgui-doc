@@ -1,0 +1,2582 @@
+﻿
+<h1 class="page-title">Class: Data_Object</h1>
+
+<section>
+
+    <!--==================================================
+    =                   Overview
+    ===================================================-->
+
+    <header>
+        <h2>
+            <span class="ancestors"><a href="@link:/core/data-object.js.html">core/data-object.js</a>.</span>
+            Data_Object
+        </h2>
+
+        <div class="container-overview">
+            <div class="class-description">
+                <p>
+                    Represents a class storing a data object.                    
+                </p>
+            </div>
+            <p>Base class: <span class="ancestors"><a href="@link:/core/evented-class.js/Evented_Class.html">core/evented-class.js:Evented_Class</a></span></p>
+        </div>
+    </header>
+
+    <article>
+
+        <!--==================================================
+        =                   Creation
+        ===================================================-->
+
+        <@section title="Creation">
+               
+            <@item title="new Data_Object(spec-opt)" >
+                <div class="description">
+                    <p>Creates the Data_Object object.</p>
+                </div>
+
+                <h5>new abstract Data_Object</h5>
+
+                <p>
+                    If <code>spec.abstract === true</code>, then creates an abstract data object. In this case, all the initialization consists of the following:
+
+                    <@codeblock>
+                        this._abstract = true;
+                        var tSpec = tof(spec);
+                        if (tSpec == 'function') {
+                            this._type_constructor = spec;
+                        }
+                        if (tSpec == 'object') {
+                            this._spec = spec;
+                        }
+                    </@codeblock>
+
+                </p>
+
+                <h5>new real Data_Object</h5>
+
+                <ul>
+                    <li>sets &nbsp; <code class="prettyprint">this.__type = 'data_object';</code></li>
+                    <li>sets &nbsp; <code class="prettyprint">this._ = {};</code></li>
+                    <li>tries to set &nbsp; <code class="prettyprint">this._context</code> and <code class="prettyprint">this.__id</code> from the <code>spec</code></li>
+                    <li>if <code>spec</code> is Data_Object in turn, then set own values from the spec values</li>
+                    <li>calls methods listed in <code>spec</code>, for example: <code>spec === {load_arr: [1,2,3]}</code> will call <code>this.load_arr([1,2,3])</code> if the <code>load_arr()</code> method exists.</li>
+                    <li>processes <a href="#feature-chained-fields">chained fields</a> and <a href="#feature-fields-connection">fields connection</a></li>
+                    <li>intended to process <code class="prettyprint">spec.event_bindings</code>, but this is prohibited now (throws an exception)</li>
+                    <li>if <code class="prettyprint">spec.constraint</code>, then calls <code class="prettyprint">that.constraint(spec.constraint);</code></li>
+                    <li>if <code class="prettyprint">spec.parent</code>, then calls <code class="prettyprint">this.set('parent', spec.parent);</code></li>
+                </ul>
+                
+                <h5>Example</h5>               
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:no spec or empty spec" />
+                
+            </@item>
+
+            <!-----------------------------------------
+            |          init_default_events()
+            ------------------------------------------>
+
+            <@item title="init_default_events()">
+                <div class="description">
+                    <p>
+                        Does nothing. 
+                    </p>
+                    <p>
+                        Called from Data_Object constructor (i.e. from <code>init(spec)</code> method).
+                    </p>
+                </div>
+            </@item>
+
+            <!-----------------------------------------
+            |          dobj(obj, data_def)
+            ------------------------------------------>
+
+            <@item title="static dobj(obj-opt, data_def-opt)" >
+                <div class="description">
+                    <p>
+                        Creates and returns a new Data_Object instance (or Enhanced_Data_Object instance, if <a href="#set_enhanced_data_object__edo">set_Enhanced_Data_Object()</a> was called previously).
+                    </p>
+                    <p>
+                        If the <code>opt</code> parameter is passed, then it is used as name/value pairs object to initialize field values.
+                    </p>
+                    <p>
+                        <mark>The <code>data_def</code> parameter is not used in fact.</mark>
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="obj" type="object" description="Fields initialization object" optional />
+                    <@parm name="data_def" type="?" description="Not used in fact" optional />
+                </@parms>
+
+                <h5>Example</h5>
+                
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:dobj() - Data_Object" />
+
+                <!--@codeblock src="/z_core/data-object/Data_Object.spec.js:dobj() - Data_Object" ></@codeblock-->
+                   
+                <!--@codeblock>
+                    var data_object = null;
+                    //
+                    // set values:
+                    //
+                    data_object = Data_Object.dobj({ Field1: [111], Field2: [222] });
+                    data_object.get("Field1")  ==>  [111]
+                    data_object.get("Field2")  ==>  [222]
+                    //
+                    // data_def does nothing:
+                    //
+                    data_object = Data_Object.dobj({}, { Field1: "int" });
+                    assert.deepEqual(data_object.field(), []);
+                </@codeblock-->
+            </@item>
+
+            <!-----------------------------------------
+            |          extend(prop, post_init)
+            ------------------------------------------>
+
+            <@item title="static extend(prop, post_init)">
+                <div class="description">
+                    <p>
+                        Creates a derived class. In general, the base class is extended by the properties and methods specified in the <code>prop</code> parameter.
+                    </p>
+                    <p>
+                        <mark>The <code>post_init</code> parameter is not used now (was used as a post init function in the past).</mark>
+                    </p>
+                </div>
+
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="prop" type="string/object" description="see below" />
+                        <@parm name="post_init" type="function" description="not used" />
+                    </@parms>
+
+                    <div>
+                        <h5 class="content-part-header collapsed">prop as string</h5>
+
+                        <p>
+                            If the <code>prop</code> parameter type is string, then it is used as a data type name for the <code>jsgui.data_types_info</code> array.
+                            The array seems as key/value pairs, where key is <code>data_type_name</code>, and value is <code>data_type_info</code>.                           
+                        </p>
+                        <p>
+                            In this case the <code>prop</code> parameter will be <code>data_type_name</code>. It processes as follows:
+                        </p>
+                        <ul>
+                            <li>
+                                <code>class[data_type_name] = data_type_name;</code>
+                            </li>
+                            <li>
+                                <code>class[data_type_info] = data_type_info;</code>
+                            </li>
+                            <li>
+                                <code>obj['__type_name'] = data_type_name;</code>
+                            </li>
+                            <li>
+                                <code>obj['__data_type_info'] = data_type_info;</code>
+                            </li>
+                        </ul>
+                        <p>
+                            where <code>class</code> is the derived class, and <code>obj</code> is the derived class object instance.
+                        </p>
+                        <p>
+                            <mark>
+                                It seems strange to assign property values equals to property names: <code>class[data_type_name] = data_type_name;</code>,
+                                <code>class[data_type_info] = data_type_info;</code>. Also, probably the <code>data_type_info</code> 
+                                can be a non-identifier string (e.g. <code>"text(10)"</code>) or object (e.g. <code>{ Field1: "int", Field2: "number" }</code> ). 
+                                In the last case it will be funny to access the <code>data_type_info</code> value: <br/>
+                                class[{ Field1: "int", Field2: "number" }] == { Field1: "int", Field2: "number" } <br/>
+                                class[{}] == { Field1: "int", Field2: "number" } <br/>
+                                class["[object Object]"] == { Field1: "int", Field2: "number" } <br/>
+                        </mark>
+                        </p>
+                        <h5>Example:</h5>
+                        <@codeblock>
+                            jsgui.data_types_info["depth"] = "int";
+                            //
+                            var Data_Object_Ex = Data_Object.extend("depth");
+                            //
+                            // Data_Object_Ex.depth === "depth"
+                            // Data_Object_Ex.int === "int"
+                            // Data_Object_Ex["int"] === "int"
+                            //
+                            var data_object = new Data_Object_Ex();
+                            //
+                            // data_object.__type_name === "depth"
+                            // data_object.__data_type_info === "int"
+                        </@codeblock>
+
+                    </div>
+                    
+                    <div>
+                        <h5 class="content-part-header collapsed">prop as object</h5>
+
+                        <p>
+                            If the <code>prop</code> parameter type is an object, then it extends the base class by adding/replacing properties an methods
+                            from the <code>prop</code> object.
+                        </p>
+                        <p>
+                            Replaced methods can use <code>this._super()</code> calls to perform the base method call.
+                        </p>
+                        
+                        <@codeblock>
+                            //
+                            // add property and method:
+                            //
+                            var Data_Object_Ex = Data_Object.extend({
+                                Prop1: 123,
+                                Func1: function () { return "hello"; }
+                            });
+                            //
+                            var data_object = new Data_Object_Ex();
+                            //
+                            data_object.Prop1 === 123
+                            data_object.Func1()  ==>  "hello"
+                            //
+                            // override stringify() method:
+                            //
+                            data_object._ = "123";
+                            data_object.stringify()  ==>  'Data_Object("123")'
+                            //
+                            var Data_Object_Ex_2 = Data_Object.extend({
+                                stringify: function () { return this._super() + "-extended"; }
+                            });
+                            //
+                            data_object = new Data_Object_Ex_2();
+                            data_object._ = "123";
+                            data_object.stringify()  ==>  'Data_Object("123")-extended'
+                        </@codeblock>
+                           
+                        
+                        <div>
+                        <h6 class="content-part-header collapsed">for_class</h6>
+                        
+                        <p>
+                            Some property names have a special meaning, and applies to the class itself instead of the object instances. 
+                            This processing named 'for_class' feature:
+                        </p>
+                            
+                        <ul>
+                            <li>
+                                <code>'class_name'</code> - sets <code>class._class_name</code> property
+                            </li>
+                            <li>
+                                <code>'fields'</code> - sets <code>class._fields</code> property
+                            </li>
+                            <li>
+                                <code>'connect_fields'</code> - sets <code>class._connect_fields</code> property
+                            </li>
+                        </ul>
+                        <p>
+                            The 'for_class' processing described above applies only when the property value is of <code>object</code> or <code>boolean</code> type.
+                        </p>
+                            
+                        <@codeblock>
+                            var Data_Object_Ex = Data_Object.extend({
+                                class_name: { name: "MyClass" }, // object
+                                fields: { f1: 1, f2: 2 },  // object
+                                connect_fields: false  // boolean
+                            });
+                            var data_object = new Data_Object_Ex();
+                            //
+                            Data_Object_Ex._class_name === { name: "MyClass" }
+                            Data_Object_Ex._fields === { f1: 1, f2: 2 }
+                            Data_Object_Ex._connect_fields === false
+                            //
+                            data_object.class_name === undefined
+                            data_object.fields === undefined
+                            data_object.connect_fields is connect_fields() method
+                            //
+                            // the 'for_class' feature works for 'object' and 'boolean' types only;
+                            // other types just extends the class as usual:
+                            //
+                            var func_fields = function () { };
+                            //
+                            Data_Object_Ex = Data_Object.extend({
+                                class_name: "MyClass",  // not object
+                                fields: func_fields,  // not object
+                                connect_fields: 100  // not boolean
+                            });
+                            data_object = new Data_Object_Ex();
+                            //
+                            Data_Object_Ex._class_name === undefined
+                            Data_Object_Ex._fields === undefined
+                            Data_Object_Ex._connect_fields === undefined
+                            //
+                            data_object.class_name === "MyClass"
+                            data_object.fields === func_fields
+                            data_object.connect_fields === 100
+                        </@codeblock>
+                        </div>
+                        
+                        <div>
+                        <h6 class="content-part-header collapsed">#name</h6>
+                        
+                        <p>
+                            If the property name starts from <code>'#'</code> character, then it gets an initial value from other property (referred by the property value).
+                        </p>
+
+                        <@codeblock>
+                            var Data_Object_2 = Data_Object.extend({
+                                'prop1': 111,
+                                'prop2': 222,
+                                '#prop3': 'prop1'
+                            });
+                            var do2 = new Data_Object_2();
+                            //
+                            do2.prop1 === 111
+                            do2.prop2 === 222
+                            do2.prop3 === 111
+                            do2['#prop3'] === undefined
+                            //
+                            do2.prop1 = 1000; // change the .prop1 value
+                            do2.prop3 === 111 // .prop3 not changed
+                        </@codeblock>
+
+                        </div>
+                        
+                        <div>
+                        <h6 class="content-part-header collapsed">post_init</h6>
+                            
+                        <p>
+                            If <code>prop</code> object contains a <code>post_init</code> method, then the method is called 
+                            when an usual object initialization is completed.
+                        </p>
+
+                        <@codeblock>
+                            var Data_Object_Ex = Data_Object.extend({
+                                post_init: function () { this.PI = 3.14; }
+                            });
+                            var data_object = new Data_Object_Ex();
+                            //
+                            data_object.PI === 3.14
+                        </@codeblock>
+
+                        </div>
+                    
+                    </div>
+                    
+            </@item>
+
+            <!-----------------------------------------
+            |          ensure_data_type_data_object_constructor(data_type_name)
+            ------------------------------------------>
+
+            <@item title="static ensure_data_type_data_object_constructor(data_type_name)">
+                <div class="description">
+                    <p>
+                        Returns a Data_Object constructor intended to create data objects for the <code>data_type_name</code>.
+                    </p>
+                    <p>
+                        If the constructor was not created previously, then it creates here. <code>jsgui.data_types_info[data_type_name]</code> is used for the fields description.
+                    </p>
+                    <p>
+                        The created constructors are cached in the <a href="#map_data_type_data_object_constructors">map_data_type_data_object_constructors</a> array.
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="data_type_name" type="string" description="Data type name" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    jsgui.data_types_info['my_test_type'] = { Field1: "int", Field2: "number" };
+                    var MyTestTypeConstructor = Data_Object.ensure_data_type_data_object_constructor('my_test_type');
+                    //
+                    var data_object = new MyTestTypeConstructor();
+                    data_object.field()  ==>  [["Field1", "int", { data_type: "int" }], ["Field2", "number", { data_type: "number" }]]
+                    //
+                    Data_Object.map_data_type_data_object_constructors['my_test_type'] === MyTestTypeConstructor
+                </@codeblock>
+            </@item>
+        
+            <!-----------------------------------------
+            |          map_data_type_data_object_constructors
+            ------------------------------------------>
+
+            <@item title="static map_data_type_data_object_constructors">
+                <div class="description">
+                    <p>
+                        Name/value array containing predefined constructors for data type names.
+                    </p>
+                    <p>
+                        <code>Data_Object.map_data_type_data_object_constructors === jsgui.map_data_type_data_object_constructors</code>
+                    </p>
+                    <p>
+                        Constructors created by <a href="#ensure_data_type_data_object_constructor__data_type_name">ensure_data_type_data_object_constructor(data_type_name)</a> function 
+                        are added to the array automatically (inside the function call).
+                    </p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    // The following code is contained in the data_object.js module:
+                    jsgui.map_data_type_data_object_constructors['boolean'] = Data_Value;
+                </@codeblock>
+            </@item>
+
+        </@section>
+
+        <!--==================================================
+        =                   Context
+        ===================================================-->
+
+        <@section title="Context">
+
+            <@item title="Remarks" class="remark">
+                <p>
+                    <mark>parent() and other methods (_fp_parent(), position_within(), and remove_from()) use different implementation private variables.</mark>
+                </p>
+            </@item>
+            
+            <!-----------------------------------------
+            |          _id()
+            ------------------------------------------>
+
+            <@item title="_id()">
+                <div class="description">
+                    <p>(just like Data_Value._id())</p>
+                    <p>Returns an object id.</p>
+                    <p>
+                        The id is assigned by the context.new_id() method when the _id() is called for the first time.
+                        If the context was not set, then _id() throws an exception.
+                    </p>
+                </div>
+
+                <h5>Example</h5>
+
+                <@codeblock>
+                    data_object = new Data_Object();
+                    // data_object._id() called here will throw an exception!
+                    //
+                    var nextId = 7;
+                    var context = { new_id: function (prefix) { return prefix + "_00" + nextId++; } };
+                    //
+                    data_object = new Data_Object({ context: context });
+                    data_object._id()  ==>  "data_object_007"
+                    data_object._id()  ==>  "data_object_007" // the same as above, new_id() was not called
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          parent(obj, index)
+            ------------------------------------------>
+
+            <@item title="parent(obj-opt, index-opt)">
+                <div class="description">
+                    <p>(just like Data_Value.parent())</p>
+                    <p>When called without arguments: returns the current parent.</p>
+                    <p>
+                        When called with <code>obj</code> argument: sets the <code>obj</code> as a parent.<br />
+                        If the context was not set, then tries to set its context to the parent context (so, will be able to use the _id() method further).
+                    </p>
+                    <p>
+                        When called with <code>index</code> argument too: also sets an (internal) <code>_index</code> field.
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="obj" type="Object" description="New parent object" optional />
+                    <@parm name="index" type="Number" description="An index within the parent?" optional />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    // no parent:
+                    //
+                    data_object = new Data_Object();
+                    data_object.parent()  ==>  undefined
+                    //
+                    // set a parent with a context:
+                    //
+                    var nextId = 7;
+                    var myContext = { new_id: function (prefix) { return prefix + "_00" + nextId++; } };
+                    var myParent = { _context: myContext };
+                    //
+                    data_object.parent(myParent);
+                    data_object.parent()  ==>  myParent
+                    data_object._id()  ==>  "data_object_007"
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          _fp_parent()
+            ------------------------------------------>
+
+            <@item title="_fp_parent()">
+                <div class="description">
+                    <p>It seems that this method was intended for some relationship feature with multi-parents capability. But it looks not completed yet.</p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    //
+                    // _fp_parent() always returns undefined (here and below):  !!!
+                    //
+                    assert.deepEqual(data_object._fp_parent(), undefined);
+                    //
+                    // _fp_parent(data_object) does nothing besides the _context setting:  !!!
+                    //
+                    var parent_data_object = new Data_Object();
+                    parent_data_object._context = "context1";  // implementation specific !!!
+                    data_object._fp_parent(parent_data_object);
+                    //
+                    assert.deepEqual(data_object._parents, undefined); // implementation specific !!!
+                    assert.deepEqual(data_object._relationships, undefined); // implementation specific !!!
+                    assert.deepEqual(data_object._fp_parent(), undefined);
+                    assert.deepEqual(data_object.parent(), undefined);
+                    //
+                    assert.deepEqual(data_object._context, "context1"); // implementation specific !!!
+                    //
+                    // _fp_parent(data_object, position) changes the _parents variable:
+                    //
+                    var nextId = 7;
+                    var context = { new_id: function (prefix) { return prefix + "_00" + nextId++; } };
+                    //
+                    parent_data_object._context = context; // implementation specific !!!
+                    data_object._fp_parent(parent_data_object, 3);
+                    //
+                    assert.deepEqual(data_object._parents, { 'data_object_007': [parent_data_object, 3] });  // implementation specific !!!
+                    assert.deepEqual(data_object._relationships, undefined); // implementation specific !!!
+                    assert.deepEqual(data_object._fp_parent(), undefined);
+                    assert.deepEqual(data_object.parent(), undefined);
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |   position_within(parent)
+            ------------------------------------------>
+
+            <@item title="position_within(parent)">
+                <div class="description">
+                    <p>
+                        Returns the Data_Object position as a child of the <code>parent</code> object.
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="parent" type="An object with _id() method" description="Parent object" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    //
+                    var nextId = 7;
+                    var context = { new_id: function (prefix) { return prefix + "_00" + nextId++; } };
+                    var parent_data_object = new Data_Object({ context: context });
+                    //
+                    // parent not set - returns undefined:
+                    //
+                    assert.deepEqual(data_object.position_within(parent_data_object), undefined);
+                    //
+                    //  _fp_parent(data_object, position) sets the parent and position:
+                    //
+                    data_object._fp_parent(parent_data_object, 3);
+                    assert.deepEqual(data_object.position_within(parent_data_object), 3);
+                    //
+                    // throws exception if the parent candidate is unable to provide _id():
+                    //
+                    var other_data_object = new Data_Object();
+                    assert.throws(function () { data_object.position_within(other_data_object); });
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |   remove_from(parent)
+            ------------------------------------------>
+
+            <@item title="remove_from(parent)">
+                <div class="description">
+                    <p>
+                        Probably should remove the Data_Object from the parent, but throws an exception instead (attempt to use a non-existing "_arr" field of the parent).
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="parent" type="An object with _id() method" description="Parent object" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    //
+                    var nextId = 7;
+                    var context = { new_id: function (prefix) { return prefix + "_00" + nextId++; } };
+                    var parent_data_object = new Data_Object({ context: context });
+                    //
+                    //  _fp_parent(data_object, position) sets the parent and position:
+                    //
+                    data_object._fp_parent(parent_data_object, 3);
+                    assert.deepEqual(data_object.position_within(parent_data_object), 3);
+                    //
+                    // remove_from() does not works:
+                    //
+                    assert.throws(function () { data_object.remove_from(parent_data_object); });
+                </@codeblock>
+            </@item>
+
+            <!-----------------------------------------
+            |          Mini_Context
+            ------------------------------------------>
+
+            <@item title="static Mini_Context">
+                <div class="description">
+                    <p>
+                        Just a reference to <a href="@link:/core/data-object.js/Mini_Context.html">Mini_Context</a> class.
+                    </p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var mini_context = new Data_Object.Mini_Context();
+                </@codeblock>
+            </@item>
+        
+        </@section>
+
+        <!--==================================================
+        =                   Fields
+        ===================================================-->
+
+        <@section title="Fields">
+
+            <!-----------------------------------------
+            |   set_field(...)
+            ------------------------------------------>
+
+            <@item title="set_field(...)">
+                <div class="description">
+                    <p>
+                        Adds a field description to the Data_Object.
+                        Please see <a href="@link:/core/data-object-fields-collection.js/Fields_Collection.html#set_parms">Fields_Collection.set()</a> for the parameters explanation.
+                    </p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    data_object = new Data_Object();
+                    //
+                    data_object.set_field("Field1", "int");
+                    data_object.field()  ==>  [["Field1", "int", { data_type: "int" }]]
+                    //
+                    // <mark>setting the same field again adds a field with the same name !!!</mark>
+                    //
+                    data_object.set_field("Field1", "bool");
+                    data_object.field()  ==>  [["Field1", "int", { data_type: "int" }], ["Field1", "bool", { data_type: "bool" }]]
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          field()
+            ------------------------------------------>
+
+            <@overloads title="field()">
+    
+            <@item title="field()">
+                <div class="description">
+                    <p>Returns an array containing fields definition.</p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    data_object = new Data_Object();
+                    data_object.field()  ==>  []
+                    //
+                    data_object.set_field("Field1", "int");
+                    data_object.field()  ==>  [["Field1", "int", { data_type: "int" }]]
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          field(field_name)
+            ------------------------------------------>
+
+            <@item title="field(field_name)">
+                <div class="description">
+                    <p>
+                        Returns a field definition for the field specified by <code>field_name</code>
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="field_name" type="string" description="Field name" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    data_object = new Data_Object();
+                    data_object.field("Field1")  ==>  undefined
+                    //
+                    data_object.set_field("Field1", "int");
+                    data_object.field("Field1")  ==>  ["Field1", "int", { data_type: "int" }]
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          field(obj)
+            ------------------------------------------>
+
+            <@item title="field(obj)">
+                <div class="description">
+                    <p>
+                        Sets fields (calling <a href="#set_field">set_field()</a> method) for each key/value pair from the passed <code>obj</code>.
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="obj" type="object" description="Fields definition object" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    data_object = new Data_Object();
+                    //
+                    data_object.field({ Field2: "string", Field3: "bool" });
+                    data_object.field()  ==>  [["Field2", "string", { data_type: "string" }], ["Field3", "bool", { data_type: "bool" }]]
+                </@codeblock>
+
+            </@item>
+
+            </@overloads>
+            
+            <!-----------------------------------------
+            |   read_only(field_name)
+            ------------------------------------------>
+
+            <@overloads title="read_only()">
+    
+            <@item title="read_only(field_name)">
+                <div class="description">
+                    <p>Marks the specified field as read-only.</p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="field_name" type="string" description="Field name" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    //
+                    data_object.read_only("Field1");
+                    data_object.set("Field1", 123);  ==>  exception!
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |   read_only(field_name, value)
+            ------------------------------------------>
+
+            <@item title="read_only(field_name, value)">
+                <div class="description">
+                    <p>Enables/disables a read-only mode for the specified field.</p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="field_name" type="string" description="Field name" />
+                    <@parm name="value" type="bool" description="read-only mode" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    //
+                    data_object.read_only("Field1", true);
+                    //data_object.set("Field1", [123]);  ==>  exception!
+                    //
+                    data_object.read_only("Field1", false);
+                    data_object.set("Field1", [123]);
+                    data_object.get("Field1")  ==>  [123]
+                </@codeblock>
+
+            </@item>
+
+            </@overloads>
+            
+            <!-----------------------------------------
+            |          Fields_Collection
+            ------------------------------------------>
+
+            <@item title="static Fields_Collection">
+                <div class="description">
+                    <p>
+                        Just a reference to <a href="@link:/core/data-object-fields-collection.js/Fields_Collection.html">Fields_Collection</a> class.
+                    </p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var fields_collection = new Data_Object.Fields_Collection();
+                </@codeblock>
+            </@item>
+    
+            <!-----------------------------------------
+            |          parse_field_text(field_text)
+            ------------------------------------------>
+
+            <@item title="static parse_field_text(field_text)">
+                <div class="description">
+                    <p>
+                        Just a reference to <a href="@link:/core/data-object-fields-collection.js/Fields_Collection.html#parse_field_text">Fields_Collection.parse_field_text()</a> function.
+                    </p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    Data_Object.parse_field_text("not_null int")  ==>  { data_type: "int", not_null: true }
+                </@codeblock>
+            </@item>
+        
+        </@section>
+
+        <!--==================================================
+        =                   Values
+        ===================================================-->
+
+        <@section title="Values">
+
+            <!-----------------------------------------
+            |   value()
+            ------------------------------------------>
+
+            <@item title="value()">
+                <div class="description">
+                    <p>
+                        Returns a name/value object for the Data_Object values.
+                    </p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    //
+                    // internal direct value:
+                    //
+                    data_object.set("Field1", ["abc"]);
+                    data_object.get("Field1")  ==>  ["abc"]
+                    data_object.value()  ==>  { Field1: ["abc"] }
+                    //
+                    // internal Data_Value:
+                    //
+                    var data_value = new Data_Value({ value: 123 });
+                    data_object.set("Field2", data_value);
+                    data_object.get("Field2")  ==>  data_value
+                    data_object.value()  ==>  { Field1: ["abc"], Field2: 123 } // because Data_Value have value() method in turn
+                </@codeblock>
+            </@item>
+
+            <!-----------------------------------------
+            -------------------------------------------
+            |   get()
+            -------------------------------------------
+            ------------------------------------------>
+
+            <@overloads title="get()">
+
+                <!-----------------------------------------
+                |   get()
+                ------------------------------------------>
+
+                <@item title="get()">
+                    <div class="description">
+                        <p>
+                            Just returns an internal storage object containing the field values: <code>return this._;</code>
+                        </p>
+                        <p>
+                            But if <code>this.__type_name</code> is set, then processes the storage object by output processor: 
+                            <code>return jsgui.output_processors[this.__type_name](this._);</code> 
+                        </p>
+                    </div>
+
+                    <h5>Example</h5>
+                    <@codeblock>
+                        var data_object = new Data_Object();
+                        //
+                        data_object.get()  ==>  {}
+                        //
+                        data_object.set("Field1", [100]);
+                        data_object.set("Field2", ["200"]);
+                        //
+                        data_object.get()  ==>  { Field1: [100], Field2: ["200"] }
+                    </@codeblock>
+                
+                    <h5>output_processors example</h5>
+                    <div>
+                        <p>
+                            <mark>It looks like input/output processors are not working properly...</mark>
+                        </p>
+                        <@codeblock>
+                            var Color = Data_Object.extend('color');
+                            var color = new Color();
+                            color.__type_name  ==>  "color"
+                            //
+                            var set_result = color.set(["#FF0000"]);
+                            set_result  ==>  [255, 0, 0]
+                            //
+                            // !!! get() returns "#NaN" instead of "#FF0000":
+                            color.get()  ==>  "#NaN"
+                            //
+                            // !!! internal data looks strange:
+                            color._  ==>  { undefined: [255, 0, 0] }
+                        </@codeblock>
+                    </div>               
+                
+                </@item>
+
+                <!-----------------------------------------
+                |   get(field_name)
+                ------------------------------------------>
+
+                <@item title="get(field_name)">
+                    <div class="description">
+                        <p>
+                            Returns a field value for the <code>field_name</code> field.
+                        </p>
+                        
+                        <h5>Parameters:</h5>
+                        <@parms>
+                            <@parm name="field_name" type="string" description="Field name" />
+                        </@parms>
+                                                       
+                        <p>
+                            The main get(field_name) algorithm is the following:
+                            <@codeblock>
+                                function get(field_name) {
+                                    if (field_name.indexOf('.') > -1) return processQualifiedName();
+                                    //
+                                    if (!fc.get(field_name)) {
+                                        // field_name field was not defined:
+                                        var res = ll_get(_, field_name);
+                                        if (res) return res;
+                                        return this[field_name];
+                                    } else {
+                                        // field_name field was defined:
+                                        if (!_[field_name]) {
+                                            _[field_name] = createValueBasedOnFieldDefinition(); // Data_Object or Data_Value usually
+                                            return _[field_name];
+                                        } else {
+                                            return _[field_name];
+                                        }
+                                    }
+                                }
+                            </@codeblock>
+                        </p>
+
+                        <h5 class="content-part-header collapsed">processQualifiedName()</h5>
+
+                        <p >
+                            If <code>field_name</code> is a qualified name (i.e. contains several names delimited by dot characters, like "a.b.c"), then
+                            it applies the get() method to all the names from the chain, and returns the result:
+                        </p>
+
+                        <@codeblock>
+                            data_object.get("a.b.c") === data_object.get("a").get("b").get("c")
+                        </@codeblock>
+
+                        <h5 class="content-part-header collapsed">field_name field was not defined</h5>
+                        
+                        <p>
+                            If the <code>field_name</code> field was not defined for this Data_Object, then it tries to get an appropriate value
+                            from an internal data object (the <code>_</code> property). By the way, it uses the
+                            <a href="@link:/core/jsgui-lang-essentials.js.html#ll_get">ll_get()</a> method call internally to get the value, but <a href="@link:/core/jsgui-lang-essentials.js.html#ll_get">ll_get()</a> power seems
+                            not used here. Moreover, the pair <a href="@link:/core/jsgui-lang-essentials.js.html#ll_set">ll_set()</a> method is not used in the Data_Object.set() method. So, <code>ll_get(_, field_name)</code> call
+                            works like <code>_[field_name]</code> here.
+                        </p>
+
+
+                        <@codeblock>
+                            var data_object = new Data_Object();
+                            //
+                            // set_field() not called, Field1 and Field2 fields are not defined
+                            //
+                            data_object.set("Field1", "abc"); // set() creates a Data_Value for string types:
+                            data_object.get("Field1")  ==>  new Data_Value({ value: "abc" })
+                            //
+                            data_object.set("Field2", ["abc"]); // set() assigns array types directly, without Data_Value creation:
+                            data_object.get("Field2")  ==>  ["abc"]
+                        </@codeblock>
+
+                        <p>
+                            If the field value was not found (more precisely: if the <a href="@link:/core/jsgui-lang-essentials.js.html#ll_get">ll_get()</a> call returned
+                            something evaluated to <code>false</code>), then it tries to get a <code>field_name</code> property of the Data_Object itself.
+                        </p>
+
+                        <@codeblock>
+                            var data_object = new Data_Object();
+                            //
+                            // ll_get() returns a Data_Value object:
+                            //
+                            data_object.set("Field1", false);
+                            data_object.get("Field1")  ==>  new Data_Value({ value: false })
+                            //
+                            // ll_get() returns null, so it tries to get data_object.Field2 property:
+                            //
+                            data_object.set("Field2", null);
+                            data_object.get("Field2")  ==>  undefined
+                            //
+                            //  "_" field was not defined, ll_get() returns undefined, so it tries to get data_object._ property:
+                            //
+                            data_object.get("_")  ==>  { Field1: new Data_Value({ value: false }), Field2: null }
+                        </@codeblock>
+
+                        <h5 class="content-part-header collapsed">field_name field was defined</h5>
+
+                        <div>
+                            
+                        <p>
+                            If the <code>field_name</code> field was defined, then <code>get()</code> just returns the field value. But if the field value was not set previously
+                            (more precisely: if <code>_[field_name]</code> evaluates to <code>false</code>), then it tries to create the value first.
+                        </p>
+
+                        <p>
+                            The field definition can be done using many different object formats, and the creating value depends of the format first of all. The code
+                            processing the formats and creating the value is placed directly into the get() method.
+                        </p>
+                        <p>
+                            The get() method selects a code branch to create the value depending of the internal format signature. Meanwhile it will be described here
+                            using the signatures too.
+                        </p>
+
+
+                        <p class="content-part-header collapsed"><strong>[s,s,f]</strong></p>
+                        
+                        <p>
+                            The [s,s,f] format parts are [field_name, fieldStrType, fieldDef]<br /><br />
+                            For fieldDef equals to <code>String</code> and <code>Number</code> classes, creates a Data_Value object as the value. For other classes (when the fieldStrType =="Class") creates
+                            the class instance as the value. A context spec passes to the Data_Value or class constructor in all cases, e.g <code>new Data_Value({ 'context': this._context })</code>.
+                        </p>
+
+                        <@codeblock>
+                            var data_object = new Data_Object();
+                            //
+                            data_object.set_field("Field_String", String); assert_field_sig(data_object, "Field_String", "[s,s,f]");
+                            var value_String = new Data_Value();
+                            assert.deepEqual(data_object.get("Field_String"), value_String);
+                            //
+                            data_object.set_field("Field_Number", Number); assert_field_sig(data_object, "Field_Number", "[s,s,f]");
+                            var value_Number = new Data_Value();
+                            assert.deepEqual(data_object.get("Field_Number"), value_Number);
+                            //
+                            var MyBook = function () { this.book = "Secret City"; };
+                            //
+                            data_object.set_field("Field_MyBook", MyBook); assert_field_sig(data_object, "Field_MyBook", "[s,s,f]");
+                            var value_MyBook = new MyBook();
+                            assert.deepEqual(data_object.get("Field_MyBook"), value_MyBook);
+                        </@codeblock>
+
+                        <p class="content-part-header collapsed"><strong>[s,[s,u]]</strong></p>
+
+                        <p>
+                            Throws an error, but I see no way to define a field using this format.
+                        </p>
+                    
+                        <p class="content-part-header collapsed"><strong>[s,s,o]</strong></p>
+                            
+                        <p>
+                            The [s,s,o] format parts are [field_name, field_type_name, field_info]<br /><br />
+                            Depending of the field_type_name part, the resulting values will be following:
+                            <ul>
+                                <li>
+                                    <strong><code>'collection'</code></strong>: error (tries to create <code>new Collection({'context': this._context});</code>, but <code>jsgui.Collection</code> not defined)
+                                </li>
+                                <li>
+                                    <strong><code>'data_object'</code></strong>: <code>new Data_Object({'context': this._context}); result.parent(this);</code>
+                                </li>
+                                <li>
+                                    <strong><code>'ordered_string_list'</code></strong>: <code>new Ordered_String_List();</code>
+                                </li>
+                                <li>
+                                    <strong><code>'string'</code></strong>: <code>new Data_Value({'context': this._context});</code>
+                                </li>
+                                <li>
+                                    <strong>other</strong>: see below
+                                </li>
+                            </ul>                       
+                        </p>
+
+                        <p>
+                            If <code>field_info.data_type</code> is <code>["text", length]</code> then creates <code>new Data_Value({'context': this._context});</code><br />
+                        </p>
+                        <p>
+                            If <code>field_info.data_type</code> is <code>["int"]</code> then creates <code>new Data_Value({'context': this._context});</code><br />
+                        </p>
+                        <p>
+                            In other cases calculates a constructor using the <code>ensure_data_type_data_object_constructor()</code> method, then creates the value:<br />
+                            <code>result = new constructor({'context': this._context}); result.parent(this);</code>
+                        </p>
+
+                        <@codeblock>
+                            var data_object = new Data_Object();
+                            //
+                            data_object.set_field("Field_collection", "collection"); assert_field_sig(data_object, "Field_collection", "[s,s,o]");
+                            assert.throws(function () { data_object.get("Field_collection") });  // it's unable to create this field (line 4172 jsgui.Collection undefined) !!!
+                            //
+                            data_object.set_field("Field_data_object", "data_object"); assert_field_sig(data_object, "Field_data_object", "[s,s,o]");
+                            var value_data_object = new Data_Object();
+                            value_data_object._parent = data_object;                                    // !!!
+                            assert.deepEqual(data_object.get("Field_data_object"), value_data_object);
+                            //
+                            data_object.set_field("Field_ordered_string_list", "ordered_string_list"); assert_field_sig(data_object, "Field_ordered_string_list", "[s,s,o]");
+                            var value_ordered_string_list = new Data_Structures.Ordered_String_List();
+                            var v1_ordered_string_list = test_utils.functionsToStrings(data_object.get("Field_ordered_string_list"));
+                            var v2_ordered_string_list = test_utils.functionsToStrings(value_ordered_string_list);
+                            assert.deepEqual(v1_ordered_string_list, v2_ordered_string_list);
+                            //
+                            data_object.set_field("Field_string", "string"); assert_field_sig(data_object, "Field_string", "[s,s,o]");
+                            var value_string = new Data_Value();
+                            value_string._parent = data_object; // !!!
+                            assert.deepEqual(data_object.get("Field_string"), value_string);
+                            //
+                            data_object.set_field("Field_text", "text", { data_type: ["text", 10] }); assert_field_sig(data_object, "Field_text", "[s,s,o]");
+                            var value_text = new Data_Value();
+                            assert.deepEqual(data_object.get("Field_text"), value_text);
+                            //
+                            data_object.set_field("Field_text2", "text"); assert_field_sig(data_object, "Field_text2", "[s,s,o]");
+                            assert.deepEqual(data_object.get("Field_text2"), undefined); // !!!
+                            //
+                            data_object.set_field("Field_int", "int"); assert_field_sig(data_object, "Field_int", "[s,s,o]");
+                            var value_int = new Data_Value();
+                            assert.deepEqual(data_object.get("Field_int"), value_int);
+                            //
+                            data_object.set_field("Field_wrong", "wrong"); assert_field_sig(data_object, "Field_wrong", "[s,s,o]");
+                            assert.deepEqual(data_object.get("Field_wrong"), undefined);
+                        </@codeblock>
+
+                        <p class="content-part-header collapsed"><strong>[s,s]</strong></p>
+                            
+                        <p>                           
+                            The [s,s] format parts are [field_name, field_type_name]<br /><br />
+                        
+                            Depending of the field_type_name part, the resulting values will be following:
+                            <ul>
+                                <li>
+                                    <strong><code>'collection'</code></strong>: <code>throw 'not supported here. should use code in enhanced-data-object.';</code>
+                                </li>
+                                <li>
+                                    <strong><code>'data_object'</code></strong>: <code>throw 'jsgui.Data_Object is not a function'</code>
+                                </li>
+                                <li>
+                                    <strong>other</strong>: <code>new ensure_data_type_data_object_constructor(field_type_name)({'context': this._context}).parent(this);</code>
+                                </li>
+                            </ul>                       
+                        </p>
+
+                        <@codeblock>
+                            var data_object = new Data_Object();
+                            //
+                            data_object.set_field(0, ["Field_collection", "collection"]); assert_field_sig(data_object, "Field_collection", "[s,s]");
+                            assert.throws(function () { data_object.get("Field_collection") }, /not supported here. should use code in enhanced-data-object./);
+                            //
+                            data_object.set_field(0, ["Field_data_object", "data_object"]); assert_field_sig(data_object, "Field_data_object", "[s,s]");
+                            assert.throws(function () { data_object.get("Field_data_object") }, /jsgui.Data_Object is not a function/); // "new jsgui.Data_Object(...)" 
+                            //
+                            data_object.set_field(0, ["Field_text", "text"]); assert_field_sig(data_object, "Field_text", "[s,s]");
+                            var value_text = new (jsgui.ensure_data_type_data_object_constructor("text"))();
+                            value_text.parent(data_object);
+                            test_utils.assertDeepEqual(data_object.get("Field_text"), value_text);
+                        </@codeblock>
+
+                        <p class="content-part-header collapsed"><strong>[s,[s,s]]</strong></p>
+                            
+                        <p>                           
+                            The [s,[s,s]] format parts are [field_name, field_info]<br /><br />
+                            
+                            Returns <code>undefined</code>.
+                        </p>
+
+                        <@codeblock>
+                            var data_object = new Data_Object();
+                            //
+                            data_object.set_field("Field_collection", ["collection", "int"]); assert_field_sig(data_object, "Field_collection", "[s,[s,s]]");
+                            assert.deepEqual(data_object.get("Field_collection"), undefined);
+                            //
+                            data_object.set_field("Field_dictionary", ["dictionary", "int"]); assert_field_sig(data_object, "Field_dictionary", "u"); // !!!
+                        </@codeblock>
+
+                        <p class="content-part-header collapsed"><strong>[s,[s,o]]</strong></p>
+                            
+                        <p>                           
+                            The [s,[s,o]] format parts are [field_name, [data_type_name, objDef]]<br /><br />
+                            
+                            If <code>data_type_name == 'collection'</code> throws <code>'not supported here. should use code in enhanced-data-object.'</code><br />
+                            In other cases returns <code>undefined</code>.
+                        </p>
+
+                        <@codeblock>
+                            var data_object = new Data_Object();
+                            //
+                            data_object.set_field("Field_collection", [{}]); assert_field_sig(data_object, "Field_collection", "[s,[s,o]]");
+                            assert.deepEqual(data_object.fc.get("Field_collection"), ["Field_collection", ["collection", {}]]);
+                            assert.throws(function () { data_object.get("Field_collection") });
+                            //
+                            data_object.set_field("Field_data_object", {}); assert_field_sig(data_object, "Field_data_object", "[s,[s,o]]");
+                            assert.deepEqual(data_object.fc.get("Field_data_object"), ["Field_data_object", ["data_object", {}]]);
+                            assert.deepEqual(data_object.get("Field_data_object"), undefined);
+                        </@codeblock>
+                            
+                        </div>
+                            
+                    </div>
+
+                </@item>
+
+            </@overloads>
+
+            <!-----------------------------------------
+            -------------------------------------------
+            |   set()
+            -------------------------------------------
+            ------------------------------------------>
+
+            <@overloads title="set()">
+
+                <div class="description">
+                    <p>
+                        If the Data_Object is abstract (<code>this._abstract == true</code>), then returns <code>false</code> without any other processing.
+                    </p>
+                    <p>
+                        If <code>is_defined(this._data_type_name) && input_processors[this._data_type_name])</code> then throws <code>'stop'</code>.
+                    </p>
+                </div>
+
+
+                <!-----------------------------------------
+                |   set(Data_Object)
+                ------------------------------------------>
+
+                <@item title="set(Data_Object)">
+                    <div class="description">
+                        <p>
+                            Tries to set <code>this._[property_name] = value;</code> but both <code>property_name</code> and <code>value</code> are undefined here.
+                        </p>
+                    </div>
+
+                    <p>
+                        Also, the <code>change</code> event seems not raised because of a wrong argument passing to the raise_event() method.
+                    </p>
+                    <p>
+                        Returns <code>undefined</code>.
+                    </p>
+                    
+                    <h5>Example</h5>
+                    <@codeblock>
+                        var data_object = new Data_Object();
+                        //
+                        var data_object_as_value = new Data_Object();
+                        //
+                        data_object.set(data_object_as_value);  // btw, the change event is not raised
+                        data_object.get()  ==>  { undefined: undefined }
+                    </@codeblock>
+                </@item>
+
+                <!-----------------------------------------
+                |   set(obj)
+                ------------------------------------------>
+
+                <@item title="set(obj)">
+                    <div class="description">
+                        <p>
+                            Enumerates the name/value pairs of the passed object, calling set(name, value) for each pair.
+                        </p>
+                        <p>
+                            Returns an object made from the called set() results (the <code>obj</code> copy in fact).
+                        </p>
+                    </div>
+
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="obj" type="object" description="name/value pairs object" />
+                    </@parms>
+
+                    <h5>Example</h5>
+                    <@codeblock>
+                        var data_object = new Data_Object();
+                        //
+                        data_object.set({ Field1: [123], Field2: ["45"] });
+                        //
+                        data_object.get("Field1")  ==>  [123]
+                        data_object.get("Field2")  ==>  ["45"]
+                    </@codeblock>
+                </@item>
+
+                <!-----------------------------------------
+                |   set(control)
+                ------------------------------------------>
+
+                <@item title="set(control)">
+                    <div class="description">
+                        <p>
+                            Tries to set <code>this._[property_name] = value;</code> but both <code>property_name</code> and <code>value</code> are undefined here.
+                        </p>
+                        <p>
+                            Also, the <code>change</code> event seems not raised because of a wrong argument passing to the raise_event() method.
+                        </p>
+                        <p>
+                            Returns <code>undefined</code>.
+                        </p>
+                        <p>
+                            <mark>TODO: create an unit test and example</mark>
+                        </p>
+                    </div>
+
+                </@item>
+
+                <!-----------------------------------------
+                |   set(field_name, value, event_prop-opt)
+                ------------------------------------------>
+
+                <@item title="set(field_name, value, event_prop-opt)">
+                    <div class="description">
+                        <p>
+                            Sets the <code>field_name</code> field value to the <code>value</code>, raises a <code>change</code> event.
+                        </p>
+                        <p>
+                            Returns <code>value</code>.
+                        </p>
+                    </div>
+
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="field_name" type="string" description="Field name" />
+                        <@parm name="value" type="*" description="Value to set" />
+                        <@parm name="event_prop" type="string, boolean, control" description="'change' event additions (see 'change event' below)" optional />
+                    </@parms>
+                    
+                    
+                    <h5 class="content-part-header collapsed">change event</h5>
+
+                    <div>
+
+                    <p>
+                       By default, the event is raised for each <code>set(field_name, value)</code> call. The event argument is the following:
+                    </p>
+
+                    <@codeblock>
+                        {
+                            'name': field_name,
+                            'value': value
+                        };
+                    </@codeblock>
+
+                        <p>
+                            If <code>field_name</code> is a qualified name, then a <code>'bubbled': true</code> property adds to the argument.
+                        </p>
+                        
+                    <h6 class="content-part-header collapsed">silent</h6>
+                        
+                    <p>
+                        If the <code>event_prop</code> type is 'string' or 'boolean', then it interpretes as a <code>silent</code> parameter. 
+                        When the <code>silent</code> evaluates to <code>true</code>, the 'change' event is not raised.
+                    </p>
+
+                    <p>
+                        <mark>
+                            <code>silent === "false"</code> evaluates to <code>true</code>!                        
+                        </mark>
+                    </p>
+                    
+                    <@codeblock>
+                        var data_object = new Data_Object();
+                        //
+                        var change_eventArgs = null;
+                        data_object.on("change", function (eventArgs) {
+                            change_eventArgs = eventArgs;
+                        });
+                        //
+                        // silent mode:
+                        //
+                        change_eventArgs = null;
+                        data_object.set("Field1", [123], true); // change_eventArgs === null
+                        //
+                        // no silent mode:
+                        //
+                        change_eventArgs = null;
+                        data_object.set("Field1", [123], false); // change_eventArgs === { name: "Field1", value: [123] }
+                        //
+                        // silent === "true", silent mode:
+                        //
+                        change_eventArgs = null;
+                        data_object.set("Field1", [123], "true");  // change_eventArgs === null
+                        //
+                        // silent === "false", evaluates to boolean true, silent mode!
+                        //
+                        change_eventArgs = null;
+                        data_object.set("Field1", [123], "false");  // change_eventArgs === null
+                    </@codeblock>
+
+                    <h6 class="content-part-header collapsed">source</h6>
+                        
+                    <p>
+                        If the <code>event_prop</code> type is 'control' (using the <a href="@link:/core/jsgui-lang-essentials.js.html#tof">tof()</a> function), then it interpretes as a <code>source</code> parameter. 
+                        The <code>source</code> value adds to the 'change' event arguments.
+                    </p>
+
+                    <p>
+                        <mark>TODO: create an unit test and example</mark>
+                    </p>
+                    
+                    </div>                   
+                    
+                    <h5 class="content-part-header collapsed">read-only</h5>
+                    
+                    <p>
+                        If the <code>field_name</code> field is read-only, then throws <code>'Property "' + property_name + '" is read-only.'</code>
+                    </p>
+                    
+                    <@codeblock>
+                        var data_object = new Data_Object();
+                        //
+                        data_object.read_only("Field1");
+                        // data_object.set("Field1", [123]); - throws an error!
+                        //
+                        data_object.read_only("Field1", false);
+                        data_object.set("Field1", [123]);
+                        data_object.get("Field1") ==>  [123]
+                    </@codeblock>
+
+                    <h5 class="content-part-header collapsed">Qualified name</h5>
+                    
+                    <p>
+                        If the <code>field_name</code> contains a dot ("."), then it is interpreted as a qualified name. 
+                        In this case it is assumed that all the intermediate names are data objects.
+                    </p>
+
+                    <@codeblock>
+                        var data_object = new Data_Object();
+                        //
+                        // set() allows to set a field named ".", but get() is unable to get this field:
+                        //
+                        data_object.set(".", ["dot"]);
+                        data_object.get()  ==>  { '.': ["dot"] }
+                        data_object.get(".")  ==>  undefined
+                        //
+                        // Data_Object allows to set values using qualified names,
+                        // if all the nested data objects are created:
+                        //
+                        var data_object_b = new Data_Object();
+                        data_object_b.set("c", ["abc"]);
+                        //
+                        var data_object_a = new Data_Object();
+                        data_object_a.set("b", data_object_b);
+                        //
+                        data_object.set("a", data_object_a);
+                        data_object.get("a.b.c")  ==>  ["abc"]
+                        //
+                        data_object.set("a.b.c", [123]);
+                        data_object.get("a.b.c")  ==>  [123]
+                        //
+                        // Data_Object is unable to create the nested data objects itself:
+                        //
+                        data_object.set("x.y", ["xy"]);  // throws an exception: 'No data object at this level.'
+                    </@codeblock>
+                
+                    <h5 class="content-part-header collapsed">Usual case</h5>
+
+                    <p>
+                        The main set() algorithm is the following:
+                    </p>
+
+                    <@codeblock>
+                        function set(field_name, value) {
+                            if (!get(field_name)) {
+                                // no field defined, and no value was set previously:
+                                if (typeof (value) in ['string', 'number', 'boolean', 'date']) {
+                                    this._[field_name] = new Data_Value({ 'value': value });
+                                } else {
+                                    this._[field_name] = value;
+                                }
+                            } else {
+                                this._[field_name] = value;
+                            }
+                            return value;
+                        }
+                    </@codeblock>
+
+                    <p>
+                        The set() method calls the get(field_name) internally.
+                        If the returned value is undefined, and <code>typeof value</code> is 'string', 'number', 'boolean', or 'date', 
+                        then it creates an internal Data_Value object for the <code>value</code>, and sets it.
+                    </p>
+                    <p>
+                        In other cases it sets the <code>value</code> directly.
+                    </p>
+
+                    <@codeblock>
+                        var data_object = new Data_Object();
+                        //
+                        // Data_Object creates an internal Data_Value for native types ('string', 'number', 'boolean', 'date')
+                        //
+                        data_object.set("Field1", "45");
+                        data_object.get("Field1")  ==>  new Data_Value({ value: "45" })
+                        //
+                        data_object.set("Field2", 123);
+                        data_object.get("Field2")  ==>  new Data_Value({ value: 123 })
+                        //
+                        data_object.set("Field3", false);
+                        data_object.get("Field3")  ==>  new Data_Value({ value: false })
+                        //
+                        // probably error
+                        // "date" is listed in the hard-coded types inside the set() method code,
+                        // but typeof returns "object" instead of "date". So, it does not create
+                        // the internal Data_Value for Date:
+                        //
+                        var date_value = new Date(10000);
+                        data_object.set("Field4", date_value);
+                        data_object.get("Field4")  ==>  date_value); // !!! no Data_Value was created
+                        //
+                        //
+                        // If the native type value is set (and the internal Data_Value is created),
+                        // then subsequent set() calls set the value directly (removing the Data_Value):
+                        //
+                        //
+                        data_object.get("Field3")  ==>  new Data_Value({ value: false })
+                        data_object.set("Field3", true);
+                        data_object.get("Field3")  ==>  true
+                    </@codeblock>
+                </@item>
+
+            </@overloads>
+
+            <!-----------------------------------------
+            |   has(field_name)
+            ------------------------------------------>
+
+            <@item title="has(field_name)">
+                <div class="description">
+                    <p>
+                        Returns <code>true</code> if the <code>field_name</code> field was set.
+                    </p>
+                </div>
+                
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="field_name" type="string" description="Field name" />
+                </@parms>
+            
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    //
+                    // with field definition:
+                    //
+                    data_object.has("Field1")  ==>  false
+                    //
+                    data_object.set_field("Field1", "int");
+                    data_object.has("Field1")  ==>  true  // value was created automatically
+                    //
+                    //
+                    // without field definition:
+                    //
+                    data_object.has("Field2")  ==>  false
+                    data_object.set("Field2", ["abc"]);
+                    data_object.has("Field2")  ==>  true
+                </@codeblock>
+
+            </@item>
+        
+            <!-----------------------------------------
+            |   load_from_spec(spec, arr_item_names)
+            ------------------------------------------>
+
+            <@item title="load_from_spec(spec, arr_item_names)">
+                <div class="description">
+                    <p>
+                        Calls the <a href="#set">set()</a> method for the <code>spec</code> properties related to the field names from the <code>arr_item_names</code> array.
+                    </p>
+                    <p>
+                        A field should be present in both <code>spec</code> object and <code>arr_item_names</code> array in order to be processed.
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="spec" type="object" description="Field values" />
+                    <@parm name="arr_item_names" type="array of string" description="Field names" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    //
+                    // btw it calls set() internally, so use arrays as values for simplicity
+                    //
+                    data_object.load_from_spec({ Field1: [111], Field2: [222], Field3: [333] }, ["Field1", "Field3", "Field4"]);
+                    //
+                    data_object.get()  ==>  { Field1: [111], Field3: [333] }
+                </@codeblock>
+            </@item>
+
+        </@section>
+        
+        <!--==================================================
+        =                   Chained Fields
+        ===================================================-->
+
+        <@section title="Chained Fields">
+
+            <@item title="Overview" class="overview" id="feature-chained-fields">
+                <p>
+                    The <strong>Chained Fields</strong> feature allows to pre-define fields at a class level.
+                </p>
+                <p>
+                    The related methods (<code>get_chained_fields()</code> and <code>chained_fields_to_fields_list()</code>) are used in the constructor
+                    code (inside the <code>init()</code> method). Probably the methods should be private, but they are published in the Data_Object class.
+                </p>
+                <p>
+                    To use this feature you should add <code>fields</code> field to the <code>prop</code> parameter of the <a href="#extend__prop_post_init">Data_Object.extend()</a> method:
+                </p>
+                <@codeblock>
+                    var Data_Object_Ex = Data_Object.extend({
+                        fields: { Field1: "int", Field2: "text" }
+                    });
+                    //
+                    var data_object = new Data_Object_Ex();
+                    data_object.field()  ==>  [["Field1", "int", { data_type: "int" }], ["Field2", "text", { data_type: "text" }]]
+                </@codeblock>
+                <p>
+                    The chained fields from base classes will be defined in the derived class as well.
+                </p>
+                <p>
+                    The <code>fields</code> field of the <code>prop</code> parameter can be an object (like above), or an array. For example:
+                </p>
+                <@codeblock>
+                    var Data_Object_Ex = Data_Object.extend({
+                        fields: [["Field1", "int"], ["Field2", "text"]]
+                    });
+                    //
+                    var data_object = new Data_Object_Ex();
+                    data_object.field()  ==>  [["Field1", "int", { data_type: "int" }], ["Field2", "text", { data_type: "text" }]]
+                </@codeblock>
+                <p>
+                    The chained fields can be initialized in the derived class constructor call:
+                </p>
+                <@codeblock>
+                    var Data_Object_Ex = Data_Object.extend({
+                        fields: { Field1: "int", Field2: "text" }                
+                    });
+                    //
+                    var data_object = new Data_Object_Ex({ Field2: "abc" });
+                    //
+                    data_object.get()  ==>  { Field2: new Data_Value({ value: "abc"}) }
+                </@codeblock>
+            </@item>
+            
+            <!-----------------------------------------
+            |   ___get_fields_chain()
+            ------------------------------------------>
+
+            <@item title="___get_fields_chain()">
+                <div class="description">
+                    <p>
+                        Does nothing, returns <code>undefined</code>.
+                    </p>
+                </div>
+            </@item>
+
+            <!-----------------------------------------
+            |   get_chained_fields(data_object_class)
+            ------------------------------------------>
+
+            <@item title="static get_chained_fields(data_object_class)">
+                <div class="description">
+                    <p>
+                        Returns an array containing chained fields definitions defined for the <code>data_object_class</code> and parent classes.
+                    </p>
+                    <p>
+                        The result array item format is <code>[item_number, [field_name, field_info]]</code>
+                    </p>
+                    <p>
+                        <mark>The <code>item_number</code> values seems not consistent.</mark>
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="data_object_class" type="class (Data_Object subclass)" description="class to inspect" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var Data_Object_Ex = Data_Object.extend({
+                        fields: { Field1: "int", Field2: "text" }
+                    });
+                    //
+                    Data_Object.get_chained_fields(Data_Object_Ex)  ==>  [[1, ["Field1", "int"]], [2, ["Field2", "text"]]]
+                    //
+                    var Data_Object_Ex_2 = Data_Object_Ex.extend({
+                        fields: { Field3: "number" }
+                    });
+                    //
+                    Data_Object.get_chained_fields(Data_Object_Ex_2)  ==>  [[1, ["Field1", "int"]], [2, ["Field2", "text"]], [1, ["Field3", "number"]]]
+                </@codeblock>
+            </@item>
+
+            <!-----------------------------------------
+            |  chained_fields_to_fields_list(chained_fields)
+            ------------------------------------------>
+
+            <@item title="static chained_fields_to_fields_list(chained_fields)">
+                <div class="description">
+                    <p>
+                        Converts the chained fields (e.g. <a href="#get_chained_fields__data_object_class">get_chained_fields()</a> output) to a fields array.
+                    </p>
+                    <p>
+                        The result array item format is <code>[field_name, field_info]</code>
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="chained_fields" type="array" description="chained fields array"  />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var chained_fields = [[1, ["Field1", "int"]], [2, ["Field2", "text"]], [1, ["Field3", "number"]]];
+                    Data_Object.chained_fields_to_fields_list(chained_fields)  ==>  [["Field1", "int"], ["Field2", "text"], ["Field3", "number"]]
+                </@codeblock>
+            </@item>
+
+        </@section>
+        
+        <!--==================================================
+        =                   Fields connection
+        ===================================================-->
+
+        <@section title="Fields connection">
+
+            <@item title="Overview" class="overview" id="feature-fields-connection">
+                <p>
+                    The <strong>Fields connection</strong> feature allows to get/set field values as the object properties.
+                </p>
+                <p>
+                    E.g. <code>data_object.Field1 = 1;</code> instead of <code>data_object.set("Field1", 1);</code>
+                </p>
+                <p>
+                    The feature can be activated for a derived class. In this case it will connect <a href="#feature-chained-fields">chained fields</a> 
+                    defined for the derived class and base classes. For example:
+                </p>
+                <@codeblock>
+                    var Data_Object_Ex = Data_Object.extend({
+                        fields: { Field1: "int", Field2: "text" },
+                        connect_fields: true
+                    });
+                    var data_object = new Data_Object_Ex();
+                    //
+                    data_object.Field1([123]);
+                    data_object.Field1()  ==>  [123];
+                </@codeblock>
+            </@item>
+            
+            <!-----------------------------------------
+            |          using_fields_connection()
+            ------------------------------------------>
+               
+            <@item title="using_fields_connection()">
+    
+                <div class="description">
+                    <p>
+                        Returns the <strong>Fields connection</strong> feature active state. The feature is not active by default.
+                        When a derived class is created from Data_Object, it can activate or deactivate the feature 
+                        passing a <code>connect_fields</code> field to the <code>prop</code> parameter 
+                        of the <a href="#extend__prop_post_init">Data_Object.extend()</a> method.
+                    </p>
+                    <p>
+                        Activating/deactivating the feature does not affect the <a href="#connect_fields__">connect_fields()</a> method behaviour.
+                    </p>
+                    <p>
+                        The <code>using_fields_connection()</code> method is called internally in the Data_Object initialization code, 
+                        and probably is not intended for public use.
+                    </p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    data_object.using_fields_connection()  ==>  false
+                    //
+                    var Data_Object_Ex = Data_Object.extend({
+                        connect_fields: false
+                    });
+                    data_object = new Data_Object_Ex();
+                    data_object.using_fields_connection()  ==>  false
+                    //
+                    var Data_Object_Ex_2 = Data_Object_Ex.extend({
+                        connect_fields: true
+                    });
+                    data_object = new Data_Object_Ex_2();
+                    data_object.using_fields_connection()  ==>  true
+                    //
+                    var Data_Object_Ex_3 = Data_Object_Ex_2.extend({
+                        connect_fields: false
+                    });
+                    data_object = new Data_Object_Ex_3();
+                    data_object.using_fields_connection()  ==>  false
+                </@codeblock>
+            </@item>
+                        
+            <!-----------------------------------------
+            |          connect_fields(name)
+            ------------------------------------------>
+
+            <@overloads title="connect_fields()">
+            
+            <@item title="connect_fields(name)">
+
+                <div class="description">
+                    <p>Creates a method allowing to get/set a field with the same name.</p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="name" type="string" description="Field and method name" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    //
+                    data_object.connect_fields("Field1");
+                    //
+                    // connect_fields() allows to create a function to get/set a field value:
+                    //
+                    data_object.Field1([123]);
+                    data_object.Field1()  ==>  [123]
+                    //
+                    // it can override any other method: !!!
+                    //
+                    data_object.stringify()  ==>  'Data_Object({"Field1": [123]})'
+                    //
+                    data_object.connect_fields("stringify");
+                    //
+                    data_object.stringify([45]);
+                    data_object.stringify()  ==>  [45]
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          connect_fields(array)
+            ------------------------------------------>
+
+            <@item title="connect_fields(array)">
+
+                <div class="description">
+                    <p>Calls <a href="#connect_fields__name">connect_fields(name)</a> for each array item.</p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    data_object.connect_fields(["Field2", "Field3"]);
+                    //
+                    data_object.Field2([222]);
+                    data_object.Field3([333]);
+                    //
+                    data_object.Field2()  ==>  [222]
+                    data_object.Field3()  ==>  [333]
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          connect_fields(obj)
+            ------------------------------------------>
+
+            <@item title="connect_fields(obj)">
+                
+                <div class="description">
+                    <p>Throws an exception when an object is passed as parameter.</p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    //
+                    data_object.connect_fields({})  ==>  exception!
+                </@codeblock>
+
+            </@item>
+           
+            </@overloads>
+            
+
+        </@section>
+
+        <!--==================================================
+        =                   Constraints
+        ===================================================-->
+
+        <@section title="Constraints">
+
+            <@item title="Remarks" class="overview">
+                <p>
+                    This feature allows to define constraints for field values. But the constraints do not apply automatically for <a href="#set__">set()</a> method.
+                </p>
+                <p>
+                    <mark>The feature seems not completed enough.</mark>
+                </p>
+            </@item>
+            
+            <!-----------------------------------------
+            |          data_def()
+            ------------------------------------------>
+
+            <@item title="data_def()">
+                <div class="description">
+                    <p><mark>Does nothing.</mark></p>
+                    <p>
+                        Probably was intended to work with Data_Object_Def_Constraint.
+                    </p>
+                </div>
+            </@item>
+            
+            <!-----------------------------------------
+            |          constraints(field_constraints)
+            ------------------------------------------>
+
+            <@item title="constraints(field_constraints)">
+                <div class="description">
+                    <p>Sets field constraints to the passed value.</p>
+                    <p><mark>constraints() without parameters seems intended to return the field constraints, but it returns undefined</mark></p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="field_constraints" type="object" description="Field constraints" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    //
+                    // it seems that the constraints should be an object with key/value pairs, probably field_name/field_constraint:
+                    //
+                    var myConstraints = { Field1: "int", Field2: "number" };
+                    data_object.constraints(myConstraints);
+                    //
+                    data_object._field_constraints  ==>  myConstraints
+                    data_object.constraints()  ==>  undefined
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |   matches_field_constraint(field_name, str_constraint)
+            ------------------------------------------>
+
+            <@item title="matches_field_constraint(field_name, str_constraint)">
+                <div class="description">
+                    <p>
+                        Returns <code>true</code> if the value of the specified field matches the specified constraint.
+                    </p>
+                    <p>
+                        <mark>In fact always returns false because of the Data_Value wrapping.</mark>
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="field_name" type="string" description="Field name" />
+                    <@parm name="str_constraint" type="string" description="Constraint definition" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = null;
+                    //
+                    // !!! data_object.set() creates an internal Data_Value, it does not matches the constraints always:
+                    //
+                    data_object = new Data_Object();
+                    data_object.set("Field1", 12.5);
+                    data_object.get("Field1")  ==>  new Data_Value({ value: 12.5 })
+                    //
+                    data_object.matches_field_constraint("Field1", "int")  ==>  false
+                    data_object.matches_field_constraint("Field1", "number")  ==>  false // !!!
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |   obj_matches_field_constraints(data_object)
+            ------------------------------------------>
+
+            <@item title="obj_matches_field_constraints(data_object)">
+                <div class="description">
+                    <p>Checks other Data_Object to match constraints from this Data_Object.</p>
+                    <p>
+                        Calls <a href="#matches_field_constraints__data_object">matches_field_constraints(data_object)</a> for the other Data_Object internally.
+                    </p>
+                    <p>
+                        <mark>Returns false instead of true because of the Data_Value wrapping</mark>
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="data_object" type="Data_Object" description="data object to check" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    //
+                    // set constraints:
+                    //
+                    var myConstraints = { Field1: "int", Field2: "number" };
+                    data_object.constraints(myConstraints);
+                    //
+                    // set values for other Data_Object:
+                    //
+                    var data_object2 = new Data_Object();
+                    data_object2.set("Field1", 1);
+                    data_object2.set("Field2", 1.5);
+                    //
+                    // returns false because of the Data_Value wrapping:
+                    data_object.obj_matches_field_constraints(data_object2)  ==>  false
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |   set_field_data_type_constraint(field_name, data_type_constructor)
+            ------------------------------------------>
+
+            <@item title="set_field_data_type_constraint(field_name, data_type_constructor)">
+                <div class="description">
+                    <p>
+                        Removes a Constraint.Field_Data_Type constraint (if exists) from the field constraints.
+                        Also it seems intended to set new constraint using the <code>data_type_constructor</code> parameter, <mark> but it does not works</mark>.
+                    </p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    //
+                    var field_info = { data_type: "int" };
+                    data_object.ensure_field_constraint("Field1", field_info);
+                    //
+                    data_object.get_field_data_type_constraint("Field1")  ==  Constraint.from_str("int") // instanceof Constraint.Field_Data_Type
+                    //
+                    // set_field_data_type_constraint() just removes the constraint. The second parameter (data_type_constructor, e.g. String) does not matter.
+                    //
+                    data_object.set_field_data_type_constraint("Field1", String);
+                    //
+                    data_object.get_field_data_type_constraint("Field1")  ==>  undefined
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |   get_field_data_type_constraint(field_name)
+            ------------------------------------------>
+
+            <@item title="get_field_data_type_constraint(field_name)">
+                <div class="description">
+                    <p>
+                        Returns a Constraint.Field_Data_Type constraint (if exists) for the specified field.
+                    </p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    //
+                    data_object.get_field_data_type_constraint("Field1")  ==>  undefined
+                    //
+                    data_object.ensure_field_constraint("Field1", { data_type: "int" });
+                    //
+                    data_object.get_field_data_type_constraint("Field1")  ==  Constraint.from_str("int") // instanceof Constraint.Field_Data_Type
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |   ensure_field_constraint(field_name, field_info)
+            ------------------------------------------>
+
+            <@item title="ensure_field_constraint(field_name, field_info)">
+                <div class="description">
+                    <p>
+                        Adds new Constraint.Field_Data_Type constraint for the specified field.
+                        The constraint is created using <code>
+                            <a href="@link:/core/constraint.js.html#from_obj">Constraint.from_obj</a>(field_info)
+                        </code> call.
+                    </p>
+                    <p>
+                        <mark>Ensuring the constraint again throws an exception.</mark>
+                    </p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    //
+                    data_object.get_field_data_type_constraint("Field1")  ==>  undefined
+                    //
+                    data_object.ensure_field_constraint("Field1", { data_type: "int" });
+                    //
+                    data_object.get_field_data_type_constraint("Field1")  ==  Constraint.from_str("int") // instanceof Constraint.Field_Data_Type
+                    //
+                    //data_object.ensure_field_constraint("Field1", { data_type: "int" }); - exception!
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |   matches_field_constraints()
+            ------------------------------------------>
+
+            <@overloads title="matches_field_constraints()">
+
+                <@item title="matches_field_constraints()">
+                    <div class="description">
+                        <p>
+                            <mark>Always returns undefined.</mark>
+                        </p>
+                    </div>
+
+                    <h5>Example</h5>
+                    <@codeblock>
+                        var data_object = new Data_Object();
+                        //
+                        data_object.constraints({ Field1: "int", Field2: "number" });
+                        //
+                        data_object.matches_field_constraints()  ==>  undefined  // !!!
+                    </@codeblock>
+
+                </@item>
+
+                <!-----------------------------------------
+                |   matches_field_constraints(obj)
+                ------------------------------------------>
+
+                <@item title="matches_field_constraints(obj)">
+                    <div class="description">
+                        <p>
+                            <mark>Always returns undefined.</mark>
+                        </p>
+                    </div>
+
+                    <h5>Example</h5>
+                    <@codeblock>
+                        var data_object = new Data_Object();
+                        //
+                        data_object.matches_field_constraints({ Field1: "int", Field2: "number" })  ==>  undefined  // !!!
+                    </@codeblock>
+
+                </@item>
+
+                <!-----------------------------------------
+                |   matches_field_constraints(data_object)
+                ------------------------------------------>
+
+                <@item title="matches_field_constraints(data_object)">
+                    <div class="description">
+                        <p>
+                            Checks the passed Data_Object to match field constraints from this Data_Object.
+                        </p>
+                        <p>
+                            <mark>Returns false instead of true because of the Data_Value wrapping.</mark>
+                        </p>
+                    </div>
+
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="data_object" type="Data_Object" description="data object to check" />
+                    </@parms>
+
+                    <h5>Example</h5>
+                    <@codeblock>
+                        var data_object = new Data_Object();
+                        //
+                        data_object.constraints({ Field1: "int", Field2: "number" });
+                        //
+                        var data_object2 = new Data_Object();
+                        data_object2.set("Field1", 1);
+                        data_object2.set("Field2", 1.5);
+                        //
+                        data_object.matches_field_constraints(data_object2)  ==>  false
+                    </@codeblock>
+
+                </@item>
+
+            </@overloads>
+
+            <!-----------------------------------------
+            |     static matches_field_constraints(data_object, field_constraints)
+            ------------------------------------------>
+
+            <@item title="static matches_field_constraints(data_object, field_constraints)">
+                <div class="description">
+                    <p>
+                        <mark>Does nothing.</mark>
+                    </p>
+                </div>
+            </@item>
+
+        </@section>
+        
+        <!--==================================================
+        =                   Requirements
+        ===================================================-->
+
+        <@section title="Requirements">
+            
+            <@item title="Remarks" class="overview">
+                <p>
+                    <mark>This feature seems not working.</mark>
+                </p>
+            </@item>
+                       
+            <!-----------------------------------------
+            |   ____requires()
+            ------------------------------------------>
+
+            <@item title="____requires()">
+                <div class="description">
+                    <p>
+                        Returns Data_Object requirements. There is no other way to set the requirements besides <code>_requirements</code> member variable assignement.
+                    </p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    //
+                    // ____requires() returns _requirements member variable
+                    // there is no way to set this variable using methods
+                    //
+                    assert.deepEqual(data_object._requirements, undefined);
+                    assert.deepEqual(data_object.____requires(), undefined);
+                    //
+                    var requirements = { abc: 123 };
+                    data_object._requirements = requirements;
+                    assert.deepEqual(data_object.____requires(), requirements);
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |   _____meets_requirements()
+            ------------------------------------------>
+
+            <@item title="_____meets_requirements()">
+                <div class="description">
+                    <p>
+                        Returns <code>true</code> if the Data_Object requirements was not set, returns <code>undefined</code> in other case.
+                    </p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    //
+                    // returns true if the requirements are not set
+                    //
+                    assert.deepEqual(data_object._requirements, undefined);
+                    assert.deepEqual(data_object._____meets_requirements(), true);
+                    //
+                    // returns undefined if the requirements are set to anything
+                    //
+                    var requirements = { abc: 123 };
+                    data_object._requirements = requirements;
+                    assert.deepEqual(data_object._____meets_requirements(), undefined);
+                    assert.deepEqual(data_object._____meets_requirements("Field1"), undefined);
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |   _____check_requirements(...)
+            ------------------------------------------>
+
+            <@item title="_____check_requirements(...)">
+                <div class="description">
+                    <p>
+                        Does nothing, always returns <code>undefined</code>.
+                    </p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    //
+                    // always returns undefined
+                    //
+                    assert.deepEqual(data_object._____check_requirements(), undefined);
+                    assert.deepEqual(data_object._____check_requirements("Field1"), undefined);
+                    assert.deepEqual(data_object._____check_requirements(true), undefined);
+                </@codeblock>
+            </@item>
+
+        </@section>
+
+        <!--==================================================
+        =                   Utils
+        ===================================================-->
+
+        <@section title="Utils">
+            
+            <!-----------------------------------------
+            |          keys()
+            ------------------------------------------>
+
+            <@item title="keys()">
+                <div class="description">
+                    <p>Returns array of the filed names.</p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    //
+                    data_object.set("Field1", 111);
+                    data_object.set("Field2", 222);
+                    //
+                    data_object.keys()  ==>  ["Field1", "Field2"]
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          stringify()
+            ------------------------------------------>
+
+            <@item title="stringify()">
+                <div class="description">
+                    <p>Returns a stringified representation of the Data_Object: a stringify() of the internal data surrounded by "Data_Object()" text.</p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    //
+                    data_object.set("Field1", 111);
+                    data_object.set("Field2", 222);
+                    //
+                    data_object.stringify()  ==>  'Data_Object({"Field1": 111, "Field2": 222})'
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          toObject()
+            ------------------------------------------>
+
+            <@item title="toObject()">
+                <div class="description">
+                    <p>Returns an object containing the Data_Object data.</p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    //
+                    data_object.set("Field1", 111);
+                    data_object.set("Field2", 222);
+                    //
+                    data_object.toObject()  ==>  {"Field1": 111, "Field2": 222}
+                </@codeblock>
+
+            </@item>
+       
+            <!-----------------------------------------
+            |   mod_link()
+            ------------------------------------------>
+
+            <@item title="mod_link()">
+                <div class="description">
+                    <p>
+                        Returns the <a href="@link:/core/jsgui-lang-essentials.js.html">jsgui-lang-essentials</a> module reference.
+                    </p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    //
+                    var jsgui = data_object.mod_link();
+                    //
+                    jsgui.get_truth_map_from_arr(["a", "b", "c"])  ==>  { a: true, b: true, c: true}
+                </@codeblock>
+            </@item>
+
+            <!-----------------------------------------
+            |   each(callback)
+            ------------------------------------------>
+
+            <@item title="each(callback)">
+                <div class="description">
+                    <p>
+                        Calls the <code>callback</code> function for each value in the Data_Object.
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="callback" type="function (name, value)" description="Callback function" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object = new Data_Object();
+                    //
+                    var result = [];
+                    var callback = function (name, value) { result.push([name, value]) };
+                    //
+                    data_object.set("Field1", ["abc"]);
+                    data_object.set("Field2", [123]);
+                    //
+                    data_object.each(callback);
+                    //
+                    assert.deepEqual(result, [["Field1", ["abc"]], ["Field2", [123]]]);
+                </@codeblock>
+
+            </@item>
+
+        </@section>
+        
+        <!--==================================================
+        =                   Other
+        ===================================================-->
+
+        <@section title="Other">
+
+            <!-----------------------------------------
+            |   _get_input_processors()
+            ------------------------------------------>
+
+            <@item title="_get_input_processors()">
+                <div class="description">
+                    <p>
+                        Returns <code>jsgui.input_processors</code> variable.
+                    </p>
+                </div>
+            </@item>
+            
+            <!-----------------------------------------
+            |     set_Enhanced_Data_Object(EDO)
+            ------------------------------------------>
+
+            <@item title="static set_Enhanced_Data_Object(EDO)">
+                <div class="description">
+                    <p>
+                        Sets an internal <code>Enhanced_Data_Object</code> variable to the <code>EDO</code>.
+                    </p>
+                    <p>
+                        If set, the variable is used as constructor to create a data object instance in the <a href="#dobj__obj_data_def">dobj()</a> function.
+                    </p>
+                </div>
+                
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="EDO" type="Enhanced_Data_Object class" description="Enhanced data object class." />
+                </@parms>
+            
+                <h5>Example</h5>
+                <@codeblock>
+                    Data_Object.get_Enhanced_Data_Object()  ==>  null
+                    Data_Object.set_Enhanced_Data_Object(Enhanced_Data_Object);
+                    Data_Object.get_Enhanced_Data_Object()  ==>  Enhanced_Data_Object
+                </@codeblock>
+            </@item>
+
+            <!-----------------------------------------
+            |     get_Enhanced_Data_Object()
+            ------------------------------------------>
+
+            <@item title="static get_Enhanced_Data_Object()">
+                <div class="description">
+                    <p>
+                        Returns an internal <code>Enhanced_Data_Object</code> variable.
+                    </p>
+                </div>
+                
+                <h5>Example</h5>
+                <@codeblock>
+                    Data_Object.get_Enhanced_Data_Object()  ==>  null
+                    Data_Object.set_Enhanced_Data_Object(Enhanced_Data_Object);
+                    Data_Object.get_Enhanced_Data_Object()  ==>  Enhanced_Data_Object
+                </@codeblock>
+            </@item>
+
+            <!-----------------------------------------
+            |          Side effects
+            ------------------------------------------>
+
+            <@item title="Side effects" class="overview">
+
+                <@codeblock>
+                    jsgui.__data_id_method = 'init';
+
+                    jsgui.map_classes = {};
+                
+                    jsgui.map_data_type_data_object_constructors = jsgui.map_data_type_data_object_constructors || {};
+                    jsgui.map_data_type_data_object_constructors['boolean'] = Data_Value;
+
+                    jsgui.ensure_data_type_data_object_constructor = ensure_data_type_data_object_constructor;
+
+                    input_processors.field_text = parse_field_text;  // ??? not "jsgui.input_processors"
+                    input_processors.data_type = parse_data_type;  // ???
+                </@codeblock>
+            
+                <p id ="extend_side_effect">
+                    The <code><a href="#extend__prop_post_init">extend(prop, post_init)</a></code> method contains the following side effect: if the derived class 
+                    constructor (e.g. Collection) called without the <code>new</code> keyword with an other constructor (e.g. String) passed as parameter, then it sets 
+                    <code>.abstract = true</code> for the passed constructor:
+                </p>
+                
+                <@codeblock>
+	                //
+                    // everything is ok:
+	                String.abstract  ==> undefined
+	                stringify(new Data_Object(String))  ==>  "Data_Object({})"
+	                stringify(new Collection(String))  ==>  "Collection()"
+	                //
+	                // Collection(String) call sets String.abstract = true:
+	                var abstract_collection = Collection(String);
+	                //
+                    // now it's broken:
+	                String.abstract  ==>  true
+	                stringify(new Data_Object(String))  ==>  "Data_Object(undefined)"
+	                stringify(new Collection(String))  ==>  "~Collection(String)"
+	                //
+                    // fix back:
+	                delete String.abstract;
+	                //
+                    // now it's fixed:
+	                String.abstract  ==> undefined
+	                stringify(new Data_Object(String))  ==>  "Data_Object({})"
+	                stringify(new Collection(String))  ==>  "Collection()"
+                </@codeblock>
+            </@item>
+        
+        
+        </@section>
+            
+    </article>
+
+</section>
+

@@ -1,0 +1,895 @@
+
+
+<h1 class="page-title">Module: core/jsgui-lang-util</h1>
+
+<section>
+
+    <header>
+        <h2>
+            core/jsgui-lang-util
+        </h2>
+
+        <div class="container-overview">
+            <div class="description">
+                <p>Utility functions module. </p>
+            </div>
+            <dl class="details"></dl>
+        </div>
+    </header>
+
+    <article>
+
+        <!--==================================================
+        =                   Methods
+        ===================================================-->
+
+        <@section title="Methods">
+
+            <!-----------------------------------------
+            |          arr_rgb_to_css_hex_6(arr_rgb)
+            ------------------------------------------>
+
+            <@item title="arr_rgb_to_css_hex_6(arr_rgb)">
+                <div class="description">
+                    <p>
+                        Converts a RGB numbers array <code>arr_rgb</code> to hexadecimal CSS string.
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="arr_rgb" type="array" description="RGB values" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    jsgui_util.arr_rgb_to_css_hex_6([0, 0, 0])  ==>  "#000000"
+                    jsgui_util.arr_rgb_to_css_hex_6([255, 255, 255])  ==>  "#FFFFFF"
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          distance_between_points(points)
+            ------------------------------------------>
+
+            <@item title="distance_between_points(points)">
+                <div class="description">
+                    <p>
+                        Returns a distance between <code>points[0]</code> and <code>points[1]</code>. The points are <code>[x,y]</code> arrays in turn.
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="points" type="array" description="2 points array" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    jsgui_util.distance_between_points([[1, 1], [5, 4]])  ==> 5  // x1==1  y1==1  x2==5  y2==4
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          execute_on_each_simple(items, fn)
+            ------------------------------------------>
+
+            <@item title="execute_on_each_simple(items, fn)">
+                <div class="description">
+                    <p>
+                        Returns an array containing items of <code>items</code> processed by <code>fn</code> function.
+                    </p>
+                    <p>
+                        The iteration is performed by jsgui.each() function. So, <code>items</code> can be array, object, or Collection.
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="items" type="*" description="items to process" />
+                    <@parm name="fn" type="function" description="processing function" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var pow2 = function (item) { return item * item; }
+                    //
+                    jsgui_util.execute_on_each_simple([1, 2, 3], pow2)  ==>  [1, 4, 9]
+                    jsgui_util.execute_on_each_simple({ a: 1, b: 2, c: 3 }, pow2)  ==>  [1, 4, 9]
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          filter_map_by_regex(map, regex)
+            ------------------------------------------>
+
+            <@item title="filter_map_by_regex(map, regex)">
+                <div class="description">
+                    <p>
+                        Returns an object containing only those properties of source <code>map</code> object, that names match to the <code>regex</code> regular expression.
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="map" type="object" description="source object" />
+                    <@parm name="regex" type="RegExp" description="regular expression to filter property names" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    jsgui_util.filter_map_by_regex({ a1: 1, a2: 2, b: 3 }, /a./)  ==>  { a1: 1, a2: 2 }
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          group(objects)
+            ------------------------------------------>
+
+            <@item title="group(objects)">
+                <div class="description">
+                    <p>
+                        Creates an object with group methods for <code>objects</code>.
+                    </p>
+                    <p>
+                        The passing objects can be just listed as parameters (e.g. <code>group(obj1, obj2, obj3)</code>),
+                        or enclosed into an array (e.g. <code>group([obj1, obj2, obj3])</code>).
+                    </p>
+                    <p>
+                        It assumes that all the objects are the same type.
+                    </p>
+                    <p>
+                        The resulting object contains the same methods as the first passed object, excepting <code>each()</code>, <code>get()</code>, and <code>add_event_listener()</code>.
+                    </p>
+                    <p>
+                        Call a resulting object method will call the method for all the passed objects.
+                    </p>
+                    <p>
+                        <strong>Implementation peculiarity:</strong> the resulting object is a <code>Collection</code>, and the passed objects
+                        are added to the collection using <code>collection.push()</code> method. The method can perform an additional processing
+                        for the passed objects, e.g. wrap values into some other class like <code>Data_Object</code> etc.
+                        The group methods will be methods of the new objects (processing results).
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="objects" type="array or parameters list" description="objects to create group methods" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var data_object1 = new jsgui_util.Data_Object(); data_object1.set("Field1", 111);
+                    var data_object2 = new jsgui_util.Data_Object(); data_object2.set("Field1", 222);
+                    var data_object3 = new jsgui_util.Data_Object(); data_object3.set("Field1", 333);
+                    //
+                    var _group = jsgui_util.group(data_object1, data_object2, data_object3);
+                    //
+                    _group.set("Field2", 2000);
+                    //
+                    jsgui_util.stringify(data_object1)  ==>  'Data_Object({"Field1": 111, "Field2": 2000})'
+                    jsgui_util.stringify(data_object2)  ==>  'Data_Object({"Field1": 222, "Field2": 2000})'
+                    jsgui_util.stringify(data_object3)  ==>  'Data_Object({"Field1": 333, "Field2": 2000})'
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          no_px(value)
+            ------------------------------------------>
+
+            <@item title="no_px(value)">
+                <div class="description">
+                    <p>
+                        Removes a "px" suffix from string values.
+                    </p>
+                    <p>
+                        Accepts single value or array as <code>value</code> parameter.
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="value" type="number, string, array" description="value to process" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    jsgui_util.no_px(0)  ==>  0
+                    jsgui_util.no_px("0")  ==>  "0"
+                    jsgui_util.no_px("0px")  ==>  0
+                    jsgui_util.no_px([0, "0", "1px"])  ==>  [0, "0", 1]
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          npx(value)
+            ------------------------------------------>
+
+            <@item title="npx(value)">
+                <div class="description">
+                    <p>
+                        Adds a "px" suffix to number values. The string values return as is.
+                    </p>
+                    <p>
+                        Accepts single value or array as <code>value</code> parameter.
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="value" type="number, string, array" description="value to process" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    jsgui_util.npx(0)  ==>  "0px"
+                    jsgui_util.npx("0")  ==>  "0"
+                    jsgui_util.npx([0, 1, "0", "1"])  ==>  ["0px", "1px", "0", "1"]
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          str_arr_mapify(fn)
+            ------------------------------------------>
+
+            <@item title="str_arr_mapify(fn)">
+                <div class="description">
+                    <p>
+                        Creates a mapified version of function <code>fn</code>.
+                    </p>
+                    <p>
+                        The mapified version accepts 1 <strong>parameter</strong>, and works on the following manner:
+                    </p>
+                    <p>
+                        If the <strong>parameter is an array</strong>, then returns a key/value object: keys are the array items,
+                        values are the array items processed by original function <code>fn</code>:<br />
+                        <code>{ array[0]: fn(array[0]), array[1]: fn(array[1]), array[2]: fn(array[2])... }</code>
+                    </p>
+                    <p>
+                        If the <strong>parameter is a string</strong>, then splits the string using a space character separator, then process the resulting array as described above.
+                        <mark>But if the resulting array contains 1 item only, then just call the original function <code>fn</code> instead.</mark>
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="fn" type="function" description="function to wrap" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var fn = function (tagName) { return tagName + "+" };
+                    var fn_mapified = jsgui_util.str_arr_mapify(fn);
+                    //
+                    fn_mapified(["h1", "div"])  ==>  { h1: "h1+", div: "div+" }
+                    fn_mapified("h1 div")       ==>  { h1: "h1+", div: "div+" }
+                    //
+                    fn_mapified("h1")  ==>  "h1+" // !!!
+                    fn_mapified("")  ==>  "+" // !!!
+                    //
+                    fn_mapified(["h1"])  ==>  { h1: "h1+" }
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          str_hex_to_int(str_hex)
+            ------------------------------------------>
+
+            <@item title="str_hex_to_int(str_hex)">
+                <div class="description">
+                    <p>
+                        Converts a hexadecimal string <code>str_hex</code> to number.
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="str_hex" type="string" description="string containing a hexadecimal number" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    jsgui_util.str_hex_to_int("0")  ==>  0
+                    jsgui_util.str_hex_to_int("a")  ==>  10
+                    jsgui_util.str_hex_to_int("aaa")  ==>  2730
+                    jsgui_util.str_hex_to_int("ABCD")  ==>  43981
+                    jsgui_util.str_hex_to_int("")  ==>  0
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          true_vals(map)
+            ------------------------------------------>
+
+            <@item title="true_vals(map)">
+                <div class="description">
+                    <p>
+                        Returns an array containing "true" values from object <code>map</code> ("true" means "evaluating to true").
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="map" type="object" description="object to inspect" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    jsgui_util.true_vals({ a: true, b: false, c: 0, d: "0" })  ==>  [true, "0"]  // "0" evaluates to true
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          v_add(...)
+            ------------------------------------------>
+
+            <@item title="v_add(...)">
+                <div class="description">
+                    <p>
+                        This function is a <a href="#vectorify__n_fn">vectorified</a> version of the <em>add</em> operation.
+                    </p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    jsgui_util.v_add(1, 2)  ==>  3 // 1+2
+                    jsgui_util.v_add(1, 2, 3)  ==>  6 // 1+2+3
+                    jsgui_util.v_add(1, 2, 3, 4)  ==>  10 // 1+2+3+4
+                    //
+                    jsgui_util.v_add([1, 2, 3, 4], 20)  ==>  [21, 22, 23, 24]
+                    //
+                    jsgui_util.v_add([1, 2, 3, 4], [5, 6, 7, 8])  ==>  [6, 8, 10, 12]
+                    //
+                    jsgui_util.v_add([1], [2, 3])  ==>  [3]
+                    jsgui_util.v_add([1, 2], [3])  ==>  [4, undefined]
+                    //
+                    jsgui_util.v_add(1)  ==>  undefined
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          v_divide(...)
+            ------------------------------------------>
+
+            <@item title="v_divide(...)">
+                <div class="description">
+                    <p>
+                        This function is a <a href="#vectorify__n_fn">vectorified</a> version of the <em>divide</em> operation.
+                    </p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    jsgui_util.v_divide(1, 2)  ==>  0.5  // 1/2
+                    jsgui_util.v_divide(100, 2, 5)  ==>  10  // 100/2/5
+                    jsgui_util.v_divide(300, 3, 2, 5)  ==>  10  // 300/3/2/5
+                    //
+                    jsgui_util.v_divide([10, 20, 30, 40], 2)  ==>  [5, 10, 15, 20]
+                    //
+                    jsgui_util.v_divide([10, 20, 30, 40], [5, 5, 3, 8])  ==>  [2, 4, 10, 5]
+                    //
+                    jsgui_util.v_divide([10], [2, 5])  ==>  [5]
+                    jsgui_util.v_divide([10, 20], [2])  ==>  [5, undefined]
+                    //
+                    jsgui_util.v_divide(1), undefined
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          v_multiply(...)
+            ------------------------------------------>
+
+            <@item title="v_multiply(...)">
+                <div class="description">
+                    <p>
+                        This function is a <a href="#vectorify__n_fn">vectorified</a> version of the <em>multiply</em> operation.
+                    </p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    jsgui_util.v_multiply(1, 2)  ==>  2  // 1*2
+                    jsgui_util.v_multiply(1, 2, 3)  ==>  6  // 1*2*3
+                    jsgui_util.v_multiply(1, 2, 3, 4)  ==>  24  // 1*2*3*4
+                    //
+                    jsgui_util.v_multiply([1, 2, 3, 4], 20)  ==>  [20, 40, 60, 80]
+                    //
+                    jsgui_util.v_multiply([10, 20, 30, 40], [5, 6, 7, 8])  ==>  [50, 120, 210, 320]
+                    //
+                    jsgui_util.v_multiply([10], [2, 3])  ==>  [20]
+                    jsgui_util.v_multiply([10, 20], [3])  ==>  [30, undefined]
+                    //
+                    jsgui_util.v_multiply(1)  ==>  undefined
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          v_subtract(...)
+            ------------------------------------------>
+
+            <@item title="v_subtract(...)">
+                <div class="description">
+                    <p>
+                        This function is a <a href="#vectorify__n_fn">vectorified</a> version of the <em>subtract</em> operation.
+                    </p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    jsgui_util.v_subtract(1, 2)  ==>  -1  // 1-2
+                    jsgui_util.v_subtract(1, 2, 3)  ==>  -4  // 1-2-3
+                    jsgui_util.v_subtract(1, 2, 3, 4)  ==>  -8  // 1-2-3-4
+                    //
+                    jsgui_util.v_subtract([1, 2, 3, 4], 20)  ==>  [-19, -18, -17, -16]
+                    //
+                    jsgui_util.v_subtract([10, 20, 30, 40], [5, 6, 7, 8])  ==>  [5, 14, 23, 32]
+                    //
+                    jsgui_util.v_subtract([10], [2, 3])  ==>  [8]
+                    jsgui_util.v_subtract([10, 20], [3])  ==>  [7, undefined]
+                    //
+                    jsgui_util.v_subtract(1)  ==>  undefined
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          vector_magnitude(vector)
+            ------------------------------------------>
+
+            <@item title="vector_magnitude(vector)">
+                <div class="description">
+                    <p>
+                        Returns a magnitude of the <code>vector</code>, i.e. <code>Math.sqrt((Math.pow(vector[0], 2)) + (Math.pow(vector[1], 2)))</code>.
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="vector" type="array" description="2 items vector" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    jsgui_util.vector_magnitude([3, 4])  ==>  5  // 3*3 + 4*4 === 5*5  (pythagorean numbers)
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          vectorify(n_fn)
+            ------------------------------------------>
+
+            <@item title="vectorify(n_fn)">
+                <div class="description">
+                    <p>
+                        Returns a vectorified version of the function <code>n_fn</code>.
+                    </p>
+                    <p>
+                        The source function (<code>n_fn</code> parameter) assumed to accept 2 number arguments, and return some <em>operation</em> result for the arguments.
+                    </p>
+                    <p>
+                        The vectorified function works depending of the arguments passed:
+                    </p>
+                    <ul>
+                        <li>
+                            <strong>(number1, number2)</strong>: just call the source function (returns the <em>operation</em> result):<br />
+                            <code>number1 <em>operation</em> number2</code><br />&nbsp;
+                        </li>
+                        <li>
+                            <strong>many arguments (greater than 2)</strong>: performs the operation over all the arguments, returns the final result:<br />
+                            <code>((argument1 <em>operation</em> argument2) <em>operation</em> argument3) <em>operation</em> argument4...</code><br />&nbsp;
+                        </li>
+                        <li>
+                            <strong>(array, number)</strong>: returns an array where items are <em>operation</em> results between the source array items and number:<br />
+                            <code>[array[0] <em>operation</em> number, array[1] <em>operation</em> number, array[2] <em>operation</em> number...]</code><br />&nbsp;
+                        </li>
+                        <li>
+                            <strong>(array1, array2)</strong>: returns an array containing the <em>operation</em> results between the arrays items pairwise. The resulting array length equals to array1 length.<br />
+                            <code>[array1[0] <em>operation</em> array2[0], array1[1] <em>operation</em> array2[1], array1[2] <em>operation</em> array2[2]... ]</code><br />&nbsp;
+                        </li>
+                        <li><strong>other</strong>: returns <code>undefined</code></li>
+                    </ul>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="n_fn" type="function" description="Function to vectorify" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var n_add = function (n1, n2) { return n1 + n2; };
+                    var v_add = jsgui_util.vectorify(n_add);
+                    //
+                    v_add(1, 2)  ==>  3 // 1+2
+                    v_add(1, 2, 3)  ==>  6 // 1+2+3
+                    v_add(1, 2, 3, 4)  ==>  10 // 1+2+3+4
+                    //
+                    v_add([1, 2, 3, 4], 20)  ==>  [21, 22, 23, 24]
+                    //
+                    v_add([1, 2, 3, 4], [5, 6, 7, 8])  ==>  [6, 8, 10, 12]
+                    //
+                    v_add([1], [2, 3])  ==>  [3]
+                    v_add([1, 2], [3])  ==>  [4, undefined]
+                    //
+                    v_add(1)  ==>  undefined
+                </@codeblock>
+
+            </@item>
+
+        </@section>
+
+        <!--==================================================
+        =                   Data
+        ===================================================-->
+
+        <@section title="Data">
+
+            <!-----------------------------------------
+            |          _data_generators
+            ------------------------------------------>
+
+            <@item title="_data_generators">
+                <div class="description">
+                    <p>
+                        Seems was intended to keep a data creation functions by a class name. Initialized by nothing.
+                    </p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    // fill the _data_generators myself:
+                    jsgui_util._data_generators['Data_Value'] = function () { return new jsgui_util.Data_Value(); };
+                    //
+                    // generate a Data_Value data:
+                    jsgui_util._data_generators['Data_Value']()  ==>  new jsgui_util.Data_Value()
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          arr_ltrb
+            ------------------------------------------>
+
+            <@item title="arr_ltrb">
+                <div class="description">
+                    <p>
+                        Array of left, top, right, bottom side names.
+                    </p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    jsgui_util.arr_ltrb  ==>  [ 'left', 'top', 'right', 'bottom' ]
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          validators
+            ------------------------------------------>
+
+            <@item title="validators">
+                <div class="description">
+                    <p>
+                        An object (map) containing type validator functions. Initialized by one function for numbers validating.
+                    </p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    jsgui_util.validators.number(0)  ==>  true
+                    jsgui_util.validators.number("0")  ==>  false
+                    jsgui_util.validators["number"]("0")  ==>  false
+                </@codeblock>
+
+            </@item>
+
+        </@section>
+
+        <!--==================================================
+        =                   Input Processors
+        ===================================================-->
+
+        <@section title="Input Processors" id="input_processors">
+
+            <!-----------------------------------------
+            |          optional_array
+            ------------------------------------------>
+
+            <@item title="optional_array">
+
+                <div class="description">
+                    <p>
+                        This input processor gets 3 arguments, but the 2nd argument is optional. Usually it returns the input back; but if the input length
+                        is greater than the processor parameters length, then it returns <code>undefined</code>.
+                    </p>
+                    <p>
+                        If the 2nd parameter is passed, then input processes by the additional input processor.
+                    </p>
+                    <p>
+                        It seems that the input processor was intended for values like CSS padding and margin, but was not completed enough.
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="oa_params" type="array" description="optional_array processor parameters" />
+                    <@parm name="items_data_type_name" type="string" description="data type name for items" optional />
+                    <@parm name="input" type="array" description="input to process" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var ip = jsgui_util.input_processors['optional_array'];
+                    //
+                    // 2 arguments:
+                    //
+                    // if the second argument is not array, then return it as is:
+                    ip(['left', 'top', 'right', 'bottom'], "10px")  ==>  "10px"
+                    //
+                    // if the second argument is array, then return it as is
+                    // but if (the array length) > (firs argument length) return undefined
+                    ip(['left', 'top', 'right', 'bottom'], ["10px"])  ==>  ["10px"]
+                    ip(['left', 'top', 'right', 'bottom'], ["10px", "20px"])  ==>  ["10px", "20px"]
+                    ip(['left', 'top', 'right', 'bottom'], ["10px", "20px", "30px"])  ==>  ["10px", "20px", "30px"]
+                    ip(['left', 'top', 'right', 'bottom'], ["10px", "20px", "30px", "40px"])  ==>  ["10px", "20px", "30px", "40px"]
+                    ip(['left', 'top', 'right', 'bottom'], ["10px", "20px", "30px", "40px", "50px"])  ==>  undefined
+                    //
+                    // 3 arguments:
+                    //
+                    //
+                    var save_input_processors = jsgui_util.input_processors;
+                    jsgui_util.input_processors = [];
+                    //
+                    // input processor for items:
+                    // ('optional_array' input processor passes 1 argument only to the input processor for items)
+                    jsgui_util.input_processors["add_plus"] = function (v) { return v + "+"; };
+                    //
+                    // if the third argument is not array, then return it processed:
+                    ip(['left', 'top', 'right', 'bottom'], "add_plus", "10px")  ==>  "10px+"
+                    //
+                    // if the second argument is array, then return it as is
+                    // but if (the array length) > (firs argument length) return undefined
+                    ip(['left', 'top', 'right', 'bottom'], "add_plus", ["10px"])  ==>  ["10px+"]
+                    ip(['left', 'top', 'right', 'bottom'], "add_plus", ["10px", "20px"])  ==>  ["10px+", "20px+"]
+                    ip(['left', 'top', 'right', 'bottom'], "add_plus", ["10px", "20px", "30px"])  ==>  ["10px+", "20px+", "30px+"]
+                    ip(['left', 'top', 'right', 'bottom'], "add_plus", ["10px", "20px", "30px", "40px"])  ==>  ["10px+", "20px+", "30px+", "40px+"]
+                    ip(['left', 'top', 'right', 'bottom'], "add_plus", ["10px+", "20px+", "30px+", "40px+", "50px+"])  ==>  undefined
+                    //
+                    jsgui_util.input_processors = save_input_processors;
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          indexed_array
+            ------------------------------------------>
+
+            <@item title="indexed_array">
+
+                <div class="description">
+                    <p>
+                        This input processor gets 3 arguments, but the 2nd argument is optional. Usually it returns the input back; but if the input length
+                        is greater than the processor parameters length, then it returns <code>undefined</code>.
+                    </p>
+                    <p>
+                        If the 2nd parameter is passed, then input processes by the additional input processor.
+                    </p>
+                    <p>
+                        This items processor works just like <a href="#optional_array">optional_array</a>, but does not accept non-array inputs.
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="ia_params" type="array" description="indexed_array processor parameters" />
+                    <@parm name="items_data_type_name" type="string" description="data type name for items" optional />
+                    <@parm name="input" type="array" description="input to process" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var ip = jsgui_util.input_processors['indexed_array'];
+                    var ip_info = [['red', 'number'], ['green', 'number'], ['blue', 'number']];
+                    //
+                    // 2 arguments:
+                    //
+                    // if the second argument is not array, then return undefined:
+                    ip(ip_info, 255)  ==>  undefined
+                    //
+                    // if the second argument is array, then return it as is
+                    // but if (the array length) > (firs argument length) return undefined
+                    ip(ip_info, [255])  ==>  [255]
+                    ip(ip_info, [255, 254])  ==>  [255, 254]
+                    ip(ip_info, [255, 254, 253])  ==>  [255, 254, 253]
+                    ip(ip_info, [255, 254, 253, 252])  ==>  undefined
+                    //
+                    // 3 arguments:
+                    //
+                    //
+                    var save_input_processors = jsgui_util.input_processors;
+                    jsgui_util.input_processors = [];
+                    //
+                    // input processor for items:
+                    // ('indexed_array' input processor passes 1 argument only to the input processor for items)
+                    jsgui_util.input_processors["minus_100"] = function (v) { return v - 100; };
+                    //
+                    // if the third argument is not array, then return undefuned:
+                    ip(ip_info, "minus_100", 255)  ==>  undefined
+                    //
+                    // if the second argument is array, then return it as is
+                    // but if (the array length) > (firs argument length) return undefined
+                    ip(ip_info, "minus_100", [255])  ==>  [155]
+                    ip(ip_info, "minus_100", [255, 254])  ==>  [155, 154]
+                    ip(ip_info, "minus_100", [255, 254, 253])  ==>  [155, 154, 153]
+                    ip(ip_info, "minus_100", [255, 254, 253, 252])  ==>  undefined
+                    //
+                    jsgui_util.input_processors = save_input_processors;
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          n_units
+            ------------------------------------------>
+
+            <@item title="n_units">
+
+                <div class="description">
+                    <p>
+                        This input processor converts input values to internal format <code>[value, units]</code>.
+                    </p>
+                    <p>
+                        If the <code>input</code> parameter is number, then uses <code>str_units</code> parameter as units name.
+                    </p>
+                    <p>
+                        If the <code>input</code> parameter is string, then parses it.
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="str_units" type="string" description="units" />
+                    <@parm name="input" type="number, string" description="input to process" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var ip = jsgui_util.input_processors['n_units'];
+                    //
+                    ip("px", 10)  ==>  [10, "px"]
+                    //
+                    ip("px", "10mm")  ==>  [10, "mm"]
+                    ip("px", "10 mm")  ==>  undefined  // because of space between "10" and "mm"
+                    //
+                    ip("px", ".5mm")  ==>  [0.5, "mm"]
+                    ip("px", "1.5mm")  ==>  [1.5, "mm"]
+                    //
+                    ip("10mm")  ==>  undefined
+                </@codeblock>
+
+            </@item>
+
+            <!-----------------------------------------
+            |          color
+            ------------------------------------------>
+
+            <@item title="color">
+
+                <div class="description">
+                    <p>
+                        This input processor converts input to the [R, G, B] format.
+                    </p>
+                    <p>
+                        It accepts one array parameter. If the array is '[n,n,n]', then it is returned "as is". If the array is '[s]',
+                        then it parses the HTML color code string from the '#xxxxxx' format.
+                    </p>
+                </div>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var ip = jsgui_util.input_processors['color'];
+                    //
+                    ip(["#090A0B"])  ==>  [9, 10, 11]
+                    ip(["white"])  ==>  undefined
+                    ip([1, 2, 3])  ==>  [1, 2, 3]
+                </@codeblock>
+
+            </@item>
+
+        </@section>
+
+        <!--==================================================
+        =                   Output Processors
+        ===================================================-->
+
+        <@section title="Output Processors" id="output_processors">
+
+            <!-----------------------------------------
+            |          color
+            ------------------------------------------>
+
+            <@item title="color">
+
+                <div class="description">
+                    <p>
+                        This output processor converts JSGUI color to CSS string.
+                    </p>
+                </div>
+
+                <h5>Parameters:</h5>
+                <@parms>
+                    <@parm name="jsgui_color" type="RGB array" description="color value" />
+                </@parms>
+
+                <h5>Example</h5>
+                <@codeblock>
+                    var op = jsgui_util.output_processors['color'];
+                    //
+                    op([0, 0, 0])  ==>  "#000000"
+                    op([255, 255, 255])  ==>  "#FFFFFF"
+                </@codeblock>
+
+            </@item>
+
+        </@section>
+
+        <!--==================================================
+        =                   Other
+        ===================================================-->
+
+        <@section title="Other">
+
+            <!-----------------------------------------
+            |          Side effects
+            ------------------------------------------>
+
+            <@item title="Side effects" class="remark">
+                <@codeblock>
+                    jsgui.Data_Object = Data_Object;
+                    jsgui.Collection = Collection;
+                    jsgui.Data_Value = Data_Value;
+                    jsgui.Evented_Class = Evented_Class;
+                    //
+                    jsgui.__data_id_method = 'lazy';
+                    //
+                    extend(jsgui.data_types_info, {
+                        'color': ['indexed_array', [
+                            ['red', 'number'],
+                            ['green', 'number'],
+                            ['blue', 'number']
+                        ]],
+                        'oltrb': ['optional_array', ['left', 'top', 'right', 'bottom']]
+                    });
+                    //
+                    jsgui.map_data_type_data_object_constructors = jsgui.map_data_type_data_object_constructors || {};
+                    //
+                    jsgui.ensure_data_type_data_object_constructor = ensure_data_type_data_object_constructor;
+                    // This ensure_data_type_data_object_constructor() method is the same as <a href="@link:/core/data-object.js/Data_Object.html#ensure_data_type_data_object_constructor__data_type_name">Data_Object.ensure_data_type_data_object_constructor(data_type_name)</a>,
+                    // but in addition it sets _data_type_name property for the created constructor prototype.
+                    //
+                    jsgui.ensure_data_type_data_object_constructor('color');
+                </@codeblock>
+            </@item>
+
+        </@section>
+
+    </article>
+
+</section>
+
+

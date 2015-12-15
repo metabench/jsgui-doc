@@ -1,0 +1,4 @@
+<pre class="prettyprint"><code>if (x == 1)
+{   
+    x = 1;
+}</code></pre>

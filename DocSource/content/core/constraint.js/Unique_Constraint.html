@@ -1,0 +1,231 @@
+    
+    <h1 class="page-title">Class: Unique_Constraint</h1>
+    
+    
+
+
+
+<section>
+    
+<header>
+    <h2>
+        <span class="ancestors"><a href="@link:/core/constraint.js.html">core/constraint</a>.</span>
+    
+    Unique_Constraint
+    </h2>
+    
+    
+    <div class="container-overview">
+        <div class="class-description">
+            <p>Collection unique constraint.</p>
+            <p>The class does not provide the <code>match()</code> method, but provides <code>.fields</code> property for the unique field names.</p>
+            <p>The class public name is <strong>Unique</strong> (e.g. <code>new Constraint.Unique()</code>).</p>
+        </div>
+    </div>
+</header>  
+
+<article>
+    
+    
+    
+        
+<dt>
+    <h4 class="name" id="Unique_Constraint"><span class="type-signature"></span>new Unique_Constraint<span class="signature">(spec)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>spec</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>unique field name(s)</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Members</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="fields"><span class="type-signature"></span>fields<span class="type-signature"> :string|Array.&lt;string></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var c = new Constraint.Unique("ID");
+c.fields  ==> "ID"</code></pre>
+
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+    
+    
+</article>
+
+</section>  
+

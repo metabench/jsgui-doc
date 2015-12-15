@@ -1,0 +1,9 @@
+﻿
+(doc and test)
+
+call_multiple_callback_functions()
+arrayify()
+mapify()
+Fns()
+get_a_sig()
+sig_match()

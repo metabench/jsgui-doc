@@ -1,0 +1,3087 @@
+    
+<h1 class="page-title">Module: core/jsgui-lang-essentials</h1>
+    
+<section>
+
+<!--==================================================
+=                   Overview
+===================================================-->
+    
+<header>
+    <h2>
+    core/jsgui-lang-essentials
+    </h2>
+    
+    <div class="container-overview">
+        <div class="description"><p>lang essentials module.</p></div>
+        <dl class="details">
+            <dt class="tag-version">Version:</dt>
+            <dd class="tag-version"><ul class="dummy"><li>0.4.4</li></ul></dd>
+        </dl>
+    </div>
+</header>  
+
+<article>
+
+    <!--==================================================
+    =                   Members
+    ===================================================-->
+
+    <h3 class="subsection-title">Members</h3>
+
+    <dl>
+
+        <!-----------------------------------------
+        |               Class
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="Class"><span class="type-signature">&lt;static> </span>Class<span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+            <div class="description">
+                <p>Base class like John Resig's &quot;Simple JavaScript Inheritance&quot; tehnique. </p>
+                <p>
+                    In addition, when the inherited class contains a property that name starts from '#',
+                    then the property adds to the class without '#', and the property value is the base class property value,
+                    but the base class property name used is the rest of the initial property name (after the '#').
+                </p>
+            </div>
+            <dl class="details">
+                <dt class="tag-see">See:</dt>
+                <dd class="tag-see">
+                    <ul>
+                        <li><p><a href="http://ejohn.org/blog/simple-javascript-inheritance/">John Resig's &quot;Simple JavaScript Inheritance&quot;</a></p></li>
+                    </ul>
+                </dd>
+            </dl>
+        </dd>
+
+        <!-----------------------------------------
+        |               data_types_info
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="data_types_info"><span class="type-signature">&lt;static> </span>data_types_info<span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+            <div class="description">
+                <p><mark>description... TODO</mark></p>
+            </div>
+            <dl class="details"></dl>
+        </dd>
+
+        <!-----------------------------------------
+        |               input_processors
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="input_processors"><span class="type-signature">&lt;static> </span>input_processors<span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+            <div class="description">
+                <p>See <a href="@link:/core/jsgui-lang-util.js.html#input_processors">jsgui-lang-util.js: Input Processors</a></p>
+            </div>
+            <dl class="details"></dl>
+        </dd>
+
+        <!-----------------------------------------
+        |               output_processors
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="output_processors"><span class="type-signature">&lt;static> </span>output_processors<span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+            <div class="description">
+                <p>See <a href="@link:/core/jsgui-lang-util.js.html#output_processors">jsgui-lang-util.js: Output Processors</a></p>
+            </div>
+            <dl class="details"></dl>
+        </dd>
+
+        <!-----------------------------------------
+        |               __data_id_method
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="__data_id_method"><span class="type-signature">&lt;static> </span>__data_id_method<span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+            <div class="description">
+                <p>
+                    In general, the <code>jsgui.__data_id_method</code> field seems intended to select an object ID generation time:
+                    <code>'init'</code> (inside an <code>init()</code> method), or <code>'lazy'</code> (inside <code>_id()</code> method call).
+                </p>
+                <p>
+                    This field is documented here, but this module does not sets this field:
+                </p>
+                <@codeblock>
+                    var jsgui = require('../../../core/jsgui-lang-essentials');
+                    jsgui.__data_id_method  ==>  undefined
+                </@codeblock>
+                <p>
+                    <a href="@link:/core/jsgui-lang-util.js.html">jsgui-lang-util.js</a> module sets this field to <code>'lazy'</code>.
+                </p>
+                <p>
+                    <a href="@link:/core/data-object.js.html">data-object.js</a> and
+                    <a href="@link:/core/data-object-fields-collection.js.html">data-object-fields-collection.js</a> modules
+                    set this field to <code>'init'</code>.
+                </p>
+                <p>
+                    <mark>As result, the field value depends of the modules set requested by the require() calls.</mark>
+                </p>
+            </div>
+        </dd>
+
+    </dl>
+
+    <!--==================================================
+    =                   Methods
+    ===================================================-->
+
+    <h3 class="subsection-title">Methods</h3>
+
+    <dl>
+
+        <!-----------------------------------------
+        |               are_equal()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="are_equal"><span class="type-signature">&lt;static> </span>are_equal<span class="signature">(obj)</span><span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+            <div class="description">
+                <p>Returns true if all the passed arguments are equals. Performs a &quot;deep equals&quot; for objects and arrays.</p>
+                <p>If one array argiment passed, then returns true if all the array elements are equals.</p>
+                <p>If one other (non-array) argument passed, returns true.</p>
+                <p>If no arguments passed, returns null.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Argument</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>obj</code></td>
+                        <td class="type">
+                            <span class="param-type">*</span>
+                        </td>
+                        <td class="attributes">
+                            &lt;repeatable><br>
+                        </td>
+                        <td class="description last"><p>values to compare.</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>
+are_equal(1, 1, 1) => true
+are_equal(1, 2, 1) => false
+are_equal([1, 1, 1]) => true
+are_equal([1, 2, 1]) => false
+are_equal([1, { b1: "2", b2: 2 }, 3], [1, { b1: "2", b2: 2 }, 3]) => true
+are_equal([1, { b1: "2", b2: 2 }, 3], [1, { b1: 2, b2: 2 }, 3]) => false
+</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |               arr_like_to_arr()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="arr_like_to_arr"><span class="type-signature">&lt;static> </span>arr_like_to_arr<span class="signature">(arr_like)</span><span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+            <div class="description">
+                <p>Returns an array created from the given &quot;array-like&quot; object (e.g. <code>arguments</code>).</p>
+            </div>
+
+            <h5>Parameters:</h5>
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>arr_like</code></td>
+                        <td class="type">
+                            <span class="param-type">Object</span>
+                            |
+                            <span class="param-type">Array</span>
+                        </td>
+                        <td class="description last"><p>the array-like object</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>function example(){
+    var arguments_array = arr_like_to_arr(arguments);
+    console.log(arguments_array);
+}</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |               arr_trim_undefined()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="arr_trim_undefined"><span class="type-signature">&lt;static> </span>arr_trim_undefined<span class="signature">(arr_like)</span><span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+            <div class="description">
+                <p>Returns an array without the trailing undefined values, made from the array-like source.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>arr_like</code></td>
+                        <td class="type">
+                            <span class="param-type">array-like</span>
+                        </td>
+                        <td class="description last"><p>the source</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>arr_trim_undefined([undefined, 1, undefined]) ==> [undefined, 1]</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |               arrayify(param_index, fn)
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="arrayify"><span class="type-signature">&lt;static> </span>arrayify<span class="signature">(<span class="optional">param_index</span>, <span class="optional">num_parallel</span>, <span class="optional">delay</span>, fn)</span><span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+            <div class="description">
+                <p>
+                    Returns an arrayified version of the function. The arrayified version accepts an array of values instead of single value for some parameter.
+                    For example: <code>func(a, b) ==&gt; arrayified_func([a], b)</code>
+                    The original function will be called several times, one time for each value from the array. The result of the arrayified function
+                    will be an array containing the original function return values.
+                </p>
+                <p>
+                    By default it arrayifies the first parameter. You can specify the arrayifying parameter index as the first argument of the arrayify() function: <br />
+                    <code>arrayify(func)  ==&gt;  arrayified_func([a], b, c, d, ...)</code> <br />
+                    <code>arrayify(2, func)  ==&gt;  arrayified_func(a, b, [c], d, ...)</code>
+                </p>
+                <p>
+                    You can arrayify an async function as well. If the very last argument passed to the arrayified version is function, then this case is considered
+                    as async function call. The last parameter is considered as a callback function receiving the async array processing final result. The callback
+                    format is <code>callback(error, result)</code>, where <code>error</code> is an error object or null, and <code>result</code> is the result array.
+                </p>
+                <p>
+                    The original async function must call a callback function in turn. The callback function is passed as a last argument to the async function
+                    call, following the usual <a href="#call_multiple_callback_functions">call_multiple_callback_functions()</a> rules.
+                </p>
+                <p>
+                    The "num_parallel" and "delay" parameters have the same meaning as for <a href="#call_multiple_callback_functions">call_multiple_callback_functions()</a> function 
+                    (and just passed to the internal <a href="#call_multiple_callback_functions">call_multiple_callback_functions()</a> call).
+                </p>
+            </div>
+
+            <h5>Parameters:</h5>
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Argument</th>
+                        <th>Default</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>param_index</code></td>
+                        <td class="type">
+                            <span class="param-type">number</span>
+                        </td>
+                        <td class="attributes">
+                            &lt;optional><br>
+                        </td>
+                        <td class="default">
+                            0
+                        </td>
+                        <td class="description last"><p>arrayifing parameter index</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>num_parallel</code></td>
+                        <td class="type">
+                            <span class="param-type">number</span>
+                        </td>
+                        <td class="attributes">
+                            &lt;optional><br>
+                        </td>
+                        <td class="default">
+                            1
+                        </td>
+                        <td class="description last"><p>maximum amount of tasks running simultaneously</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>delay</code></td>
+                        <td class="type">
+                            <span class="param-type">number</span>
+                        </td>
+                        <td class="attributes">
+                            &lt;optional><br>
+                        </td>
+                        <td class="default">
+                            0
+                        </td>
+                        <td class="description last"><p>delay between tasks execution, milliseconds</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>fn</code></td>
+                        <td class="type">
+                            <span class="param-type">function</span>
+                        </td>
+                        <td class="attributes"></td>
+                        <td class="default"></td>
+                        <td class="description last"><p>arrayifing function</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>// ------- arrayifing a function: -------
+
+var multiply = function (a, b) {
+    return a * b;
+};
+
+// multiply([a], b):
+var arrayified_multiply = jsgui.arrayify(multiply); 
+console.log(arrayified_multiply([1, 5, 10], 2));  // [2, 10, 20]);
+            
+// multiply(a, [b]):
+var arrayified_multiply2 = jsgui.arrayify(1, multiply); 
+console.log(arrayified_multiply2(10, [1, 5, 10])); // [10, 50, 100]);
+
+// ------- arrayifing an async function: -------
+
+var asyncMultiply = function (a, b, cb) {
+    setTimeout(function () { cb(null, a * b); }, 1000);
+};
+
+var arrayified_asyncMultiply = jsgui.arrayify(asyncMultiply); // asyncMultiply([a], b, cb)
+
+var callback = function (error, result) {
+    console.log(error);  // null
+    console.log(result); // [2, 10, 20]);
+};
+
+arrayified_asyncMultiply([1, 5, 10], 2, callback);</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |               arrayify(obj)
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="arrayify"><span class="type-signature">&lt;static> </span>arrayify<span class="signature">(obj)</span><span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+            <div class="description">
+                <p>Returns an array containing [key, value] arrays of the passed object properties.<br /></p>
+            </div>
+
+            <h5>Parameters:</h5>
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>obj</code></td>
+                        <td class="type">
+                            <span class="param-type">object</span>
+                        </td>
+                        <td class="description last"><p>arrayifing object</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>arrayify({a: 1, b: 2})  ==> [["a", 1], ["b", 2]]</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |               atof()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="atof"><span class="type-signature">&lt;static> </span>atof<span class="signature">(arr)</span><span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+            <div class="description">
+                <p>Returns an array containing type strings for the passed array elements. The type strings are made using the <a href="#tof">tof()</a> function.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>arr</code></td>
+                        <td class="type">
+                            <span class="param-type">Array</span>
+                        </td>
+                        <td class="description last"><p>source array</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>atof([1, "", null]) ==> ["number", "string", "null"]</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |               call_multi()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="call_multi"><span class="type-signature">&lt;static> </span>call_multi<span class="signature">()</span><span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+            <div class="description">
+                <p>Alias to the <a href="#call_multiple_callback_functions">call_multiple_callback_functions()</a> function.</p>
+            </div>
+            <dl class="details"></dl>
+        </dd>
+
+        <!-----------------------------------------
+        |    call_multiple_callback_functions()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="call_multiple_callback_functions"><span class="type-signature">&lt;static> </span>call_multiple_callback_functions<span class="signature">(tasks, <span class="optional">num_parallel</span>, <span class="optional">delay</span>, callback, <span class="optional">return_params</span>)</span><span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+            <div class="description">
+                <p>Executes several tasks one by one (default) or simultaneously (up to specified amount of tasks at the same time).</p>
+
+                <p>The following call signatures are supported:</p>
+                <ul>
+                    <li>call_multiple_callback_functions(tasks, callback)</li>
+
+                    <li>call_multiple_callback_functions(tasks, num_parallel, callback)</li>
+                    <li>call_multiple_callback_functions(num_parallel, tasks, callback)</li>
+
+                    <li>call_multiple_callback_functions(tasks, callback, return_params)</li>
+
+                    <li>call_multiple_callback_functions(tasks, num_parallel, delay, callback)</li>
+                    <li>call_multiple_callback_functions(num_parallel, delay, tasks, callback)</li>
+                </ul>
+
+                <p>Each task can be a function, or an array. The following task formats are supported:</p>
+                <ul>
+                    <li>fn</li>
+                    <li>[context, fn]</li>
+                    <li>[fn, params]</li>
+                    <li>[fn, params, fn_callback]</li>
+                    <li>[context, fn, params]</li>
+                    <li>[context, fn, params, fn_callback]</li>
+                </ul>
+                <p>The task parts mean:</p>
+                <ul>
+                    <li>context: execution context (&quot;this&quot; value)</li>
+                    <li>fn - task function</li>
+                    <li>params - task function parameters array</li>
+                    <li>fn_callback - callback function calling when the task is completed: fn_callback(null, result), where &quot;result&quot; is the task function result</li>
+                </ul>
+                <p>
+                    The task function must call a predefined callback function. The callback function is passed as the last parameter to the task function.
+                    The callback function looks as follows: callback(error, result)
+                </p>
+                <ul>
+                    <li>error: an error object or null</li>
+                    <li>result: the task result</li>
+                </ul>
+                <p>
+                    The &quot;main&quot; callback (passed to the call_multiple_callback_functions() call) looks as follows:
+                    callback(error, result), where &quot;result&quot; is all the tasks result array.
+                </p>
+            </div>
+
+            <h5>Parameters:</h5>
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Argument</th>
+                        <th>Default</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>tasks</code></td>
+                        <td class="type">
+                            <span class="param-type">array</span>
+                        </td>
+                        <td class="attributes"></td>
+                        <td class="default"></td>
+                        <td class="description last"><p>tasks array</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>num_parallel</code></td>
+                        <td class="type">
+                            <span class="param-type">number</span>
+                        </td>
+                        <td class="attributes">
+                            &lt;optional><br>
+                        </td>
+                        <td class="default">
+                            1
+                        </td>
+                        <td class="description last"><p>maximum amount of tasks running simultaneously</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>delay</code></td>
+                        <td class="type">
+                            <span class="param-type">number</span>
+                        </td>
+                        <td class="attributes">
+                            &lt;optional><br>
+                        </td>
+                        <td class="default">
+                            0
+                        </td>
+                        <td class="description last"><p>delay between tasks execution, milliseconds</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>callback</code></td>
+                        <td class="type">
+                            <span class="param-type">function</span>
+                        </td>
+                        <td class="attributes"></td>
+                        <td class="default"></td>
+                        <td class="description last"><p>callback function called when all the tasks are completed</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>return_params</code></td>
+                        <td class="type">
+                            <span class="param-type">boolean</span>
+                        </td>
+                        <td class="attributes">
+                            &lt;optional><br>
+                        </td>
+                        <td class="default">
+                            false
+                        </td>
+                        <td class="description last"><p>include the task parameters to the task result</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>var tasks = [];
+
+var task1 = function(arg1, arg2, cb) {
+   setTimeout(function () { cb(null, (arg1 * arg2)); }, 1000); // multiply arg1 * arg2
+};
+
+tasks.push([task1, [10, 2]]);   // multiply 10 * 2
+
+call_multiple_callback_functions(tasks, function(error, result) {
+   console.log("All the tasks are done. The first task result is " + result[0]); // result[0] === 20
+});</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |                   clone()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="clone"><span class="type-signature">&lt;static> </span>clone<span class="signature">(obj, <span class="optional">count</span>)</span><span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+            <div class="description">
+                <p>Creates a clone of the given value. The result depends of the input value type:</p>
+                <ul>
+                    <li>array: an array containing clones of the input array elements</li>
+                    <li>undefined: undefined</li>
+                    <li>string: same string</li>
+                    <li>number: same number</li>
+                    <li>function: same function reference</li>
+                    <li>boolean: same boolean value</li>
+                    <li>null: null</li>
+                    <li>other (object): deep copy of the object</li>
+                </ul>
+                <p>If the second parameter is passed, then returns an array containing the requested number of the clones.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Argument</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>obj</code></td>
+                        <td class="type">
+                            <span class="param-type">*</span>
+                        </td>
+                        <td class="attributes"></td>
+                        <td class="description last"><p>source value</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>count</code></td>
+                        <td class="type">
+                            <span class="param-type">number</span>
+                        </td>
+                        <td class="attributes">
+                            &lt;optional><br>
+                        </td>
+                        <td class="description last"><p>number of the output values</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>clone(1) ==> 1
+clone("abc") ==> "abc"
+clone("abc", 3) ==> ["abc", "abc", "abc"]
+clone([1, undefined]) ==> [1, undefined]
+clone({a: 1, b:{c:2}}) ==> {a: 1, b:{c:2}}</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          eac(arr, fn, context)
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="eac"><span class="type-signature">&lt;static> </span>eac<span class="signature">(arr, fn, <span class="optional">context</span>)</span><span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+            <div class="description">
+                <p>
+                    Iterates over an array, just like the <a href="#each">each()</a> function, but the iterator function parameters order is changed:<br>
+                    <code>fn(element, index, stop)</code> instead of <code>fn(index, element, stop)</code>
+                </p>
+                <p>
+                    Better each function, first param of callback is obj, 2nd is index. Will replace all each functions with this version then change the name to each.
+                    Useful for new code.
+                </p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Argument</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>arr</code></td>
+                        <td class="type">
+                            <span class="param-type">Array</span>
+                        </td>
+                        <td class="attributes"></td>
+                        <td class="description last"><p>array of elements</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>fn</code></td>
+                        <td class="type">
+                            <span class="param-type"><a href="#arrayIteratorCallback-eac">arrayIteratorCallback-eac</a></span>
+                        </td>
+                        <td class="attributes"></td>
+                        <td class="description last"><p>iterator function</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>context</code></td>
+                        <td class="type">
+                            <span class="param-type">Object</span>
+                        </td>
+                        <td class="attributes">
+                            &lt;optional><br>
+                        </td>
+                        <td class="description last"><p>context object</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>jsgui.each([1, 2, 3, 4, 5], function(element, index, stop){
+    console.log(index + ":" + element);  // 0:1 1:2 2:3 3:4 4:5
+    if (index > 1000) stop();
+});</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          eac(obj, fn, context)
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="eac"><span class="type-signature">&lt;static> </span>eac<span class="signature">(obj, fn, <span class="optional">context</span>)</span><span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+            <div class="description">
+                <p>
+                    Iterates over the object properties, just like the <a href="#each">each()</a> function, but the iterator function parameters order is changed:<br />
+                    <code>fn(value, key, stop)</code> instead of <code>fn(key, value, stop)</code>
+                </p>
+                <p>
+                    Better each function, first param of callback is obj, 2nd is index. Will replace all each functions with this version then change the name to each.
+                    Useful for new code.
+                </p>
+            </div>
+
+            <h5>Parameters:</h5>
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Argument</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>obj</code></td>
+                        <td class="type">
+                            <span class="param-type">Object</span>
+                        </td>
+                        <td class="attributes"></td>
+                        <td class="description last"><p>object</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>fn</code></td>
+                        <td class="type">
+                            <span class="param-type"><a href="#objectIteratorCallback-eac">objectIteratorCallback-eac</a></span>
+                        </td>
+                        <td class="attributes"></td>
+                        <td class="description last"><p>iterator function</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>context</code></td>
+                        <td class="type">
+                            <span class="param-type">Object</span>
+                        </td>
+                        <td class="attributes">
+                            &lt;optional><br>
+                        </td>
+                        <td class="description last"><p>context object</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>jsgui.eac({a: 1, b: 2}, function(value, key, stop){
+    if (key == "secretKey"){ 
+        stop();
+        return;
+    }
+    console.log(key + ":" + value);  // a:1  b:2
+});</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          eac(collection, fn, context)
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="eac"><span class="type-signature">&lt;static> </span>eac<span class="signature">(collection, fn, <span class="optional">context</span>)</span><span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+            <div class="description">
+                <p>Iterates over a collection calling the collection.each(fn, context) method.</p>
+                <p><mark>maybe collection.each() must be changed to collection.eac()?</mark></p>
+            </div>
+
+            <h5>Parameters:</h5>
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Argument</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>collection</code></td>
+                        <td class="type">
+                            <span class="param-type">Collection</span>
+                        </td>
+                        <td class="attributes"></td>
+                        <td class="description last"><p>collection of elements</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>fn</code></td>
+                        <td class="type">
+                            <span class="param-type">function</span>
+                        </td>
+                        <td class="attributes"></td>
+                        <td class="description last"><p>iterator function</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>context</code></td>
+                        <td class="type">
+                            <span class="param-type">Object</span>
+                        </td>
+                        <td class="attributes">
+                            &lt;optional><br>
+                        </td>
+                        <td class="description last"><p>context object</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>// TODO.......</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          each(obj, fn, context)
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="each"><span class="type-signature">&lt;static> </span>each<span class="signature">(obj, fn, <span class="optional">context</span>)</span><span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+            <div class="description">
+                <p>Iterates over the object properties. The iterator function calls for each element: fn(key, value, stop):</p>
+                <ul>
+                    <li>key: the property key</li>
+                    <li>value: the property value</li>
+                    <li>stop: call this function to prevent further iterations</li>
+                </ul>
+                <p>The iterator function is bound to the context object, if passed.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Argument</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>obj</code></td>
+                        <td class="type">
+                            <span class="param-type">Object</span>
+                        </td>
+                        <td class="attributes"></td>
+                        <td class="description last"><p>object</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>fn</code></td>
+                        <td class="type">
+                            <span class="param-type"><a href="#objectIteratorCallback">objectIteratorCallback</a></span>
+                        </td>
+                        <td class="attributes"></td>
+                        <td class="description last"><p>iterator function</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>context</code></td>
+                        <td class="type">
+                            <span class="param-type">Object</span>
+                        </td>
+                        <td class="attributes">
+                            &lt;optional><br>
+                        </td>
+                        <td class="description last"><p>context object</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>jsgui.each({a: 1, b: 2}, function(key, value, stop){
+    if (key == "secretKey"){ 
+        stop();
+        return;
+    }
+    console.log(key + ":" + value);  // a:1  b:2
+});</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          each(arr, fn, context)
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="each"><span class="type-signature">&lt;static> </span>each<span class="signature">(arr, fn, <span class="optional">context</span>)</span><span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+            <div class="description">
+                <p>Iterates over the array elements. The iterator function calls for each element: fn(index, element, stop):</p>
+                <ul>
+                    <li>index: the element index</li>
+                    <li>element: the element value</li>
+                    <li>stop: call this function to prevent further iterations</li>
+                </ul>
+                <p>The iterator function is bound to the context object, if passed.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Argument</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>arr</code></td>
+                        <td class="type">
+                            <span class="param-type">Array</span>
+                        </td>
+                        <td class="attributes"></td>
+                        <td class="description last"><p>array of elements</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>fn</code></td>
+                        <td class="type">
+                            <span class="param-type"><a href="#arrayIteratorCallback">arrayIteratorCallback</a></span>
+                        </td>
+                        <td class="attributes"></td>
+                        <td class="description last"><p>iterator function</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>context</code></td>
+                        <td class="type">
+                            <span class="param-type">Object</span>
+                        </td>
+                        <td class="attributes">
+                            &lt;optional><br>
+                        </td>
+                        <td class="description last"><p>context object</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>jsgui.each([1, 2, 3, 4, 5], function(index, element, stop){
+    console.log(index + ":" + element);  // 0:1 1:2 2:3 3:4 4:5
+    if (index > 1000) stop();
+});</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          each(collection, fn, context)
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="each"><span class="type-signature">&lt;static> </span>each<span class="signature">(collection, fn, <span class="optional">context</span>)</span><span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+            <div class="description">
+                <p>Iterates over a collection calling the collection.each(fn, context) method.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Argument</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>collection</code></td>
+                        <td class="type">
+                            <span class="param-type">Collection</span>
+                        </td>
+                        <td class="attributes"></td>
+                        <td class="description last"><p>collection of elements</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>fn</code></td>
+                        <td class="type">
+                            <span class="param-type">function</span>
+                        </td>
+                        <td class="attributes"></td>
+                        <td class="description last"><p>iterator function</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>context</code></td>
+                        <td class="type">
+                            <span class="param-type">Object</span>
+                        </td>
+                        <td class="attributes">
+                            &lt;optional><br>
+                        </td>
+                        <td class="description last"><p>context object</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>// TODO..............</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          extend()
+        ------------------------------------------>
+        
+        <dt>
+            <h4 class="name" id="extend"><span class="type-signature">&lt;static> </span>extend<span class="signature">()</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Alias to the <a href="#jq_extend">jq_extend()</a> function.</p>
+            </div>
+
+            <dl class="details"></dl>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          Fns()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="Fns"><span class="type-signature">&lt;static> </span>Fns<span class="signature">()</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>
+                    Returns a <a href="#call_multiple_callback_functions">call_multiple_callback_functions()</a> helper object. The object is an array with <code>go()</code> method added.
+                    You can add the <a href="#call_multiple_callback_functions">call_multiple_callback_functions()</a> tasks to the array, then call the go() method passing the callback function.
+                </p>
+                <p>
+                    Possible go() method overloads:
+                    <ul>
+                        <li>go(callback)</li>
+                        <li>go(num_parallel, callback)</li>
+                        <li>go(num_parallel, delay, callback)</li>
+                    </ul>
+                </p>
+            </div>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>var taskPlus = function (a, b, cb) { cb(null, a + b); };
+var taskMinus = function (a, b, cb) { cb(null, a - b); };
+
+var fns = jsgui.Fns();
+
+fns.push([taskPlus, [1, 2]]);
+fns.push([taskPlus, [3, 4]]);
+fns.push([taskMinus, [1, 2]]);
+fns.push([taskPlus, [10, 12]]);
+
+fns.go(function (error, result) {
+    console.log(result);  //  [3, 7, -1, 22]
+});</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          fp()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="fp"><span class="type-signature">&lt;static> </span>fp<span class="signature">()</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>A shortcut for the <a href="#functional_polymorphism">functional_polymorphism()</a> function.</p>
+            </div>
+
+            <dl class="details"></dl>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          functional_polymorphism()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="functional_polymorphism"><span class="type-signature">&lt;static> </span>functional_polymorphism<span class="signature">(<span class="optional">options</span>, fn)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>
+                    Helps to create a polymorphic version of the passed function. The function will get 2 parameters: <code>a</code> and <code>sig</code>.
+                    Array <code>a</code> will contains the actual parameters, <code>a.l</code> property will contains the parameters count.
+                    The <code>sig</code> parameter will contains the parameter types array signature. The function will use these parameters
+                    to select a required polymorphic code branch to execute.
+                </p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Argument</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>options</code></td>
+                        <td class="type">
+                            <span class="param-type">*</span>
+                        </td>
+                        <td class="attributes">
+                            &lt;optional><br>
+                        </td>
+                        <td class="description last"><p>not used</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>fn</code></td>
+                        <td class="type">
+                            <span class="param-type">function</span>
+                        </td>
+                        <td class="attributes"></td>
+                        <td class="description last"><p>the function</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>var myFunc = functional_polymorphism(function(a, sig){
+    return stringify(a) + ": " + sig;
+});
+
+myFunc(1, "a", [null])  ==>  '[1, "a", [null]]: [n,s,a]'</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          get()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="get"><span class="type-signature">&lt;static> </span>get<span class="signature">(key)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Gets value from the module's internal key/value storage.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>key</code></td>
+                        <td class="type">
+                            <span class="param-type">string</span>
+                            |
+                            <span class="param-type">*</span>
+                        </td>
+                        <td class="description last"><p>the value key</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>jsgui.set("a", 1);
+jsgui.set(100, 2);
+jsgui.get("a")  ==>  1
+jsgui.get(100)  ==>  2</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          get_a_sig()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="get_a_sig"><span class="type-signature">&lt;static> </span>get_a_sig<span class="signature">(a)</span><span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Returns arguments type signature string for the given arguments array-like parameter. This function is intended for use inside an other function.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>a</code></td>
+                        <td class="type"><span class="param-type">Array-like</span></td>
+                        <td class="description last"><p>arguments</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint">
+<code>var return_arguments_sig = function () {
+    return get_a_sig(arguments);
+}
+
+return_arguments_sig()  ==>  "[]"
+return_arguments_sig(1, "2", new Date(), null)  ==>  "[n,s,d,!]"
+</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          get_item_sig()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="get_item_sig"><span class="type-signature">&lt;static> </span>get_item_sig<span class="signature">(i, <span class="optional">arr_depth</span>)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>
+                    Returns a type signature for the given value.
+                    Possible results are:
+                </p>
+                <ul>
+                    <li>&quot;s&quot; (string)</li>
+                    <li>&quot;n&quot; (number)</li>
+                    <li>&quot;b&quot; (boolean)</li>
+                    <li>&quot;f&quot; (function)</li>
+                    <li>&quot;a&quot; (array)</li>
+                    <li>&quot;o&quot; (object)</li>
+                    <li>&quot;u&quot; (undefined)</li>
+                    <li>&quot;!&quot; (null)</li>
+                    <li>&quot;c&quot; (control)</li>
+                    <li>&quot;r&quot; (RegEx)</li>
+                    <li>&quot;B&quot; (Buffer)</li>
+                    <li>&quot;R&quot; (readable_stream)</li>
+                    <li>&quot;W&quot; (writable_stream)</li>
+                    <li>&quot;X&quot; (collection_index)</li>
+                    <li>&quot;D&quot; (data_object)</li>
+                    <li>&quot;~D&quot; (abstract data_object)</li>
+                    <li>&quot;V&quot; (data_value)</li>
+                    <li>&quot;~V&quot; (abstract data_value)</li>
+                    <li>&quot;C&quot; (collection)</li>
+                    <li>&quot;~C&quot; (abstract collection)</li>
+                </ul>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Argument</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>i</code></td>
+                        <td class="type">
+                            <span class="param-type">*</span>
+                        </td>
+                        <td class="attributes"></td>
+                        <td class="description last"><p>value to get the type signature</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>arr_depth</code></td>
+                        <td class="type">
+                            <span class="param-type">*</span>
+                        </td>
+                        <td class="attributes">
+                            &lt;optional><br>
+                        </td>
+                        <td class="description last"><p>array nesting depth to include the array element signatures</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>get_item_sig(1) ==> 'n'
+get_item_sig("1") ==> 's'
+get_item_sig([1, 2]) ==> 'a'
+get_item_sig([1, 2], 1) ==> '[n,n]'</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          get_map_from_arr()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="get_map_from_arr"><span class="type-signature">&lt;static> </span>get_map_from_arr<span class="signature">(arr)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Returns a map created from the given array.</p>
+                <p>The map is an object containing key/value pairs; the keys are the array elements, the values are the array indexes.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>arr</code></td>
+                        <td class="type">
+                            <span class="param-type">Array</span>
+                        </td>
+                        <td class="description last"><p>source array</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>get_map_from_arr(["a", "b", "c"]) ==> { a: 0, b: 1, c: 2}</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          get_truth_map_from_arr()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="get_truth_map_from_arr"><span class="type-signature">&lt;static> </span>get_truth_map_from_arr<span class="signature">(arr)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Returns a truth map created from the given array.</p>
+                <p>The truth map is an object containing key/value pairs; the keys are the array elements, the values are all true.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>arr</code></td>
+                        <td class="type">
+                            <span class="param-type">Array</span>
+                        </td>
+                        <td class="description last"><p>source array</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>get_truth_map_from_arr(["a", "b", "c"]) ==> { a: true, b: true, c: true}</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          is_arr_of_arrs()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="is_arr_of_arrs"><span class="type-signature">&lt;static> </span>is_arr_of_arrs<span class="signature">(obj)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Returns <code>true</code> if the passed object is an array containing arrays in turn.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>obj</code></td>
+                        <td class="type">
+                            <span class="param-type">*</span>
+                        </td>
+                        <td class="description last"><p>object to check</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>
+jsgui.is_arr_of_arrs([])  ==>  true
+jsgui.is_arr_of_arrs(["1", "2", "3"])  ==>  false
+jsgui.is_arr_of_arrs([[], [1, "2"]])  ==>  true
+</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          is_arr_of_strs()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="is_arr_of_strs"><span class="type-signature">&lt;static> </span>is_arr_of_strs<span class="signature">(obj)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Returns <code>true</code> if the passed object is an array containing strings only.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>obj</code></td>
+                        <td class="type">
+                            <span class="param-type">*</span>
+                        </td>
+                        <td class="description last"><p>object to check</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>
+jsgui.is_arr_of_strs("1")  ==>  false
+jsgui.is_arr_of_strs([])  ==>  true
+jsgui.is_arr_of_strs(["1", "2", "3"])  ==>  true
+jsgui.is_arr_of_strs(["1", 2, "3"])  ==>  false
+</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          is_arr_of_t()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="is_arr_of_t"><span class="type-signature">&lt;static> </span>is_arr_of_t<span class="signature">(obj, type_name)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Returns <code>true</code> if the passed object is an array containing values of the specified type only.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>obj</code></td>
+                        <td class="type">
+                            <span class="param-type">*</span>
+                        </td>
+                        <td class="description last"><p>object to check</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>type_name</code></td>
+                        <td class="type">
+                            <span class="param-type">string</span>
+                        </td>
+                        <td class="description last"><p>estimated type name</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>
+jsgui.is_arr_of_t("1", "string")  ==>  false
+jsgui.is_arr_of_t([], "string")  ==>  true
+jsgui.is_arr_of_t(["1", "2", "3"], "string")  ==>  true
+jsgui.is_arr_of_t(["1", 2, "3"], "string")  ==>  false
+</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          is_array()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="is_array"><span class="type-signature">&lt;static> </span>is_array<span class="signature">(obj)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Returns <code>true</code> if the passed <code>obj</code> is an <code>Array</code>. Delegates to the native <code>Array.isArray()</code> function if it exists.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>obj</code></td>
+                        <td class="type">
+                            <span class="param-type">Object</span>
+                        </td>
+                        <td class="description last"><p>object to check</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          is_constructor_fn()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="is_constructor_fn"><span class="type-signature">&lt;static> </span>is_constructor_fn<span class="signature">(fn)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p><mark>Returns <code>true</code> if the passed object has a prototype (typically the object is a function).</mark></p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>fn</code></td>
+                        <td class="type">
+                            <span class="param-type">function</span>
+                        </td>
+                        <td class="description last"><p>object to check</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>
+jsgui.is_constructor_fn(Object)  ==>  true
+jsgui.is_constructor_fn(new Object())  ==>  false
+jsgui.is_constructor_fn(setInterval)  ==>  true
+</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          is_ctrl()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="is_ctrl"><span class="type-signature">&lt;static> </span>is_ctrl<span class="signature">()</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p><mark>description...</mark></p>
+            </div>
+
+            <dl class="details"></dl>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          is_defined()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="is_defined"><span class="type-signature">&lt;static> </span>is_defined<span class="signature">(value)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Returns true if the value is defined (e.g. not equals to undefined)</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>value</code></td>
+                        <td class="type">
+                            <span class="param-type">*</span>
+                        </td>
+                        <td class="description last"><p>value to check</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>is_defined(Math.PI) ==> true
+is_defined(Math.PI_PI_PI) ==> false</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          is_dom_node()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="is_dom_node"><span class="type-signature">&lt;static> </span>is_dom_node<span class="signature">(obj)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Returns <code>true</code> if the passed <code>obj</code> is a DOM node. Uses the duck typing.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>obj</code></td>
+                        <td class="type">
+                            <span class="param-type">Object</span>
+                        </td>
+                        <td class="description last"><p>object to check</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          iterate_ancestor_classes()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="iterate_ancestor_classes"><span class="type-signature">&lt;static> </span>iterate_ancestor_classes<span class="signature">(obj, callback)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Iterates over ancestor classes hierarchy calling the callback function for each class in the inheritance tree. Starts from the passed class, ends on jsgui.Class.</p>
+                <p>The iteration can be broken calling the <code>stop()</code> function (the callback second parameter).</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>obj</code></td>
+                        <td class="type">
+                            <span class="param-type">jsgui.Class</span>
+                        </td>
+                        <td class="description last"><p>class to start the iteration</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>callback</code></td>
+                        <td class="type">
+                            <span class="param-type">function</span>
+                        </td>
+                        <td class="description last"><p>callback function (obj, stop).</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>
+var Class = jsgui.Class;
+var Person = Class.extend({});
+var Ninja = Person.extend({});
+var classes = [];
+var callback = function (_class, stop) {
+    classes.push(_class);
+};
+jsgui.iterate_ancestor_classes(Ninja, callback);  // classes == [Ninja, Person, Class]
+</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          jq_extend()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="jq_extend"><span class="type-signature">&lt;static> </span>jq_extend<span class="signature">(<span class="optional">deep</span>, <span class="optional">target</span>, extender)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>
+                    Merge the contents of two or more objects together into the first object. Returns the updated object.
+                    If only one parameter is passed, the extends <code>this</code>.
+                </p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Argument</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>deep</code></td>
+                        <td class="type">
+                            <span class="param-type">boolean</span>
+                        </td>
+                        <td class="attributes">
+                            &lt;optional><br>
+                        </td>
+                        <td class="description last"><p>if true, performs recursive deep copy. if false or omitted, performs simple reference copy.</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>target</code></td>
+                        <td class="type">
+                            <span class="param-type">object</span>
+                            |
+                            <span class="param-type">array</span>
+                        </td>
+                        <td class="attributes">
+                            &lt;optional><br>
+                        </td>
+                        <td class="description last"><p>target object; if omitted then <code>this</code> is used.</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>extender</code></td>
+                        <td class="type">
+                            <span class="param-type">object</span>
+                            |
+                            <span class="param-type">array</span>
+                        </td>
+                        <td class="attributes">
+                            &lt;repeatable><br>
+                        </td>
+                        <td class="description last"><p>object(s) to add the content</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>jq_extend({a:1}, {b:2})  ==> {a:1, b:2}
+jq_extend([1,2,3], [4,5])  ==> [4,5,3]  
+
+var ext = {sub2:{prop2:2}};
+var result1 = jq_extend(true, {}, ext)  ==> {sub2:{prop2:2}}
+var result2 = jq_extend(false, {}, ext)  ==> {sub2:{prop2:2}}
+ext.sub2.prop2 = 20;  ==> (result1.sub2.prop2 == 2) &amp; (result2.sub2.prop2 == 20)</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          ll_get()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="ll_get"><span class="type-signature">&lt;static> </span>ll_get<span class="signature">(obj, prop_name)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Returns a property value of the object using a qualified (dotted) property name.</p>
+                <p>Returns <code>undefined</code> if the property does not exists.</p>
+                <p>Throwns an exception if an inner object containing the property does not exists.</p>
+                <p>if the object contains an internal object named &quot;_&quot;, then return the value of the internal object property.</p>
+                <p>Allows to pass &quot;.&quot; (dot) as the <code>prop_name</code> parameter returning a value of the '.' property for the object or internal &quot;_&quot; object (if the value exists).</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>obj</code></td>
+                        <td class="type">
+                            <span class="param-type">object</span>
+                        </td>
+                        <td class="description last"><p>object</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>prop_name</code></td>
+                        <td class="type">
+                            <span class="param-type">string</span>
+                        </td>
+                        <td class="description last"><p>property name</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Returns:</h5>
+
+            <div class="param-desc">
+                <p>property value</p>
+            </div>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>
+// object itself:
+
+jsgui.ll_get({}, "a");  ==> undefined
+jsgui.ll_get({ a: 1 }, "a");  ==> 1
+jsgui.ll_get({ '.': 1 }, ".");  ==> 1
+jsgui.ll_get({ a: { b: { c: 1 } } }, "a.b.c");  ==> 1
+jsgui.ll_get({ a: { b: { } } }, "a.b.c");  ==> undefined
+jsgui.ll_get({ a: { } }, "a.b.c");  ==> exception
+jsgui.ll_get({ }, "a.b.c");  ==> exception
+
+// internal object:
+
+jsgui.ll_get({ _ : { '.': 1 } }, ".");  ==> 1
+jsgui.ll_get({ _ : { a: { b: { c: 1 } } } }, "a.b.c");  ==> 1
+jsgui.ll_get({ _ : { '.': 1 } }, "a.b.c");  ==> exception</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          ll_set()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="ll_set"><span class="type-signature">&lt;static> </span>ll_set<span class="signature">(obj, prop_name, prop_value)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Assigns a property value of the object using a qualified (dotted) property name. Nested sub-objects are created if needed.</p>
+                <p>if the object contains an internal object named &quot;_&quot;, then assigns the internal object property.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>obj</code></td>
+                        <td class="type">
+                            <span class="param-type">object</span>
+                        </td>
+                        <td class="description last"><p>target object</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>prop_name</code></td>
+                        <td class="type">
+                            <span class="param-type">string</span>
+                        </td>
+                        <td class="description last"><p>property name</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>prop_value</code></td>
+                        <td class="type">
+                            <span class="param-type">*</span>
+                        </td>
+                        <td class="description last"><p>property value</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Returns:</h5>
+
+            <div class="param-desc">
+                <p>property value</p>
+            </div>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>
+// object itself:
+
+var obj1 = {};
+jsgui.ll_set(obj1, "a", 1);  // obj1 == { a: 1 }
+var obj2 = {};
+jsgui.ll_set(obj2, "a.b.c", 1);  // obj2 == { a: { b: { c: 1 } } }
+var obj3 = { a: { b: { c: 1 } };
+jsgui.ll_set(obj3, "a.b.c", 100);  // obj3 == { a: { b: { c: 100 } } }
+
+// internal object:
+
+var obj4 = { _: {}, a: 100 };
+jsgui.ll_set(obj4, "a", 1);  // obj4 == { _: { a: 1 }, a: 100 }</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          mapify(arr)
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="mapify"><span class="type-signature">&lt;static> </span>mapify<span class="signature">(arr)</span><span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Returns an object containing keys and values from the [key, value] pairs of the array.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>arr</code></td>
+                        <td class="type">
+                            <span class="param-type">array</span>
+                        </td>
+                        <td class="description last"><p>mapifying array</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>mapify([["name", "John"], ["age", 22]])  ==> { name: "John", age: 22 }</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          mapify(arr_of_strings)
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="mapify"><span class="type-signature">&lt;static> </span>mapify<span class="signature">(arr_of_strings)</span><span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Returns a truth map from the passed array of strings.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>arr_of_strings</code></td>
+                        <td class="type">
+                            <span class="param-type">array of strings</span>
+                        </td>
+                        <td class="description last"><p>mapifying array</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>mapify(["name", "John"])  ==> { name: true, John: true }</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          mapify(arr, by_property_name)
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="mapify"><span class="type-signature">&lt;static> </span>mapify<span class="signature">(arr, by_property_name)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>
+                    The array is an objects array. The mapify() function gathers values of the (by_property_name) properties. The values will be keys (property names) of the
+                    returning object. The values of the returning object will be the objects itself.
+                </p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>arr</code></td>
+                        <td class="type">
+                            <span class="param-type">array</span>
+                        </td>
+                        <td class="description last"><p>mapifying array</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>by_property_name</code></td>
+                        <td class="type">
+                            <span class="param-type">string</span>
+                        </td>
+                        <td class="description last"><p>mapping property name</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>var obj_arr = [{ name: "Larry", age: 21 }, { name: "John", age: 22 }];
+
+mapify(obj_arr, "name")  ==> { Larry: { name: "Larry", age: 21 }, John: { name: "John", age: 22 } }</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          mapify(fn)
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="mapify"><span class="type-signature">&lt;static> </span>mapify<span class="signature">(fn)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>
+                    Returns an mapified version of the function. The orginal function receives 2 parameters: key and value. The mapified version receives an object, and
+                    calls the original function for each key/value pair of the object.
+                </p>
+                <p>
+                    You can mapify an async function as well. If you pass a function as the second parameter to the mapified version call, then this case is considered
+                    as async function call. The second parameter is considered as a callback function receiving the async object processing final result. The callback
+                    format is <code>callback(error, result)</code>, where <code>error</code> is an error object or null, and <code>result</code> is the result array.
+                </p>
+                <p>
+                    The original async function must call a callback function in turn. The callback function is passed as a last argument to the async function
+                    call, following the usual <a href="#call_multiple_callback_functions">call_multiple_callback_functions()</a> rules.
+                </p>
+                <p>
+                    So, the mapified function parameters are (object) or (object, function). You can call the mapified function with other parameters type, but in
+                    this case it will just call the original function (if the parameters number &gt;= 2).
+                </p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>fn</code></td>
+                        <td class="type">
+                            <span class="param-type">function</span>
+                        </td>
+                        <td class="description last"><p>mapifying function</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>var keys = [];
+var values = [];
+var addKeyValue = function (key, value) {
+    keys.push(key);
+    values.push(value);
+};
+
+var mapified_addKeyValue = jsgui.mapify(addKeyValue);
+
+mapified_addKeyValue({ a: 1, b: 2, name: "John" });
+
+console.log(keys); // ["a", "b", "name"]
+console.log(values); // [1, 2, "John"]
+
+// ------- mapify an async function: -------
+
+var keys = [];
+var values = [];
+var asyncAddKeyValue = function (key, value, cb) {
+    setTimeout(function () {
+        keys.push(key);
+        values.push(value);
+        cb(null, key + "=" + value);
+    }, 1000);
+};
+
+var callback = function (error, result) {
+    console.log(result); // ["a=1", "b=2", "name=John"]
+    //
+    console.log(keys);   // ["a", "b", "name"]
+    console.log(values); // [1, 2, "John"]
+};
+
+var mapified_asyncAddKeyValue = jsgui.mapify(asyncAddKeyValue);
+
+mapified_asyncAddKeyValue({ a: 1, b: 2, name: "John" }, callback);
+
+// ------- call the original function: -------
+
+var func = function (a, b, c) {
+    console.log(a + " " + b + " " + c);  // 1 5 10
+};
+
+var mapified_func = jsgui.mapify(func);
+
+mapified_func(1, 5, 10);</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          native_constructor_tof()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="native_constructor_tof"><span class="type-signature">&lt;static> </span>native_constructor_tof<span class="signature">()</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Returns a name of the passed native constructor function. Possible return values are:</p>
+                <ul>
+                    <li>&quot;String&quot;</li>
+                    <li>&quot;Number&quot;</li>
+                    <li>&quot;Boolean&quot;</li>
+                    <li>&quot;Array&quot;</li>
+                    <li>&quot;Object&quot;</li>
+                    <li>undefined (for all other arguments)</li>
+                </ul>
+            </div>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>jsgui.native_constructor_tof(String)  ==>  "String"
+jsgui.native_constructor_tof(Date)  ==>  undefined</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          set()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="set"><span class="type-signature">&lt;static> </span>set<span class="signature">(key, value)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Sets value for the module's internal key/value storage.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>key</code></td>
+                        <td class="type">
+                            <span class="param-type">string</span>
+                            |
+                            <span class="param-type">*</span>
+                        </td>
+                        <td class="description last"><p>the value key</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>value</code></td>
+                        <td class="type">
+                            <span class="param-type">*</span>
+                        </td>
+                        <td class="description last"><p>the value</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>jsgui.set("a", 1);
+jsgui.set(100, 2);
+jsgui.get("a")  ==>  1
+jsgui.get(100)  ==>  2</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          set_vals()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="set_vals"><span class="type-signature">&lt;static> </span>set_vals<span class="signature">(obj, map)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Assigns property values from map to obj.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>obj</code></td>
+                        <td class="type">
+                            <span class="param-type">object</span>
+                        </td>
+                        <td class="description last"><p>target object</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>map</code></td>
+                        <td class="type">
+                            <span class="param-type">object</span>
+                        </td>
+                        <td class="description last"><p>source key/value object</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Returns:</h5>
+
+            <div class="param-desc">
+                <p>undefined</p>
+            </div>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>
+var obj1 = {};
+jsgui.set_vals(obj1, { a: 1, b: 2});  // obj1 == { a: 1, b: 2 }
+var obj2 = { a: 1, b: 2};
+jsgui.set_vals(obj2, { b: 200, c: 300});  // obj2 == { a: 1, b: 200, c: 300 }
+</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          sig_match()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="sig_match"><span class="type-signature">&lt;static> </span>sig_match<span class="signature">(pattern, sig)</span><span class="type-signature"></span></h4>
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Returns true if the sig meets to the pattern. The pattern can contains "?" instead of real type signatures.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>pattern</code></td>
+                        <td class="type"><span class="param-type">String</span></td>
+                        <td class="description last"><p>Function signature pattern</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>sig</code></td>
+                        <td class="type"><span class="param-type">String</span></td>
+                        <td class="description last"><p>Function signature</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>sig_match("[a,?,f,?]", "[a,s,f,n]") ==> true</code></pre>
+
+        </dd>
+
+
+        <!-----------------------------------------
+        |          stringify()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="stringify"><span class="type-signature">&lt;static> </span>stringify<span class="signature">(obj, <span class="optional">includeFunctions</span>, <span class="optional">excludingProps</span>)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Outputting a string in a convenient format - currently JSON.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Argument</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>obj</code></td>
+                        <td class="type">
+                            <span class="param-type">*</span>
+                        </td>
+                        <td class="attributes"></td>
+                        <td class="description last"><p>value to convert</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>includeFunctions</code></td>
+                        <td class="type">
+                            <span class="param-type">bool</span>
+                        </td>
+                        <td class="attributes">
+                            &lt;optional><br>
+                        </td>
+                        <td class="description last"><p>if true, then include functions to the result</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>excludingProps</code></td>
+                        <td class="type">
+                            <span class="param-type">array(string)</span>
+                        </td>
+                        <td class="attributes">
+                            &lt;optional><br>
+                        </td>
+                        <td class="description last"><p>exclude the listed object properties from the result</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>stringify(1) ==> '1'
+stringify("1") ==> '"1"'
+stringify([1, "a", null]) ==> '[1, "a", null]'
+stringify({p1:1, p2:"a", p3:null}) ==> '{"p1": 1, "p2": "a", "p3": null}'</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          tof()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="tof"><span class="type-signature">&lt;static> </span>tof<span class="signature">(obj, <span class="optional">t1</span>)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>
+                    Returns the type of the given object as a string. If the t1 parameter is passed, then returns t1 for all the t1 values excepting 'object' one.
+                    Possible results are:
+                </p>
+                <ul>
+                    <li>&quot;number&quot;</li>
+                    <li>&quot;string&quot;</li>
+                    <li>&quot;function&quot;</li>
+                    <li>&quot;boolean&quot;</li>
+                    <li>&quot;object&quot;</li>
+                    <li>&quot;undefined&quot;</li>
+                    <li>&quot;null&quot;</li>
+                    <li><mark>obj.__type</mark></li>
+                    <li>&quot;date&quot;</li>
+                    <li>&quot;array&quot;</li>
+                    <li>&quot;control&quot;</li>
+                    <li>&quot;regex&quot; (obj instanceof RegExp)</li>
+                    <li>&quot;buffer&quot; (obj instanceof Buffer)</li>
+                    <li>&quot;readable_stream&quot; (obj instanceof Stream.Readable)</li>
+                    <li>&quot;writable_stream&quot; (obj instanceof Stream.Writable)</li>
+                </ul>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Argument</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>obj</code></td>
+                        <td class="type">
+                            <span class="param-type">*</span>
+                        </td>
+                        <td class="attributes"></td>
+                        <td class="description last"><p>object to inspect type</p></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>t1</code></td>
+                        <td class="type">
+                            <span class="param-type">string</span>
+                        </td>
+                        <td class="attributes">
+                            &lt;optional><br>
+                        </td>
+                        <td class="description last"><p>type to return (?)</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>tof(1) ==> "number"
+tof([]) ==> "array"
+tof(1, "myType") ==> "myType"
+tof(1, "object") ==> "object"
+tof([], "object") ==> "array"</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          trim_sig_brackets()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="trim_sig_brackets"><span class="type-signature">&lt;static> </span>trim_sig_brackets<span class="signature">(sig)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Removes the leading and trailing square brackets from the signature, if the brackets are presented.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>sig</code></td>
+                        <td class="type">
+                            <span class="param-type">string</span>
+                        </td>
+                        <td class="description last"><p>the signature</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>trim_sig_brackets("[n]") ==> "n"
+trim_sig_brackets("n") ==> "n"</code></pre>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          truth()
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="truth"><span class="type-signature">&lt;static> </span>truth<span class="signature">(value)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Returns true only if the passed value is a boolean true.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>value</code></td>
+                        <td class="type">
+                            <span class="param-type">*</span>
+                        </td>
+                        <td class="description last"><p>value to check</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>
+jsgui.truth(true)  ==> true
+jsgui.truth(1)  ==> false
+</code></pre>
+
+        </dd>
+
+    </dl>
+
+    <!--==================================================
+    =                   Type Definitions
+    ===================================================-->
+
+    <h3 class="subsection-title">Type Definitions</h3>
+
+    <dl>
+
+        <!-----------------------------------------
+        |          arrayIteratorCallback
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="arrayIteratorCallback"><span class="type-signature"></span>arrayIteratorCallback<span class="signature">(index, element, stop)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Array iterator callback function.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>index</code></td>
+                        <td class="type">
+                            <span class="param-type">number</span>
+                        </td>
+                        <td class="description last"></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>element</code></td>
+                        <td class="type">
+                            <span class="param-type">*</span>
+                        </td>
+                        <td class="description last"></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>stop</code></td>
+                        <td class="type">
+                            <span class="param-type"><a href="#stopIterationCallback">stopIterationCallback</a></span>
+                        </td>
+                        <td class="description last"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          arrayIteratorCallback-eac
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="arrayIteratorCallback-eac"><span class="type-signature"></span>arrayIteratorCallback-eac<span class="signature">(element, index, stop)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Array iterator callback function.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>element</code></td>
+                        <td class="type"><span class="param-type">*</span></td>
+                        <td class="description last"></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>index</code></td>
+                        <td class="type"><span class="param-type">number</span></td>
+                        <td class="description last"></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>stop</code></td>
+                        <td class="type"><span class="param-type"><a href="#stopIterationCallback">stopIterationCallback</a></span></td>
+                        <td class="description last"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          objectIteratorCallback
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="objectIteratorCallback"><span class="type-signature"></span>objectIteratorCallback<span class="signature">(key, value, stop)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Object iterator callback function.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>key</code></td>
+                        <td class="type">
+                            <span class="param-type">string</span>
+                        </td>
+                        <td class="description last"></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>value</code></td>
+                        <td class="type">
+                            <span class="param-type">*</span>
+                        </td>
+                        <td class="description last"></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>stop</code></td>
+                        <td class="type">
+                            <span class="param-type"><a href="#stopIterationCallback">stopIterationCallback</a></span>
+                        </td>
+                        <td class="description last"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          objectIteratorCallback-eac
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="objectIteratorCallback-eac"><span class="type-signature"></span>objectIteratorCallback-eac<span class="signature">(value, key, stop)</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Object iterator callback function.</p>
+            </div>
+
+            <h5>Parameters:</h5>
+
+            <table class="params">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th class="last">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name"><code>value</code></td>
+                        <td class="type"><span class="param-type">*</span></td>
+                        <td class="description last"></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>key</code></td>
+                        <td class="type"><span class="param-type">string</span></td>
+                        <td class="description last"></td>
+                    </tr>
+                    <tr>
+                        <td class="name"><code>stop</code></td>
+                        <td class="type"><span class="param-type"><a href="#stopIterationCallback">stopIterationCallback</a></span></td>
+                        <td class="description last"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <dl class="details"></dl>
+
+        </dd>
+
+        <!-----------------------------------------
+        |          stopIterationCallback
+        ------------------------------------------>
+
+        <dt>
+            <h4 class="name" id="stopIterationCallback"><span class="type-signature"></span>stopIterationCallback<span class="signature">()</span><span class="type-signature"></span></h4>
+
+        </dt>
+        <dd>
+
+            <div class="description">
+                <p>Break iteration callback function.</p>
+            </div>
+
+            <dl class="details"></dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>jsgui.each([1, 2, 3, 4, 5], function(index, element, stop){
+    if (element > 3) stop();
+});
+jsgui.eac([1, 2, 3, 4, 5], function(element, index, stop){
+    if (element > 3) stop();
+});</code></pre>
+
+        </dd>
+
+    </dl>
+
+</article>
+
+</section>  
+
