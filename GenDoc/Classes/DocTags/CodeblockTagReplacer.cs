@@ -42,7 +42,10 @@ namespace GenDoc.Classes
             if (src != null)
             {
                 TestSourceLoader testSourceLoader = new TestSourceLoader(src);
+                //
                 string labelText = testSourceLoader.State.ToString();
+                if (testSourceLoader.State == TestSourceLoader.TestState.Passed) labelText = "√ " + labelText;
+                //
                 string stateClass = "";
                 string labelClass = "label-ok";
                 if (testSourceLoader.State != TestSourceLoader.TestState.Passed)
@@ -80,15 +83,14 @@ namespace GenDoc.Classes
             //
             content = content.Replace("\t", "    ");
             //
-            //string[] lines = content.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-            string[] lines = content.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            string[] lines = this.splitToLines(content); // content.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
             if (lines.Length <= 0) return content;
             //
-            List<string> temp = lines.ToList();
-            if ((temp.Count > 0) && (string.IsNullOrWhiteSpace(temp[0]))) temp.RemoveAt(0);
-            if ((temp.Count > 0) && (string.IsNullOrWhiteSpace(temp[temp.Count - 1]))) temp.RemoveAt(temp.Count - 1);
-            lines = temp.ToArray();
-            if (lines.Length <= 0) return Environment.NewLine;
+            //List<string> temp = lines.ToList();
+            //if ((temp.Count > 0) && (string.IsNullOrWhiteSpace(temp[0]))) temp.RemoveAt(0);
+            //if ((temp.Count > 0) && (string.IsNullOrWhiteSpace(temp[temp.Count - 1]))) temp.RemoveAt(temp.Count - 1);
+            //lines = temp.ToArray();
+            //if (lines.Length <= 0) return Environment.NewLine;
             //
             List<string> newLines = new List<string>();
             //
@@ -115,7 +117,26 @@ namespace GenDoc.Classes
                 //newLines.Add(lines[lines.Length - 1].TrimEnd());
             }
             //
+            for (int i=0; i<newLines.Count; i++)
+            {
+                newLines[i] = this.process3Exclamations(newLines[i]);
+            }
+            //
             return String.Join(Environment.NewLine, newLines);
+        }
+
+        private string[] splitToLines(string content)
+        {
+            string[] lines = content.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            if (lines.Length > 0)
+            {
+                List<string> temp = lines.ToList();
+                if ((temp.Count > 0) && (string.IsNullOrWhiteSpace(temp[0]))) temp.RemoveAt(0);
+                if ((temp.Count > 0) && (string.IsNullOrWhiteSpace(temp[temp.Count - 1]))) temp.RemoveAt(temp.Count - 1);
+                lines = temp.ToArray();
+            }
+            //
+            return lines;
         }
 
         private int calcMinStartSpaceLength(string[] lines)
@@ -150,5 +171,19 @@ namespace GenDoc.Classes
             return line.Length - trimmed.Length;
         }
 
-    }
+        private string process3Exclamations(string line)
+        {
+            int index = line.IndexOf("!!!");
+            if (index < 0) return line;
+            //
+            string result = "";
+            if (index > 0) result += line.Substring(0, index);
+            result += "<mark>";
+            result += line.Substring(index);
+            result += "</mark>";
+            return result;
+        }
+
+
+}
 }

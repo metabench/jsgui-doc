@@ -215,7 +215,8 @@ module.exports = function(runner, options) {
     });
 
     runner.on('fail', function(test, err) {
-        //test.err = err;
+        test.err = err;
+        //
         //var depth = test.parent.depth + 1;
         //var output = '';
         //if (config.mode != HTML_OUT) {
@@ -332,12 +333,22 @@ var calcTestHtml = function (test, suite, status) {
     //
     var processedTestSource = processSource(test.fn, getErrorLineText());
     //
+    if (processedTestSource.indexOf("!!!") >= 0) textDuration += '&nbsp;&nbsp;&nbsp;<mark>!!!</mark>';
+    //
+    var testTitle = test.title;
+    if (testTitle.indexOf("!!!") == 0) {
+        //testTitle = "<mark>" + testTitle.substr(3).trim() + "</mark>";
+        testTitle = "<mark>" + testTitle + "</mark>";
+    }
+
     html += '<table cellspacing="0" cellpadding="0">' + CRLF +
         htmlTr + CRLF +
         addIndentation(suite.depth + 1) + CRLF + // tests reside one step deaper than its parent suite
         '<td id="image" class="expanded"></td>' + CRLF +
         '<td class="duration">' + textDuration + '</td>' + CRLF +
-        '<td class="title">' + processTestTitle(test.title, processedTestSource) + '</td>' + CRLF +
+        //'<td class="title">' + processTestTitle(test.title, processedTestSource) + '</td>' + CRLF +
+        //'<td class="title">' + test.title + '</td>' + CRLF +
+        '<td class="title">' + testTitle + '</td>' + CRLF +
         htmlTdState + CRLF +
         '</tr>' + CRLF +
         '</table>' + CRLF;
@@ -414,19 +425,19 @@ var processSource = function (fn, errorLineText) {
     return result;
 };
 
-var processTestTitle = function (title, source) {
-    var sourceContains3Exclamations = (source.indexOf("!!!") >= 0);
-    var titleContains3Exclamations = (title.indexOf("!!!") >= 0);
-    //
-    if (sourceContains3Exclamations && !titleContains3Exclamations) {
-        title += " !!!";
-        titleContains3Exclamations = true;
-    }
-    //
-    if (titleContains3Exclamations) title = process3Exclamations(title);
-    //
-    return title;
-};
+//var processTestTitle = function (title, source) {
+//    var sourceContains3Exclamations = (source.indexOf("!!!") >= 0);
+//    var titleContains3Exclamations = (title.indexOf("!!!") >= 0);
+//    //
+//    if (sourceContains3Exclamations && !titleContains3Exclamations) {
+//        title += " !!!";
+//        titleContains3Exclamations = true;
+//    }
+//    //
+//    if (titleContains3Exclamations) title = process3Exclamations(title);
+//    //
+//    return title;
+//};
 
 var process3Exclamations = function (line) {
     var index = line.indexOf("!!!");

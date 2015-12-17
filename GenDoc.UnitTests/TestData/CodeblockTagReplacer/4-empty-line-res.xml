@@ -1,3 +1,8 @@
-﻿<pre class="prettyprint"><code>x = 1;
+<div>
+<div class="example-wrapper staticcode">
+<p class="example-label label-static" title="This code is not checked by unit testing system">Static code</p>
 
-y = 2;</code></pre>
+<pre  class="prettyprint"><code>x = 1;
+
+y = 2;</code></pre></div>
+</div>

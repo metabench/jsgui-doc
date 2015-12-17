@@ -1,6 +1,12 @@
-                <pre class="prettyprint"><code>var Data_Object_Ex = Data_Object.extend({
+                <div>
+<div class="example-wrapper staticcode">
+<p class="example-label label-static" title="This code is not checked by unit testing system">Static code</p>
+
+<pre  class="prettyprint"><code>var Data_Object_Ex = Data_Object.extend({
     fields: { Field1: "int", Field2: "text" }
 });
 //
 var data_object = new Data_Object_Ex();
-data_object.fields()  ==>  [["Field1", "int", { data_type: "int" }], ["Field2", "text", { data_type: "text" }]]</code></pre>
+data_object.fields()  ==>  [["Field1", "int", { data_type: "int" }], ["Field2", "text", { data_type: "text" }]]</code></pre></div>
+</div>
+

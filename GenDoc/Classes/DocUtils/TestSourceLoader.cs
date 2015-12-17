@@ -72,10 +72,11 @@ namespace GenDoc.Classes.DocUtils
 
         private HtmlNode selectTestTableNode(HtmlDocument htmlDocument, string testName)
         {
-            string expr = string.Format("//td[@class='title' and contains(text(), '{0}')]", testName);
-
+            //string expr = string.Format("//td[@class='title' and contains(text(), '{0}')]", testName);
+            string expr = string.Format("//td[@class='title' and text()='{0}']", testName);
+            //
             HtmlNodeCollection nodes = htmlDocument.DocumentNode.SelectNodes(expr);
-            if (nodes.Count < 1) throw new Exception(string.Format("Code not found: \"{0}\"", this.Src));
+            if ((nodes == null) || (nodes.Count < 1)) throw new Exception(string.Format("Code not found: \"{0}\"", this.Src));
             if (nodes.Count > 1) throw new Exception(string.Format("Ambiguity: there are {0} occurrencies of the code: \"{1}\"", nodes.Count, this.Src));
             //
             HtmlNode testTitleNode = nodes[0]; // htmlDocument.DocumentNode.SelectSingleNode(expr);
