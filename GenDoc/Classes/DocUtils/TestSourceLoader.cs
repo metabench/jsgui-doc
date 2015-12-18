@@ -73,7 +73,9 @@ namespace GenDoc.Classes.DocUtils
         private HtmlNode selectTestTableNode(HtmlDocument htmlDocument, string testName)
         {
             //string expr = string.Format("//td[@class='title' and contains(text(), '{0}')]", testName);
-            string expr = string.Format("//td[@class='title' and text()='{0}']", testName);
+            //string expr = string.Format("//td[@class='title' and text()='{0}']", testName);
+            //string expr = string.Format("//td[@data-type='test-title' and text()='{0}']", testName);
+            string expr = string.Format("//span[@data-type='test-title' and text()='{0}']", testName);
             //
             HtmlNodeCollection nodes = htmlDocument.DocumentNode.SelectNodes(expr);
             if ((nodes == null) || (nodes.Count < 1)) throw new Exception(string.Format("Code not found: \"{0}\"", this.Src));
@@ -82,7 +84,11 @@ namespace GenDoc.Classes.DocUtils
             HtmlNode testTitleNode = nodes[0]; // htmlDocument.DocumentNode.SelectSingleNode(expr);
             if (testTitleNode == null) throw new Exception("testTitleNode == null");
             //
-            HtmlNode testTrNode = testTitleNode.ParentNode;
+            HtmlNode testTdNode = testTitleNode.ParentNode;
+            if (testTdNode == null) throw new Exception("testTdNode == null");
+            if (testTdNode.Name != "td") throw new Exception("testTdNode.Name != \"td\"");
+            //
+            HtmlNode testTrNode = testTdNode.ParentNode;
             if (testTrNode == null) throw new Exception("testTrNode == null");
             if (testTrNode.Name != "tr") throw new Exception("testTrNode.Name != \"tr\"");
             //

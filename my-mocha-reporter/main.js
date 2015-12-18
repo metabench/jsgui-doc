@@ -336,9 +336,14 @@ var calcTestHtml = function (test, suite, status) {
     if (processedTestSource.indexOf("!!!") >= 0) textDuration += '&nbsp;&nbsp;&nbsp;<mark>!!!</mark>';
     //
     var testTitle = test.title;
+    var testTitleClass = "title";
+    var testTitleSpanClass = "";
     if (testTitle.indexOf("!!!") == 0) {
+        testTitle = testTitle.substr(3).trim();
+        testTitleClass = "title exclamations";
+        testTitleSpanClass = "exclamations";
         //testTitle = "<mark>" + testTitle.substr(3).trim() + "</mark>";
-        testTitle = "<mark>" + testTitle + "</mark>";
+        //testTitle = "<mark>" + testTitle + "</mark>";
     }
 
     html += '<table cellspacing="0" cellpadding="0">' + CRLF +
@@ -348,7 +353,10 @@ var calcTestHtml = function (test, suite, status) {
         '<td class="duration">' + textDuration + '</td>' + CRLF +
         //'<td class="title">' + processTestTitle(test.title, processedTestSource) + '</td>' + CRLF +
         //'<td class="title">' + test.title + '</td>' + CRLF +
-        '<td class="title">' + testTitle + '</td>' + CRLF +
+        //'<td class="title" data-type="test-title">' + testTitle + '</td>' + CRLF +
+        //'<td class=' + testTitleClass + ' data-type="test-title"><span>' + testTitle + '</span></td>' + CRLF +
+        //'<td class="' + testTitleClass + '" data-type="test-title">' + testTitle + '</td>' + CRLF +
+        '<td class="' + testTitleClass + '" data-type="test-title"><span class="' + testTitleSpanClass + '" data-type="test-title">' + testTitle + '</span></td>' + CRLF +
         htmlTdState + CRLF +
         '</tr>' + CRLF +
         '</table>' + CRLF;

@@ -1214,20 +1214,7 @@
                 </@parms>
 
                 <h5>Example</h5>
-                <@codeblock src="/z_core/data-object/Data_Object.spec.js:2-level inheritance" />
-                <@codeblock>
-                    var Data_Object_Ex = Data_Object.extend({
-                        fields: { Field1: "int", Field2: "text" }
-                    });
-                    //
-                    Data_Object.get_chained_fields(Data_Object_Ex)  ==>  [[1, ["Field1", "int"]], [2, ["Field2", "text"]]]
-                    //
-                    var Data_Object_Ex_2 = Data_Object_Ex.extend({
-                        fields: { Field3: "number" }
-                    });
-                    //
-                    Data_Object.get_chained_fields(Data_Object_Ex_2)  ==>  [[1, ["Field1", "int"]], [2, ["Field2", "text"]], [1, ["Field3", "number"]]]
-                </@codeblock>
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:get_chained_fields() - doc example" />
             </@item>
 
             <!-----------------------------------------
@@ -1250,10 +1237,7 @@
                 </@parms>
 
                 <h5>Example</h5>
-                <@codeblock>
-                    var chained_fields = [[1, ["Field1", "int"]], [2, ["Field2", "text"]], [1, ["Field3", "number"]]];
-                    Data_Object.chained_fields_to_fields_list(chained_fields)  ==>  [["Field1", "int"], ["Field2", "text"], ["Field3", "number"]]
-                </@codeblock>
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:chained_fields_to_fields_list() - doc example" />
             </@item>
 
         </@section>
@@ -1275,16 +1259,7 @@
                     The feature can be activated for a derived class. In this case it will connect <a href="#feature-chained-fields">chained fields</a> 
                     defined for the derived class and base classes. For example:
                 </p>
-                <@codeblock>
-                    var Data_Object_Ex = Data_Object.extend({
-                        fields: { Field1: "int", Field2: "text" },
-                        connect_fields: true
-                    });
-                    var data_object = new Data_Object_Ex();
-                    //
-                    data_object.Field1([123]);
-                    data_object.Field1()  ==>  [123];
-                </@codeblock>
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:connect_fields: doc example" />
             </@item>
             
             <!-----------------------------------------
@@ -1310,28 +1285,7 @@
                 </div>
 
                 <h5>Example</h5>
-                <@codeblock>
-                    var data_object = new Data_Object();
-                    data_object.using_fields_connection()  ==>  false
-                    //
-                    var Data_Object_Ex = Data_Object.extend({
-                        connect_fields: false
-                    });
-                    data_object = new Data_Object_Ex();
-                    data_object.using_fields_connection()  ==>  false
-                    //
-                    var Data_Object_Ex_2 = Data_Object_Ex.extend({
-                        connect_fields: true
-                    });
-                    data_object = new Data_Object_Ex_2();
-                    data_object.using_fields_connection()  ==>  true
-                    //
-                    var Data_Object_Ex_3 = Data_Object_Ex_2.extend({
-                        connect_fields: false
-                    });
-                    data_object = new Data_Object_Ex_3();
-                    data_object.using_fields_connection()  ==>  false
-                </@codeblock>
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:using_fields_connection()" />
             </@item>
                         
             <!-----------------------------------------
@@ -1352,25 +1306,7 @@
                 </@parms>
 
                 <h5>Example</h5>
-                <@codeblock>
-                    var data_object = new Data_Object();
-                    //
-                    data_object.connect_fields("Field1");
-                    //
-                    // connect_fields() allows to create a function to get/set a field value:
-                    //
-                    data_object.Field1([123]);
-                    data_object.Field1()  ==>  [123]
-                    //
-                    // it can override any other method: !!!
-                    //
-                    data_object.stringify()  ==>  'Data_Object({"Field1": [123]})'
-                    //
-                    data_object.connect_fields("stringify");
-                    //
-                    data_object.stringify([45]);
-                    data_object.stringify()  ==>  [45]
-                </@codeblock>
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:connect_fields(name): doc example" />
 
             </@item>
 
@@ -1385,17 +1321,7 @@
                 </div>
 
                 <h5>Example</h5>
-                <@codeblock>
-                    var data_object = new Data_Object();
-                    data_object.connect_fields(["Field2", "Field3"]);
-                    //
-                    data_object.Field2([222]);
-                    data_object.Field3([333]);
-                    //
-                    data_object.Field2()  ==>  [222]
-                    data_object.Field3()  ==>  [333]
-                </@codeblock>
-
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:connect_fields(array): doc example" />
             </@item>
 
             <!-----------------------------------------
@@ -1405,16 +1331,11 @@
             <@item title="connect_fields(obj)">
                 
                 <div class="description">
-                    <p>Throws an exception when an object is passed as parameter.</p>
+                    <p><mark>Throws an exception when an object is passed as parameter.</mark></p>
                 </div>
 
                 <h5>Example</h5>
-                <@codeblock>
-                    var data_object = new Data_Object();
-                    //
-                    data_object.connect_fields({})  ==>  exception!
-                </@codeblock>
-
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:connect_fields(obj): doc example" />
             </@item>
            
             </@overloads>
@@ -1466,17 +1387,7 @@
                 </@parms>
 
                 <h5>Example</h5>
-                <@codeblock>
-                    var data_object = new Data_Object();
-                    //
-                    // it seems that the constraints should be an object with key/value pairs, probably field_name/field_constraint:
-                    //
-                    var myConstraints = { Field1: "int", Field2: "number" };
-                    data_object.constraints(myConstraints);
-                    //
-                    data_object._field_constraints  ==>  myConstraints
-                    data_object.constraints()  ==>  undefined
-                </@codeblock>
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:constraints()" />
 
             </@item>
 
@@ -1501,19 +1412,7 @@
                 </@parms>
 
                 <h5>Example</h5>
-                <@codeblock>
-                    var data_object = null;
-                    //
-                    // !!! data_object.set() creates an internal Data_Value, it does not matches the constraints always:
-                    //
-                    data_object = new Data_Object();
-                    data_object.set("Field1", 12.5);
-                    data_object.get("Field1")  ==>  new Data_Value({ value: 12.5 })
-                    //
-                    data_object.matches_field_constraint("Field1", "int")  ==>  false
-                    data_object.matches_field_constraint("Field1", "number")  ==>  false // !!!
-                </@codeblock>
-
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:matches_field_constraint()" />
             </@item>
 
             <!-----------------------------------------
@@ -1537,24 +1436,7 @@
                 </@parms>
 
                 <h5>Example</h5>
-                <@codeblock>
-                    var data_object = new Data_Object();
-                    //
-                    // set constraints:
-                    //
-                    var myConstraints = { Field1: "int", Field2: "number" };
-                    data_object.constraints(myConstraints);
-                    //
-                    // set values for other Data_Object:
-                    //
-                    var data_object2 = new Data_Object();
-                    data_object2.set("Field1", 1);
-                    data_object2.set("Field2", 1.5);
-                    //
-                    // returns false because of the Data_Value wrapping:
-                    data_object.obj_matches_field_constraints(data_object2)  ==>  false
-                </@codeblock>
-
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:obj_matches_field_constraints() - doc example" />
             </@item>
 
             <!-----------------------------------------
@@ -1570,21 +1452,7 @@
                 </div>
 
                 <h5>Example</h5>
-                <@codeblock>
-                    var data_object = new Data_Object();
-                    //
-                    var field_info = { data_type: "int" };
-                    data_object.ensure_field_constraint("Field1", field_info);
-                    //
-                    data_object.get_field_data_type_constraint("Field1")  ==  Constraint.from_str("int") // instanceof Constraint.Field_Data_Type
-                    //
-                    // set_field_data_type_constraint() just removes the constraint. The second parameter (data_type_constructor, e.g. String) does not matter.
-                    //
-                    data_object.set_field_data_type_constraint("Field1", String);
-                    //
-                    data_object.get_field_data_type_constraint("Field1")  ==>  undefined
-                </@codeblock>
-
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:set_field_data_type_constraint() - doc example" />
             </@item>
 
             <!-----------------------------------------
@@ -1599,16 +1467,7 @@
                 </div>
 
                 <h5>Example</h5>
-                <@codeblock>
-                    var data_object = new Data_Object();
-                    //
-                    data_object.get_field_data_type_constraint("Field1")  ==>  undefined
-                    //
-                    data_object.ensure_field_constraint("Field1", { data_type: "int" });
-                    //
-                    data_object.get_field_data_type_constraint("Field1")  ==  Constraint.from_str("int") // instanceof Constraint.Field_Data_Type
-                </@codeblock>
-
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:get_field_data_type_constraint() - doc example" />
             </@item>
 
             <!-----------------------------------------
@@ -1629,18 +1488,7 @@
                 </div>
 
                 <h5>Example</h5>
-                <@codeblock>
-                    var data_object = new Data_Object();
-                    //
-                    data_object.get_field_data_type_constraint("Field1")  ==>  undefined
-                    //
-                    data_object.ensure_field_constraint("Field1", { data_type: "int" });
-                    //
-                    data_object.get_field_data_type_constraint("Field1")  ==  Constraint.from_str("int") // instanceof Constraint.Field_Data_Type
-                    //
-                    //data_object.ensure_field_constraint("Field1", { data_type: "int" }); - exception!
-                </@codeblock>
-
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:ensure_field_constraint() - doc example" />
             </@item>
 
             <!-----------------------------------------
@@ -1657,14 +1505,7 @@
                     </div>
 
                     <h5>Example</h5>
-                    <@codeblock>
-                        var data_object = new Data_Object();
-                        //
-                        data_object.constraints({ Field1: "int", Field2: "number" });
-                        //
-                        data_object.matches_field_constraints()  ==>  undefined  // !!!
-                    </@codeblock>
-
+                    <@codeblock src="/z_core/data-object/Data_Object.spec.js:matches_field_constraints() - doc example" />
                 </@item>
 
                 <!-----------------------------------------
@@ -1679,12 +1520,7 @@
                     </div>
 
                     <h5>Example</h5>
-                    <@codeblock>
-                        var data_object = new Data_Object();
-                        //
-                        data_object.matches_field_constraints({ Field1: "int", Field2: "number" })  ==>  undefined  // !!!
-                    </@codeblock>
-
+                    <@codeblock src="/z_core/data-object/Data_Object.spec.js:matches_field_constraints(obj) - doc example" />
                 </@item>
 
                 <!-----------------------------------------
@@ -1707,18 +1543,7 @@
                     </@parms>
 
                     <h5>Example</h5>
-                    <@codeblock>
-                        var data_object = new Data_Object();
-                        //
-                        data_object.constraints({ Field1: "int", Field2: "number" });
-                        //
-                        var data_object2 = new Data_Object();
-                        data_object2.set("Field1", 1);
-                        data_object2.set("Field2", 1.5);
-                        //
-                        data_object.matches_field_constraints(data_object2)  ==>  false
-                    </@codeblock>
-
+                    <@codeblock src="/z_core/data-object/Data_Object.spec.js:matches_field_constraints(data_object) - doc example" />
                 </@item>
 
             </@overloads>
@@ -1761,20 +1586,7 @@
                 </div>
 
                 <h5>Example</h5>
-                <@codeblock>
-                    var data_object = new Data_Object();
-                    //
-                    // ____requires() returns _requirements member variable
-                    // there is no way to set this variable using methods
-                    //
-                    assert.deepEqual(data_object._requirements, undefined);
-                    assert.deepEqual(data_object.____requires(), undefined);
-                    //
-                    var requirements = { abc: 123 };
-                    data_object._requirements = requirements;
-                    assert.deepEqual(data_object.____requires(), requirements);
-                </@codeblock>
-
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:____requires()" />
             </@item>
 
             <!-----------------------------------------
@@ -1789,22 +1601,7 @@
                 </div>
 
                 <h5>Example</h5>
-                <@codeblock>
-                    var data_object = new Data_Object();
-                    //
-                    // returns true if the requirements are not set
-                    //
-                    assert.deepEqual(data_object._requirements, undefined);
-                    assert.deepEqual(data_object._____meets_requirements(), true);
-                    //
-                    // returns undefined if the requirements are set to anything
-                    //
-                    var requirements = { abc: 123 };
-                    data_object._requirements = requirements;
-                    assert.deepEqual(data_object._____meets_requirements(), undefined);
-                    assert.deepEqual(data_object._____meets_requirements("Field1"), undefined);
-                </@codeblock>
-
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:_____meets_requirements()" />
             </@item>
 
             <!-----------------------------------------
@@ -1819,15 +1616,7 @@
                 </div>
 
                 <h5>Example</h5>
-                <@codeblock>
-                    var data_object = new Data_Object();
-                    //
-                    // always returns undefined
-                    //
-                    assert.deepEqual(data_object._____check_requirements(), undefined);
-                    assert.deepEqual(data_object._____check_requirements("Field1"), undefined);
-                    assert.deepEqual(data_object._____check_requirements(true), undefined);
-                </@codeblock>
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:_____check_requirements()" />
             </@item>
 
         </@section>
@@ -1848,15 +1637,7 @@
                 </div>
 
                 <h5>Example</h5>
-                <@codeblock>
-                    var data_object = new Data_Object();
-                    //
-                    data_object.set("Field1", 111);
-                    data_object.set("Field2", 222);
-                    //
-                    data_object.keys()  ==>  ["Field1", "Field2"]
-                </@codeblock>
-
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:keys()" />
             </@item>
 
             <!-----------------------------------------
@@ -1869,15 +1650,7 @@
                 </div>
 
                 <h5>Example</h5>
-                <@codeblock>
-                    var data_object = new Data_Object();
-                    //
-                    data_object.set("Field1", 111);
-                    data_object.set("Field2", 222);
-                    //
-                    data_object.stringify()  ==>  'Data_Object({"Field1": 111, "Field2": 222})'
-                </@codeblock>
-
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:stringify()" />
             </@item>
 
             <!-----------------------------------------
@@ -1890,15 +1663,7 @@
                 </div>
 
                 <h5>Example</h5>
-                <@codeblock>
-                    var data_object = new Data_Object();
-                    //
-                    data_object.set("Field1", 111);
-                    data_object.set("Field2", 222);
-                    //
-                    data_object.toObject()  ==>  {"Field1": 111, "Field2": 222}
-                </@codeblock>
-
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:toObject()" />
             </@item>
        
             <!-----------------------------------------
@@ -1913,13 +1678,7 @@
                 </div>
 
                 <h5>Example</h5>
-                <@codeblock>
-                    var data_object = new Data_Object();
-                    //
-                    var jsgui = data_object.mod_link();
-                    //
-                    jsgui.get_truth_map_from_arr(["a", "b", "c"])  ==>  { a: true, b: true, c: true}
-                </@codeblock>
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:mod_link()" />
             </@item>
 
             <!-----------------------------------------
@@ -1939,20 +1698,7 @@
                 </@parms>
 
                 <h5>Example</h5>
-                <@codeblock>
-                    var data_object = new Data_Object();
-                    //
-                    var result = [];
-                    var callback = function (name, value) { result.push([name, value]) };
-                    //
-                    data_object.set("Field1", ["abc"]);
-                    data_object.set("Field2", [123]);
-                    //
-                    data_object.each(callback);
-                    //
-                    assert.deepEqual(result, [["Field1", ["abc"]], ["Field2", [123]]]);
-                </@codeblock>
-
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:each()" />
             </@item>
 
         </@section>
@@ -1973,6 +1719,9 @@
                         Returns <code>jsgui.input_processors</code> variable.
                     </p>
                 </div>
+
+                <h5>Example</h5>
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:_get_input_processors()" />
             </@item>
             
             <!-----------------------------------------
@@ -1995,11 +1744,7 @@
                 </@parms>
             
                 <h5>Example</h5>
-                <@codeblock>
-                    Data_Object.get_Enhanced_Data_Object()  ==>  null
-                    Data_Object.set_Enhanced_Data_Object(Enhanced_Data_Object);
-                    Data_Object.get_Enhanced_Data_Object()  ==>  Enhanced_Data_Object
-                </@codeblock>
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:get_Enhanced_Data_Object(), set_Enhanced_Data_Object()" />
             </@item>
 
             <!-----------------------------------------
@@ -2014,11 +1759,7 @@
                 </div>
                 
                 <h5>Example</h5>
-                <@codeblock>
-                    Data_Object.get_Enhanced_Data_Object()  ==>  null
-                    Data_Object.set_Enhanced_Data_Object(Enhanced_Data_Object);
-                    Data_Object.get_Enhanced_Data_Object()  ==>  Enhanced_Data_Object
-                </@codeblock>
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:get_Enhanced_Data_Object(), set_Enhanced_Data_Object()" />
             </@item>
 
             <!-----------------------------------------
@@ -2047,29 +1788,7 @@
                     <code>.abstract = true</code> for the passed constructor:
                 </p>
                 
-                <@codeblock>
-	                //
-                    // everything is ok:
-	                String.abstract  ==> undefined
-	                stringify(new Data_Object(String))  ==>  "Data_Object({})"
-	                stringify(new Collection(String))  ==>  "Collection()"
-	                //
-	                // Collection(String) call sets String.abstract = true:
-	                var abstract_collection = Collection(String);
-	                //
-                    // now it's broken:
-	                String.abstract  ==>  true
-	                stringify(new Data_Object(String))  ==>  "Data_Object(undefined)"
-	                stringify(new Collection(String))  ==>  "~Collection(String)"
-	                //
-                    // fix back:
-	                delete String.abstract;
-	                //
-                    // now it's fixed:
-	                String.abstract  ==> undefined
-	                stringify(new Data_Object(String))  ==>  "Data_Object({})"
-	                stringify(new Collection(String))  ==>  "Collection()"
-                </@codeblock>
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:extend_side_effect" />
             </@item>
         
         
