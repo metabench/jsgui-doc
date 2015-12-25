@@ -67,6 +67,8 @@ namespace GenDoc.Classes
                             FileSystemNode docFileSubNode = docNode.FindSub(docSubNode.Name + ".html");
                             if (docFileSubNode != null)
                             {
+                                // doc dir and doc file, e.g. "collection.js" dir and "collection.js.html" file:
+                                //
                                 resultSubNode.Name += ".html";
                                 resultSubNode.Kind = NavNodeKind.DirPage;
                             }
@@ -81,6 +83,10 @@ namespace GenDoc.Classes
                             NavNode resultSubNode = new NavNode(docSubNode.Name, NavNodeKind.Page);
                             result.AddSub(resultSubNode);
                         }
+                        else
+                        {
+                            // the pair NavNodeKind.DirPage file, e.g. "collection.js.html"
+                        }
                     }
                 }
             }
@@ -94,6 +100,8 @@ namespace GenDoc.Classes
                     FileSystemNode docSubNode = FileSystemNode.FindSub(docNode, calcDocNodeName(srcSubNode));
                     if (docSubNode == null)
                     {
+                        // the src js file is not documented yet:
+                        //
                         if (srcSubNode.IsDir)
                         {
                             NavNode resultSubNode = CreateNavNode(srcSubNode, docSubNode);

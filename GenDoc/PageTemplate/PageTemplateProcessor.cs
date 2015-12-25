@@ -34,6 +34,19 @@ namespace GenDoc.PageTemplate
             this.doWritePage(pageFileName, this.createContentWithH1(contentHtml, title), title);
         }
 
+        public void WritePageText(string pageFileName, string text)
+        {
+            string title = "Untitled";
+            //
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("<pre>");
+            sb.AppendLine(text);
+            sb.AppendLine("</pre>");
+            //
+            this.doWritePage(pageFileName, sb.ToString(), title);
+        }
+
+
         #endregion
 
         #region Private

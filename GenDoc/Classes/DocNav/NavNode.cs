@@ -13,8 +13,6 @@ namespace GenDoc.Classes
     {
         public string Name { get; set; }
         public NavNodeKind Kind { get; set; }
-        public bool IsDocCompleted { get; set; }
-        public bool IsTestCompleted { get; set; }
 
         public NavNode Parent { get; private set; }
         public List<NavNode> SubNodes { get; private set; }
@@ -67,11 +65,6 @@ namespace GenDoc.Classes
             {
                 result = result.Remove(result.Length - 4);
             }
-            //
-            //if (result.StartsWith("!_", StringComparison.OrdinalIgnoreCase))
-            //{
-            //    result = result.Substring(2);
-            //}
             //
             return result;
         }

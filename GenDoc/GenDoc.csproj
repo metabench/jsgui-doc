@@ -62,10 +62,14 @@
     <Compile Include="Classes\DocUtils\SignatureParser.cs" />
     <Compile Include="Classes\DocUtils\TagProcessor.cs" />
     <Compile Include="Classes\DocUtils\TestSourceLoader.cs" />
+    <Compile Include="Classes\Env\CommandLine.cs" />
     <Compile Include="Classes\Env\Settings.cs" />
     <Compile Include="Classes\TestsProcessing\RunMocha.cs" />
     <Compile Include="Classes\TestsProcessing\RunTests.cs" />
     <Compile Include="Classes\DocUtils\TextProcessor.cs" />
+    <Compile Include="Classes\TestsProcessing\TestDirNode.cs" />
+    <Compile Include="Classes\TestsProcessing\TestItemNode.cs" />
+    <Compile Include="Classes\TestsProcessing\TestResultsInfo.cs" />
     <Compile Include="PageTemplate\PageTemplateProcessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

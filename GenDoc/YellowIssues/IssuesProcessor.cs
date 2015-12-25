@@ -306,14 +306,6 @@ namespace GenDoc.YellowIssues
             return sb.ToString();
         }
 
-        //private string processTemplate(string title, string contentHtml)
-        //{
-        //    string text = File.ReadAllText(this.TemplateFileName);
-        //    text = text.Replace("%TITLE%", title);
-        //    text = text.Replace("%CONTENT%", contentHtml);
-        //    return text;
-        //}
-
         #endregion
 
     }

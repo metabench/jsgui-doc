@@ -137,35 +137,8 @@
                        It has no data_type constraint, and no indexes.
                        <mark>As result, the collection <code>has()</code> and <code>remove()</code> methods does not work properly:</mark>
                     </p>
-                    <@codeblock>
-	                    var edo = new Enhanced_Data_Object();
-	                    var flags = edo.get('flags');
-	                    stringify(flags)  ==>  "Collection()"
-                        //
-	                    flags.add('selectable');
-	                    flags.add('resizable');
-	                    stringify(flags)  ==>  'Collection("selectable", "resizable")'
-	                    //
-	                    // the Enhanced_Data_Object() constructor does not set data_type constraint
-	                    // for the "flags" collection. 
-                        // So, flags.has() result is always undefined:
-	                    flags._data_type_constraint  ==>  undefined
-	                    flags.has('selectable')  ==>  undefined
-	                    flags.has('resizable')  ==>  undefined
-	                    //
-                        //
-	                    // the Enhanced_Data_Object() constructor does not set indexes
-	                    // for the "flags" collection. 
-	                    // So, flags.remove() throws an error:
-	                    assert.throws(function(){ flags.remove('selectable');});
-	                    // must be: assert.equal(stringify(flags), 'Collection("resizable")');
-                        //
-	                    flags.has('selectable')  ==>  undefined
-	                    flags.has('resizable')  ==>  undefined
-                        //
-	                    edo.add_flag('hidden');
-	                    stringify(flags)  ==>  'Collection("selectable", "resizable", "hidden")'
-                    </@codeblock>
+
+                    <@codeblock src="/z_core/data-object/Enhanced_Data_Object.spec.js:flags issue (doc: new Enhanced_Data_Object())" />
                 </div>
             
             </@item>
@@ -752,12 +725,7 @@
                     <@parm name="propsToMerge" type="string" description="not used" />
                 </@parms>
 
-                <h5>Example</h5>
-                <@codeblock>
-                    var EDO2 = new Enhanced_Data_Object();
-                    var edo2 = new EDO2();
-                </@codeblock>
-
+                <@codeblock src="/z_core/data-object/Enhanced_Data_Object.spec.js:extend() doc example" />
             </@item>
             
             <!-----------------------------------------
@@ -783,29 +751,8 @@
                     See <a href="@link:/core/data-object.js/Data_Object.html#extend_side_effect">Data_Object.extend() side effect</a>
                     for an additional info.
                 </p>
-                
-                <@codeblock>
-	                // everything is ok:
-	                String.abstract  ==>  undefined
-	                stringify(new Data_Object(String))  ==>  "Data_Object({})"
-	                stringify(new Collection(String))  ==>  "Collection()"
-	                //
-	                // require('enhanced-data-object') calls Collection(String) inside, and sets String.abstract = true:
-	                var Enhanced_Data_Object = require('../../../core/enhanced-data-object');
-	                //
-	                // now it's broken:
-	                String.abstract  ==>  true
-	                stringify(new Data_Object(String))  ==>  "Data_Object(undefined)"
-	                stringify(new Collection(String))  ==>  "~Collection(String)"
-	                //
-	                // fix back:
-	                delete String.abstract;
-	                //
-	                // now it's fixed:
-	                String.abstract  ==>  undefined
-	                stringify(new Data_Object(String))  ==>  "Data_Object({})"
-	                stringify(new Collection(String))  ==>  "Collection()"
-                </@codeblock>
+
+                <@codeblock src="/z_core/side-effects/collection_string.spec.js:test require(enhanced-data-object)" />
             </@item>
 
 

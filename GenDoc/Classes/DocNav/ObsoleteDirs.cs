@@ -34,10 +34,20 @@ namespace GenDoc.Classes
             foreach (string obsoleteDirName in this.obsoleteDirNames)
             {
                 string fullObsoleteDirName = Path.Combine(this.dirInfo.FullName, obsoleteDirName);
-                Directory.Delete(fullObsoleteDirName, recursive: true);
+                if (Directory.Exists(fullObsoleteDirName))
+                {
+                    Directory.Delete(fullObsoleteDirName, recursive: true);
+                }
             }
         }
 
+        public void Print()
+        {
+            foreach (string obsoleteDirName in this.obsoleteDirNames)
+            {
+                Console.WriteLine("ObsoleteDirs: " + obsoleteDirName);
+            }
+        }
 
     }
 }

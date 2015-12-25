@@ -31,7 +31,9 @@ module.exports = function(runner, options) {
         pass: 0,
         fail: 0,
         pending: 0,
-        duration: 0
+        duration: 0,
+        issues: 0,
+        big_issues: 0
     };
 
     // initialize configuration
@@ -91,6 +93,8 @@ module.exports = function(runner, options) {
             if (status.pass > 0) summary += "  pass: " + status.pass;
             if (status.fail > 0) summary += "  fail: " + status.fail;
             if (status.pending > 0) summary += "  pending: " + status.pending;
+            if (status.big_issues > 0) summary += "  big_issues: " + status.big_issues;
+            if (status.issues > 0) summary += "  issues: " + status.issues;
             console.log(summary);
 
             if (filePath) {
@@ -263,10 +267,12 @@ var calcDocHtml = function (status, root) {
     //
     doc += '<div class="totalsLeft">' +
         '<div>Run Time: ' + getTime(status.duration) + '</div>' +
-        '<div>Total: ' + totalTests + '</div>' +
-        '<div class="totalPassed">Passed: ' + status.pass + '</div>' +
-        '<div class="totalFailed">Failed: ' + status.fail + '</div>' +
-        '<div class="totalPending">Pending: ' + status.pending + '</div>' +
+        '<div class="totalTotal">Total: <span class="infoTotal">' + totalTests + '</span></div>' +
+        '<div class="totalPassed">Passed: <span class="infoPassed">' + status.pass + '</span></div>' +
+        '<div class="totalFailed">Failed: <span class="infoFailed">' + status.fail + '</span></div>' +
+        '<div class="totalPending">Pending: <span class="infoPending">' + status.pending + '</span></div>' +
+        //'<div class="totalIssues">Issues: <span class="infoIssues">' + status.issues + '</span></div>' +
+        '<div class="totalIssues">Issues: ' + '<span class="infoIssues"><strong>' + status.big_issues +'</strong>+' + status.issues + '</span></div>' +
         '</div>';
     //
     doc += '<div class="totalsRight" style="width: ' + width + 'px;">' +
@@ -311,6 +317,39 @@ var calcTestHtml = function (test, suite, status) {
     //
     var detailId = getNextDetailId();
     //
+    var hasIssues = false;
+    var hasBigIssues = false;
+    //
+    var textDuration = (test.duration != undefined) ? test.duration + ' ms' : '';
+    //
+    var errorHtml = calcTestErrorHtml(test.err); // process error first to save possible error line number for the getErrorLineText() call
+    //
+    var processedTestSource = processSource(test.fn, getErrorLineText());
+    //    
+    if (processedTestSource.indexOf("!!!!") >= 0) {
+        textDuration += '&nbsp;&nbsp;&nbsp;<mark>!!!</mark>';
+        hasBigIssues = true;
+    } else if (processedTestSource.indexOf("!!!") >= 0) {
+        textDuration += '&nbsp;&nbsp;&nbsp;<mark>!!!</mark>';
+        hasIssues = true;
+    }
+    //
+    var testTitle = test.title;
+    var testTitleClass = "title";
+    var testTitleSpanClass = "";
+    if (testTitle.indexOf("!!!") == 0) {
+        testTitle = testTitle.substr(3).trim();
+        hasBigIssues = true;
+    }
+    //
+    if (hasBigIssues) {
+        //testTitleClass = "title exclamations";
+        testTitleSpanClass = "exclamations big-issues";
+    }
+    //
+    if (hasIssues) status.issues++;
+    if (hasBigIssues) status.big_issues++;
+    //
     if (test.state == 'failed') {
         htmlTr = '<tr id="' + suite.guid + 'err' + status.fail + '" onclick="showHide(\'' + detailId + '\', \'' + suite.guid + '\')" class="' + suite.guid + ' failed">';
         htmlTdState = '<td class="state failedState">Failed</td>';
@@ -327,25 +366,6 @@ var calcTestHtml = function (test, suite, status) {
         detailClass += detailId + ' pending';
     }
     //
-    var textDuration = (test.duration != undefined) ? test.duration + ' ms' : '';
-    //
-    var errorHtml = calcTestErrorHtml(test.err); // process error first to save possible error line number for the getErrorLineText() call
-    //
-    var processedTestSource = processSource(test.fn, getErrorLineText());
-    //
-    if (processedTestSource.indexOf("!!!") >= 0) textDuration += '&nbsp;&nbsp;&nbsp;<mark>!!!</mark>';
-    //
-    var testTitle = test.title;
-    var testTitleClass = "title";
-    var testTitleSpanClass = "";
-    if (testTitle.indexOf("!!!") == 0) {
-        testTitle = testTitle.substr(3).trim();
-        testTitleClass = "title exclamations";
-        testTitleSpanClass = "exclamations";
-        //testTitle = "<mark>" + testTitle.substr(3).trim() + "</mark>";
-        //testTitle = "<mark>" + testTitle + "</mark>";
-    }
-
     html += '<table cellspacing="0" cellpadding="0">' + CRLF +
         htmlTr + CRLF +
         addIndentation(suite.depth + 1) + CRLF + // tests reside one step deaper than its parent suite
@@ -423,6 +443,7 @@ var processSource = function (fn, errorLineText) {
             line = line.substr(indent);
         }
         //
+        line = htmlEntities(line);
         line = process3Exclamations(line);
         //
         if (isErrorLine) line = '<mark class="testerror">' + line + '</mark>';
@@ -431,6 +452,10 @@ var processSource = function (fn, errorLineText) {
     }
     //
     return result;
+};
+
+var htmlEntities = function (str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 };
 
 //var processTestTitle = function (title, source) {

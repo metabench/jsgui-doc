@@ -1788,7 +1788,7 @@
                     <code>.abstract = true</code> for the passed constructor:
                 </p>
                 
-                <@codeblock src="/z_core/data-object/Data_Object.spec.js:extend_side_effect" />
+                <@codeblock src="/z_core/side-effects/collection_string.spec.js:test Collection(String)" />
             </@item>
         
         

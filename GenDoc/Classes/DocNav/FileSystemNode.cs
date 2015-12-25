@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace GenDoc.Classes
 {
     class FileSystemNode
     {
+
         public string Name { get; set; }
         public FileSystemNode Parent { get; private set; }
         public List<FileSystemNode> SubNodes { get; private set; }
@@ -70,5 +72,24 @@ namespace GenDoc.Classes
                 return string.Compare(x.Name, y.Name);
             }
         }
+
+        #region Utils
+
+        // -------------------------------------
+        //              Utils
+        // -------------------------------------
+
+        public void PrintToDebug(string indent = "")
+        {
+            Debug.WriteLine(indent + this.Name);
+            foreach (FileSystemNode sub in this.SubNodes)
+            {
+                sub.PrintToDebug(indent + "  ");
+            }
+        }
+
+        #endregion
+
+
     }
 }

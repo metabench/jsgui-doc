@@ -27,13 +27,15 @@ namespace GenDoc
 
         static void Main(string[] args)
         {
-            Classes.TestsProcessing.RunTests.Run();
-            //
-            pageTemplateProcessor = new PageTemplateProcessor(Settings.PageTemplateFileName);
-            //
-            issuesProcessor.DocOutDir = Settings.DocOutDir;
-            issuesProcessor.IssuesOutDir = Settings.IssuesOutDir;
-            issuesProcessor.PageTemplateProcessor = pageTemplateProcessor;
+            try
+            {
+                CommandLine.Prepare(args);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(string.Format("Command line error: {0}", ex.Message));
+                return;
+            }
             //
             if (!Directory.Exists(Settings.DocSourceDir))
             {
@@ -41,6 +43,14 @@ namespace GenDoc
                 return;
             }
             //
+            pageTemplateProcessor = new PageTemplateProcessor(Settings.PageTemplateFileName);
+            Settings.pageTemplateProcessor = pageTemplateProcessor;
+            //
+            Classes.TestsProcessing.RunTests.Run();
+            //
+            issuesProcessor.DocOutDir = Settings.DocOutDir;
+            issuesProcessor.IssuesOutDir = Settings.IssuesOutDir;
+            issuesProcessor.PageTemplateProcessor = pageTemplateProcessor;
             //
             processDir(new DirectoryInfo(Settings.DocSourceDir), Settings.DocOutDir);
             //
@@ -110,7 +120,7 @@ namespace GenDoc
             //
             pageTemplateProcessor.WritePage(pageFileName, contentHtml);
             //
-            issuesProcessor.ProcessYellowIssues(pageFileName, contentHtml); // text);
+            issuesProcessor.ProcessYellowIssues(pageFileName, contentHtml);
         }
 
         private static string preprocessContent(string contentHtml)
@@ -128,22 +138,6 @@ namespace GenDoc
 
         #endregion
 
-        #region Utils
-
-        // -------------------------------------
-        //              Utils
-        // -------------------------------------
-
-        private static void printNode(FileSystemNode node, string indent = "")
-        {
-            Debug.WriteLine(indent + node.Name);
-            foreach(FileSystemNode sub in node.SubNodes)
-            {
-                printNode(sub, indent + "  ");
-            }
-        }
-
-        #endregion
 
     }
 }

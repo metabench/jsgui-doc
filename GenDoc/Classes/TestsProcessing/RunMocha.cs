@@ -11,53 +11,60 @@ namespace GenDoc.Classes.TestsProcessing
 {
     class RunMocha
     {
+
         public static void Run(string testRelFileName)
         {
-            //string testDir = @"D:\WORK\RentACoder\James\Work\Main\Github-jsgui\ws\js\test";
-            //string outDir = @"D:\WORK\RentACoder\James\Work\Doc\DocWebSite\jsgui-doc\tests";
-            //string mochaFileName = @"C:\Users\-\AppData\Roaming\npm\node_modules\mocha\bin\mocha";
             string testDir = Settings.TestsSourceDir;
             string outDir = Settings.TestsOutDir;
-            string mochaFileName = Settings.TestsMochaFileName;
             //
             string testFileName = Path.Combine(testDir, testRelFileName);
             string outFileName = Path.Combine(outDir, testRelFileName) + ".html";
+            //
+            Run(testFileName, outFileName);
+        }
 
-            //ProcessStartInfo startInfo = new ProcessStartInfo("mocha.cmd", @"-R my-mocha-reporter D:\WORK\RentACoder\James\Work\Main\Github-jsgui\ws\js\test\z_core\data-object\Data_Object.spec.js");
-            //ProcessStartInfo startInfo = new ProcessStartInfo(
-            //    "node.exe",
-            //    @"C:\Users\-\AppData\Roaming\npm\node_modules\mocha\bin\mocha -R my-mocha-reporter -m Silent D:\WORK\RentACoder\James\Work\Main\Github-jsgui\ws\js\test\z_core\data-object\Data_Object.spec.js"
-            //);
+        public static TestResultsInfo Run(string testFileName, string outFileName)
+        {
+            // D:\WORK\RentACoder\James\Work\Main\Github-jsgui\ws\js\test\z_core\
+            // D:\WORK\RentACoder\James\Work\Main\Github-jsgui\ws\js\test\z_core\data-object\Data_Object.spec.js 
+            // D:\WORK\RentACoder\James\Work\Main\Github-jsgui\ws\js\test\z_heap\require\require.spec.js 
 
-            string args = string.Format("{0} -R my-mocha-reporter -m Silent {1} -p {2}", mochaFileName, testFileName, outFileName);
-
-            //Debug.WriteLine(args);
-            //Debug.WriteLine(@"C:\Users\-\AppData\Roaming\npm\node_modules\mocha\bin\mocha -R my-mocha-reporter -m Silent D:\WORK\RentACoder\James\Work\Main\Github-jsgui\ws\js\test\z_core\data-object\Data_Object.spec.js -p D:\WORK\RentACoder\James\Work\Doc\DocWebSite\jsgui-doc\tests\z_core\data_object\Data_Object.spec.js.html");
-            //if (args != @"C:\Users\-\AppData\Roaming\npm\node_modules\mocha\bin\mocha -R my-mocha-reporter -m Silent D:\WORK\RentACoder\James\Work\Main\Github-jsgui\ws\js\test\z_core\data-object\Data_Object.spec.js -p D:\WORK\RentACoder\James\Work\Doc\DocWebSite\jsgui-doc\tests\z_core\data_object\Data_Object.spec.js.html")
-            //{
-            //    Debug.WriteLine("NOT EQUAL!");
-            //}
-
-            ProcessStartInfo startInfo = new ProcessStartInfo(
-                "node.exe",
-                args
-                //@"C:\Users\-\AppData\Roaming\npm\node_modules\mocha\bin\mocha -R my-mocha-reporter -m Silent D:\WORK\RentACoder\James\Work\Main\Github-jsgui\ws\js\test\z_core\data-object\Data_Object.spec.js -p D:\WORK\RentACoder\James\Work\Doc\DocWebSite\jsgui-doc\tests\z_core\data_object\Data_Object.spec.js.html"
-            );
-
+            string args = string.Format("{0} -R my-mocha-reporter -m Silent {1} -p {2}", Settings.TestsMochaFileName, testFileName, outFileName);
+            //
+            ProcessStartInfo startInfo = new ProcessStartInfo("node.exe", args);
+            //
             //startInfo.RedirectStandardOutput = true;
-            //startInfo.RedirectStandardError = true;
+            startInfo.RedirectStandardError = true;
             startInfo.UseShellExecute = false;
             //startInfo.CreateNoWindow = true;
-
-            //using (Process exeProcess = Process.Start(@"mocha -R my-mocha-reporter D:\WORK\RentACoder\James\Work\Main\Github-jsgui\ws\js\test\z_core\data-object\Data_Object.spec.js"))
-            //using (Process exeProcess = Process.Start(@"mocha"))
-            //using (Process exeProcess = Process.Start(@"mocha D:\WORK\RentACoder\James\Work\Main\Github-jsgui\ws\js\test\z_core\data-object\Data_Object.spec.js"))
-
-            using (Process exeProcess = Process.Start(startInfo))
+            //
+            bool execute = CommandLine.ExecuteTests;
+            if (CommandLine.TestsStartPath != null)
             {
-                exeProcess.WaitForExit();
-                Debug.WriteLine(exeProcess.ExitCode);
+                if (!testFileName.StartsWith(CommandLine.TestsStartPath)) execute = false;
             }
+            //
+            string error = "unknown error";
+            //
+            if (execute)
+            {
+                File.Delete(outFileName);
+                //
+                using (Process exeProcess = Process.Start(startInfo))
+                {
+                    error = exeProcess.StandardError.ReadToEnd();
+                    exeProcess.WaitForExit();
+                    //Debug.WriteLine(exeProcess.ExitCode);
+                }
+            }
+            //
+            if (File.Exists(outFileName)) {
+                return TestResultsInfo.CreateFromFile(outFileName);
+            }
+            //
+            Settings.pageTemplateProcessor.WritePageText(outFileName, error);
+            return TestResultsInfo.CreateError();
         }
+
     }
 }
