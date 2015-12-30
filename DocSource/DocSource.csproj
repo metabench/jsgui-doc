@@ -92,8 +92,8 @@
     <Content Include="_info\changes-log.txt" />
     <Content Include="_info\doc-log.txt" />
     <Content Include="_info\remarks.txt" />
-    <Content Include="_temp\temp-data-object.js" />
     <Content Include="_temp\temp-enhanced-data-object.js" />
+    <Content Include="_temp\temp-data-object.js" />
     <Content Include="_temp\temp-data-object-fields-collection.js" />
     <Content Include="_temp\temp-collection-index.js" />
     <Content Include="_temp\temp-collection.js" />

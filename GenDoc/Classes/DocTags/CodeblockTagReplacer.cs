@@ -24,10 +24,39 @@ namespace GenDoc.Classes
 
         #endregion
 
+        private int exampleProblemsCount = 0;
+
         private string doProcess(string html)
         {
             TagProcessor tagProcessor = new TagProcessor("@codeblock", html);
-            return tagProcessor.Replace(this.doReplace);
+            string result = tagProcessor.Replace(this.doReplace);
+            result = this.calcExampleProblemsListHtml() + result;
+            return result;
+        }
+
+        private string calcExampleProblemId(int exampleProblemIndex)
+        {
+            return string.Format("example-problem-{0}", exampleProblemIndex);
+        }
+
+        private string calcExampleProblemsListHtml()
+        {
+            if (this.exampleProblemsCount <= 0) return string.Empty;
+            //
+            StringBuilder sb = new StringBuilder();
+            sb.Append("<div class=\"example-problems-list\">");
+            sb.Append("<p>Example problems:</p>");
+            sb.Append("<ul>");
+            //
+            for (int i = 0; i < this.exampleProblemsCount; i++)
+            {
+                string link = string.Format("<a href=\"#{0}\">{1}</a>", this.calcExampleProblemId(i), i+1);
+                sb.AppendFormat("<li>{0}</li> ", link);
+            }
+            //
+            sb.Append("</ul>");
+            sb.Append("</div>");
+            return sb.ToString();
         }
 
         private string doReplace(string openTag, string content, string closeTag)
@@ -48,13 +77,16 @@ namespace GenDoc.Classes
                 //
                 string stateClass = "";
                 string labelClass = "label-ok";
+                string problemId = "";
                 if (testSourceLoader.State != TestSourceLoader.TestState.Passed)
                 {
                     stateClass = " testerror";
                     labelClass = "label-problem";
+                    problemId = string.Format("id=\"{0}\"", this.calcExampleProblemId(this.exampleProblemsCount++));
                 }
                 //
-                sb.AppendLine("<div class=\"example-wrapper" + stateClass + "\">");
+                //sb.AppendLine("<div class=\"example-wrapper" + stateClass + "\">");
+                sb.AppendLine(string.Format("<div {0} class=\"example-wrapper{1}\">", problemId, stateClass));
                 sb.AppendLine(string.Format("<p class=\"example-label {0}\" title=\"{2}\">{1}</p>\r\n", labelClass, labelText, "The code unit test state"));
                 sb.Append("<pre  class=\"prettyprint\"><code>");
                 sb.Append(this.processContent(testSourceLoader.Text));

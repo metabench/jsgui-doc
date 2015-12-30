@@ -1240,48 +1240,15 @@
                     </div>
                 
                     <h5>Example</h5>
-                    <@codeblock>
-	                    var presidents = new jsgui.Collection(
-                            Data_Object.extend({
-                                'fields': [
-                                    ['name', 'indexed text(32)'],
-                                    ['party', 'indexed text(32)'],
-                                    ['y1', 'int'],
-                                    ['y2', 'int'],
-                                ],
-                            }),
-                            [
-                                { 'name': 'George Washington', 'y1': 1789, 'y2': 1797 },
-                                { 'name': 'John Adams', 'y1': 1797, 'y2': 1801, 'party': 'Federalist' },
-                                { 'name': 'Thomas Jefferson', 'y1': 1801, 'y2': 1809, 'party': 'Democratic-Republican' },
-                            ]
-                        );
-                        //
-	                    var find_result = null;
-	                    //
-	                    find_result = presidents.find({ 'name': 'George Washington' });
-	                    stringify(find_result)  ==>  '[Data_Object({"name": "George Washington", "y1": 1789, "y2": 1797, "party": undefined})]'
-	                    //
-	                    find_result = presidents.find({ 'party': '' });
-	                    stringify(find_result)  ==>  '[Data_Object({"name": "George Washington", "y1": 1789, "y2": 1797, "party": undefined})]'
-	                    //
-	                    presidents.find({ 'party': undefined })  ==>  undefined
-	                    //
-            	        // presidents.find({ 'y1': 1789 }); // throws "stop": no index for 'y1' field
-                        //
-	                    presidents.find({ 'name': '' })  ==>  []
-	                    //
-	                    // presidents.find({ 'name': 'George Washington', 'party': '' }); // throws "stop": 2 key/value pairs
-	                    // presidents.find({ 'name': 'George Washington', 'y1': 1789 });  // throws "stop": 2 key/value pairs
-                    </@codeblock>
-                
+                    <@codeblock src="/z_core/collection/Collection-ItemsRead.spec.js:test find([o])" />
                 </@item>
             
                 <@item title="find(arrQuery)  // [a]">
                     
                     <div class="description">
                         <p>
-                            The <code>arrQuery</code> parameter is an array containing <code>[key, value]</code> subarrays; keys are field names, and values are field values to match. 
+                            The <code>arrQuery</code> parameter is an array containing <code>[key, value]</code> subarrays; 
+                            keys are field names, and values are field values to match. 
                         </p>
                         <p>
                             Search uses collection indexes. Non-indexed fields cannot be used for the search.
@@ -1289,77 +1256,7 @@
                     </div>
                 
                     <h5>Example</h5>
-                    <@codeblock>
-	                    var presidents = new jsgui.Collection(
-                            Data_Object.extend({
-                                'fields': [
-                                    ['name', 'indexed text(32)'],
-                                    ['party', 'indexed text(32)'],
-                                    ['y1', 'int'],
-                                    ['y2', 'int'],
-                                ],
-                            }),
-                            [
-                                { 'name': 'George Washington', 'y1': 1789, 'y2': 1797 },
-                                { 'name': 'John Adams', 'y1': 1797, 'y2': 1801, 'party': 'Federalist' },
-                                { 'name': 'Thomas Jefferson', 'y1': 1801, 'y2': 1809, 'party': 'Democratic-Republican' },
-                                { 'name': 'William Henry Harrison', 'y1': 1841, 'y2': 1841, 'party': 'Whig' },
-                                { 'name': 'John Tyler', 'y1': 1841, 'y2': 1845, 'party': 'Whig' },
-                                { 'name': 'James K. Polk', 'y1': 1845, 'y2': 1849, 'party': 'Democratic' },
-                                { 'name': 'Zachary Taylor', 'y1': 1849, 'y2': 1850, 'party': 'Whig' },
-                                { 'name': 'Millard Fillmore', 'y1': 1850, 'y2': 1853, 'party': 'Whig' },
-                            ]
-                        );
-	                    //
-	                    var find_result = null;
-	                    //
-	                    // name field, found:
-	                    find_result = presidents.find([['name', 'George Washington']]);
-	                    stringify(find_result)  ==>  '[Data_Object({"name": "George Washington", "y1": 1789, "y2": 1797, "party": undefined})]'
-	                    //
-	                    // name field, not found:
-	                    presidents.find([['name', 'Nobody']])  ==>  []
-	                    //
-	                    // party field, found:
-	                    find_result = presidents.find([['party', 'Whig']]);
-	                    find_result.length  ==>  4
-	                    //
-	                    // party, undefined found:
-	                    find_result = presidents.find([['party', undefined]]);
-	                    stringify(find_result)  ==>  '[Data_Object({"name": "George Washington", "y1": 1789, "y2": 1797, "party": undefined})]'
-	                    //
-	                    // party field, empty string instead of undefined, found:
-	                    find_result = presidents.find([['party', '']]);
-	                    stringify(find_result)  ==>  '[Data_Object({"name": "George Washington", "y1": 1789, "y2": 1797, "party": undefined})]'
-	                    //
-	                    // party field, not found:
-	                    presidents.find([['party', 'xxx']])  ==>  []
-	                    //
-	                    // non-indexed field:
-	                    presidents.find([['y1', '1789']]  ==>  undefined
-	                    //
-	                    // indexed + indexed (different indexes), not work:
-	                    presidents.find([['name', 'George Washington'], ['party', undefined]])  ==>  undefined
-	                    //
-	                    // indexed + indexed (different indexes), not work again:
-	                    presidents.find([['name', 'William Henry Harrison'], ['party', 'Whig']])  ==>  undefined
-	                    //
-	                    // indexed + non-indexed, not work (it's expected):
-	                    presidents.find([['name', 'George Washington'], ['y1', '1789']])  ==>  undefined
-                        //
-                        // add 2 fields index:
-                        //
-                        presidents.index(['name', 'party']);
-                        //
-                        // indexed + indexed, works now:
-                        find_result = presidents.find([['name', 'George Washington'], ['party', undefined]]);
-                        stringify(find_result)  ==>  '[Data_Object({"name": "George Washington", "y1": 1789, "y2": 1797, "party": undefined})]'
-                        //
-                        // indexed + indexed, works now:
-                        find_result = presidents.find([['name', 'William Henry Harrison'], ['party', 'Whig']]);
-                        stringify(find_result)  ==>  '[Data_Object({"name": "William Henry Harrison", "y1": 1841, "y2": 1841, "party": "Whig"})]'
-                    </@codeblock>
-                
+                    <@codeblock src="/z_core/collection/Collection-ItemsRead.spec.js:test find([a])" />
                 </@item>
             
                 <@item title="find(fieldDef, search_term)  // [o,s]">
@@ -1373,32 +1270,7 @@
                     </div>
                 
                     <h5>Example</h5>
-                    <@codeblock>
-	                    var presidents = new jsgui.Collection(
-                            Data_Object.extend({
-                                'fields': [
-                                    ['name', 'indexed text(32)'],
-                                    ['party', 'indexed text(32)'],
-                                    ['y1', 'int'],
-                                    ['y2', 'int'],
-                                ],
-                            }),
-                            [
-                                { 'name': 'George Washington', 'y1': 1789, 'y2': 1797 },
-                                { 'name': 'John Adams', 'y1': 1797, 'y2': 1801, 'party': 'Federalist' },
-                                { 'name': 'Thomas Jefferson', 'y1': 1801, 'y2': 1809, 'party': 'Democratic-Republican' },
-                            ]
-                        );
-	                    //
-	                    // seems not possible to pass an object to be found successfully...
-	                    //
-	                    // When Collection_Index_System.search_for_index_with_fields() method tries
-	                    // to select an appropriate index, it compares an object and an array using an are_equal() function. 
-	                    // In this case the function result is never true.
-                        //
-	                    presidents.find({}, 'George Washington')  ==>  undefined
-                    </@codeblock>
-                
+                    <@codeblock src="/z_core/collection/Collection-ItemsRead.spec.js:test find([o,s])" />
                 </@item>
             
                 <@item title="find(fieldName, search_term)  // [s,s]">
@@ -1413,46 +1285,7 @@
                     </div>
                 
                     <h5>Example</h5>
-                    <@codeblock>
-	                    var presidents = new jsgui.Collection(
-                            Data_Object.extend({
-                                'fields': [
-                                    ['name', 'indexed text(32)'],
-                                    ['party', 'indexed text(32)'],
-                                    ['y1', 'int'],
-                                    ['y2', 'int'],
-                                ],
-                            }),
-                            [
-                                { 'name': 'George Washington', 'y1': 1789, 'y2': 1797 },
-                                { 'name': 'John Adams', 'y1': 1797, 'y2': 1801, 'party': 'Federalist' },
-                                { 'name': 'Thomas Jefferson', 'y1': 1801, 'y2': 1809, 'party': 'Democratic-Republican' },
-                                { 'name': 'William Henry Harrison', 'y1': 1841, 'y2': 1841, 'party': 'Whig' },
-                                { 'name': 'John Tyler', 'y1': 1841, 'y2': 1845, 'party': 'Whig' },
-                                { 'name': 'James K. Polk', 'y1': 1845, 'y2': 1849, 'party': 'Democratic' },
-                                { 'name': 'Zachary Taylor', 'y1': 1849, 'y2': 1850, 'party': 'Whig' },
-                                { 'name': 'Millard Fillmore', 'y1': 1850, 'y2': 1853, 'party': 'Whig' },
-                            ]
-                        );
-	                    //
-	                    var find_result = null;
-	                    //
-	                    find_result = presidents.find('name', 'George Washington');
-	                    stringify(find_result)  ==>  '[Data_Object({"name": "George Washington", "y1": 1789, "y2": 1797, "party": undefined})]'
-	                    //
-	                    presidents.find('name', '')  ==>  []
-	                    //
-	                    find_result = presidents.find('party', '');
-	                    stringify(find_result)  ==>  '[Data_Object({"name": "George Washington", "y1": 1789, "y2": 1797, "party": undefined})]'
-	                    //
-	                    presidents.find('party', undefined)  ==>  undefined
-	                    //
-	                    find_result = presidents.find('party', 'Whig');
-	                    find_result.length  ==>  4  // found 4 items
-	                    //
-	                    presidents.find('y1', '1789')  ==>  undefined  // "y1" field not indexed
-                    </@codeblock>
-                
+                    <@codeblock src="/z_core/collection/Collection-ItemsRead.spec.js:test find([s,s])" />
                 </@item>
             
                 <@item title="find(fieldsDef, search_term)  // [a,s]">
@@ -1466,32 +1299,7 @@
                     </div>
                 
                     <h5>Example</h5>
-                    <@codeblock>
-	                    var presidents = new jsgui.Collection(
-                            Data_Object.extend({
-                                'fields': [
-                                    ['name', 'indexed text(32)'],
-                                    ['party', 'indexed text(32)'],
-                                    ['y1', 'int'],
-                                    ['y2', 'int'],
-                                ],
-                            }),
-                            [
-                                { 'name': 'George Washington', 'y1': 1789, 'y2': 1797 },
-                                { 'name': 'John Adams', 'y1': 1797, 'y2': 1801, 'party': 'Federalist' },
-                                { 'name': 'Thomas Jefferson', 'y1': 1801, 'y2': 1809, 'party': 'Democratic-Republican' },
-                            ]
-                        );
-	                    //
-	                    // seems not possible to pass such parameters to be found successfully...
-	                    //
-	                    // Collection_Index_System.find() passing the first parameter (array) into the 
-                        // Collection_Index_System.search_for_index_with_fields() method wraps it 
-                        // into an additional array, so it is unable to find an appropriate collection index.
-                        //
-	                    presidents.find(['name'], 'George Washington')  ==>  undefined
-                    </@codeblock>
-                
+                    <@codeblock src="/z_core/collection/Collection-ItemsRead.spec.js:test find([a,s])" />
                 </@item>
             
                 <@item title="find(propertyName, query)  // [s,o]">
@@ -1518,30 +1326,7 @@
                     </@parms>
                     
                     <h5>Example</h5>
-                    <@codeblock>
-	                    var order_items = new jsgui.Collection(
-                            Data_Object.extend({
-                                'fields': [
-                                    ['order_id', 'indexed text(10)'],
-                                    ['items', 'array']
-                                ],
-                            }),
-                            [
-                                { 'order_id': '101', items: [{ name: 'pencil', cost: 1 }, { name: 'book', cost: 15 }, { name: 'watercolour', cost: 7 }] },
-                                { 'order_id': '102', items: [{ name: 'stick notes', cost: 3 }, { name: 'mark pen', cost: 4 }] },
-                                { 'order_id': '103', items: [{ name: 'drawing set', cost: 10 }, { name: 'protractor', cost: 1 }, { name: 'book', cost: 20 }] }
-                            ]
-                        );
-	                    //
-	                    var find_result = null;
-	                    //
-	                    find_result = order_items.find('items', { name: 'book' });
-	                    stringify(find_result)  ==>  'Collection(Data_Object({"name": "book", "cost": 15}), Data_Object({"name": "book", "cost": 20}))'
-	                    //
-	                    find_result = order_items.find('items', { name: 'book', cost: 20 });
-	                    stringify(find_result)  ==>  'Collection(Data_Object({"name": "book", "cost": 20}))'
-                    </@codeblock>
-                
+                    <@codeblock src="/z_core/collection/Collection-ItemsRead.spec.js:test find([s,o])" />
                 </@item>
                         
             </@overloads>
