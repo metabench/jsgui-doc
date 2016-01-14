@@ -47,17 +47,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\DocProcessor\DocProcessor.cs" />
     <Compile Include="Classes\DocTags\SectionTagReplacer.cs" />
     <Compile Include="Classes\DocTags\OverloadsTagReplacer.cs" />
     <Compile Include="Classes\DocTags\ParmsTagReplacer.cs" />
     <Compile Include="Classes\DocTags\CodeblockTagReplacer.cs" />
-    <Compile Include="Classes\DocNav\DocIgnore.cs" />
+    <Compile Include="Classes\DocUtils\CommentsChecker.cs" />
+    <Compile Include="Classes\Env\Globals.cs" />
+    <Compile Include="Classes\Env\OutputSettings.cs" />
+    <Compile Include="Classes\Helpers\DocIgnore.cs" />
     <Compile Include="Classes\DocNav\FileSystemNode.cs" />
     <Compile Include="Classes\DocTags\ItemTagReplacer.cs" />
     <Compile Include="Classes\DocNav\NavNode.cs" />
     <Compile Include="Classes\DocNav\NavProcessor.cs" />
-    <Compile Include="Classes\DocNav\ObsoleteDirs.cs" />
-    <Compile Include="Classes\DocNav\ObsoleteFiles.cs" />
+    <Compile Include="Classes\Helpers\ObsoleteDirs.cs" />
+    <Compile Include="Classes\Helpers\ObsoleteFiles.cs" />
     <Compile Include="Classes\DocUtils\OpenTagParser.cs" />
     <Compile Include="Classes\DocUtils\SignatureParser.cs" />
     <Compile Include="Classes\DocUtils\TagProcessor.cs" />
@@ -65,7 +69,7 @@
     <Compile Include="Classes\Env\CommandLine.cs" />
     <Compile Include="Classes\Env\Settings.cs" />
     <Compile Include="Classes\TestsProcessing\RunMocha.cs" />
-    <Compile Include="Classes\TestsProcessing\RunTests.cs" />
+    <Compile Include="Classes\TestsProcessing\TestsProcessor.cs" />
     <Compile Include="Classes\DocUtils\TextProcessor.cs" />
     <Compile Include="Classes\TestsProcessing\TestDirNode.cs" />
     <Compile Include="Classes\TestsProcessing\TestItemNode.cs" />

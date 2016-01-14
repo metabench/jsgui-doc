@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="jsgui-doc\css\page-test.css" />
+    <Content Include="jsgui-doc\js\main.js" />
     <Content Include="jsgui-doc\js\navigation.js" />
     <Content Include="packages.config" />
     <Content Include="jsgui-doc\lib\jquery\jquery-1.10.2.min.map" />
@@ -92,6 +93,7 @@
     <Content Include="jsgui-doc\lib\jsdoc\styles\jsdoc-default.css" />
     <Content Include="jsgui-doc\lib\jsdoc\styles\prettify-jsdoc.css" />
     <Content Include="jsgui-doc\lib\jsdoc\styles\prettify-tomorrow.css" />
+    <Content Include="template\page-template-dev.html" />
     <Content Include="template\page-test-template.html" />
     <Content Include="template\page-template.html" />
     <Content Include="test\codeblock.html" />

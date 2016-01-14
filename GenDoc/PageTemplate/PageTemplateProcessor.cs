@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GenDoc.Classes.Env;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -69,6 +70,7 @@ namespace GenDoc.PageTemplate
         {
             string text = this.templateText;
             text = text.Replace("%TITLE%", title);
+            //text = text.Replace("%CONTENT-DIR-SUFFIX%", Globals.OutSettings.ContentDirSuffix);
             text = text.Replace("%CONTENT%", contentHtml);
             //
             if (File.Exists(pageFileName))

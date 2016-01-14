@@ -148,7 +148,8 @@ namespace GenDoc.Classes.DocUtils
         private string calcTestOutFileName(string testPath)
         {
             //return Path.Combine(Settings.TestsOutDir, testPath) + ".html"; // - does not works because testPath starts from "/" - returns testPathOnly as result
-            return Settings.TestsOutDir + testPath + ".html";
+            //return Globals.OutSettings.TestsOutDir + testPath + ".html";
+            return Globals.DevOutSettings.TestsOutDir + testPath + ".html";
         }
 
         private HtmlNode selectNextSibling(HtmlNode node, string siblingName)

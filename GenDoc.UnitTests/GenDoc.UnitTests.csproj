@@ -53,6 +53,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Classes\MyTestEnv.cs" />
+    <Compile Include="DocUtils\UT-CommentsChecker.cs" />
     <Compile Include="TagsProcessing\UT-CodeblockTagReplacer.cs" />
     <Compile Include="TagsProcessing\UT-OpenTagParser.cs" />
     <Compile Include="TagsProcessing\UT-SignatureParser.cs" />

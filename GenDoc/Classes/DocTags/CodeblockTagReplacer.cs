@@ -1,4 +1,5 @@
 ﻿using GenDoc.Classes.DocUtils;
+using GenDoc.Classes.Env;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,12 @@ namespace GenDoc.Classes
         {
             TagProcessor tagProcessor = new TagProcessor("@codeblock", html);
             string result = tagProcessor.Replace(this.doReplace);
-            result = this.calcExampleProblemsListHtml() + result;
+            //
+            if (Globals.OutSettings.DevOutMode)
+            {
+                result = this.calcExampleProblemsListHtml() + result;
+            }
+            //
             return result;
         }
 
@@ -44,18 +50,19 @@ namespace GenDoc.Classes
             if (this.exampleProblemsCount <= 0) return string.Empty;
             //
             StringBuilder sb = new StringBuilder();
-            sb.Append("<div class=\"example-problems-list\">");
-            sb.Append("<p>Example problems:</p>");
-            sb.Append("<ul>");
+            sb.AppendLine("<div class=\"example-problems-list\">");
+            sb.AppendLine("<span>Example problems: </span>");
+            sb.AppendLine("<ul>");
             //
             for (int i = 0; i < this.exampleProblemsCount; i++)
             {
-                string link = string.Format("<a href=\"#{0}\">{1}</a>", this.calcExampleProblemId(i), i+1);
+                string link = string.Format("<a href=\"#{0}\">&nbsp;{1}&nbsp;</a> ", this.calcExampleProblemId(i), i+1);
                 sb.AppendFormat("<li>{0}</li> ", link);
+                sb.AppendLine();
             }
             //
-            sb.Append("</ul>");
-            sb.Append("</div>");
+            sb.AppendLine("</ul>");
+            sb.AppendLine("</div>");
             return sb.ToString();
         }
 

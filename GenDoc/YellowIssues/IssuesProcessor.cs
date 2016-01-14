@@ -19,12 +19,14 @@ namespace GenDoc.YellowIssues
         //              Public
         // -------------------------------------
 
-        public string DocOutDir { get; set; }
-        public string IssuesOutDir { get; set; }
-        public PageTemplateProcessor PageTemplateProcessor { get; set; }
+        //public string DocOutDir { get; set; }
+        //public string IssuesOutDir { get; set; }
+        //public PageTemplateProcessor PageTemplateProcessor { get; set; }
 
         public void ProcessYellowIssues(string pageFileName, string text)
         {
+            if (!Globals.OutSettings.DevOutMode) return;
+            //
             this.doProcessYellowIssues(pageFileName, text);
         }
 
@@ -33,19 +35,12 @@ namespace GenDoc.YellowIssues
             this.print(this.rootDirNode);
         }
 
-        public void WriteIssuesNav()
+        public void WriteOutput()
         {
-            this.rootDirNode.UpdateItemsCount();
-            string navHtml = this.doGenIssuesNavHtml(this.rootDirNode, Settings.IssuesRelPath);
-            //File.WriteAllText(Path.Combine(this.DocOutDir, "issues.html"), navHtml);
-            File.WriteAllText(Path.Combine(Settings.OutDir, "issues.html"), navHtml);
-            //this.Print();
-        }
-
-        public void WriteIssuePages()
-        {
-            this.clearIssuePages(IssuesOutDir);
-            this.doWriteIssuePages(this.rootDirNode, IssuesOutDir);
+            if (!Globals.OutSettings.DevOutMode) return;
+            //
+            this.writeIssuesNav();
+            this.writeIssuePages();
         }
 
         #endregion
@@ -71,7 +66,7 @@ namespace GenDoc.YellowIssues
             HtmlDocument htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(text);
             //
-            string relFileName = pageFileName.Substring(this.DocOutDir.Length);
+            string relFileName = pageFileName.Substring(Globals.OutSettings.DocOutDir.Length);
             //
             HtmlNodeCollection markNodes = htmlDocument.DocumentNode.SelectNodes("//mark");
             if ((markNodes != null) && (markNodes.Count > 0))
@@ -189,6 +184,29 @@ namespace GenDoc.YellowIssues
 
         #endregion
 
+        #region WriteOutput
+
+        // -------------------------------------
+        //              WriteOutput
+        // -------------------------------------
+
+        private void writeIssuesNav()
+        {
+            this.rootDirNode.UpdateItemsCount();
+            string navHtml = this.doGenIssuesNavHtml(this.rootDirNode, Globals.OutSettings.IssuesRelPath);
+            //File.WriteAllText(Path.Combine(this.DocOutDir, "issues.html"), navHtml);
+            File.WriteAllText(Path.Combine(Globals.OutSettings.OutDir, "issues.html"), navHtml);
+            //this.Print();
+        }
+
+        private void writeIssuePages()
+        {
+            this.clearIssuePages(Globals.OutSettings.IssuesOutDir);
+            this.doWriteIssuePages(this.rootDirNode, Globals.OutSettings.IssuesOutDir);
+        }
+
+        #endregion
+
         #region doGenIssuesNavHtml
 
         // -------------------------------------
@@ -268,7 +286,7 @@ namespace GenDoc.YellowIssues
                 string contentHtml = this.createIssuesHtml(dirNode);
                 //string pageHtml = contentHtml; // this.processTemplate(contentHtml);
                 //File.WriteAllText(pagePath, pageHtml);
-                this.PageTemplateProcessor.WritePageAddH1(pagePath, contentHtml, dirNode.Name + " known issues");
+                Globals.PageTemplateProcessor.WritePageAddH1(pagePath, contentHtml, dirNode.Name + " known issues");
             }
             //
             if (dirNode.SubNodes.Count > 0)

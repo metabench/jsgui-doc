@@ -26,6 +26,8 @@ namespace GenDoc.Classes
 
         public void AddSub(NavNode subNode)
         {
+            if (subNode == null) return;
+            //
             subNode.Parent = this;
             //
             this.SubNodes.Add(subNode);

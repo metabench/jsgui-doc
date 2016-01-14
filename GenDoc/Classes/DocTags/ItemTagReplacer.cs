@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GenDoc.Classes.Env;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,6 +37,11 @@ namespace GenDoc.Classes
 
         private string doReplace(string openTag, string content, string closeTag)
         {
+            if (!Globals.OutSettings.DevOutMode)
+            {
+                if (content.IndexOf("!!!!") >= 0) return string.Empty;
+            }
+            //
             OpenTagParser openTagParser = new OpenTagParser("@item", openTag);
             string title = openTagParser.TryGetAttribute("title");
             if (string.IsNullOrEmpty(title)) title = "Untitled";

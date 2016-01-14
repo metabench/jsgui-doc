@@ -36,7 +36,7 @@ namespace GenDoc.Classes.Env
                 }
                 else
                 {
-                    throw new Exception(string.Format("unknown parameter \"{0}\"", arg));
+                    throw new Exception(string.Format("unknown command-line parameter: \"{0}\"", arg));
                 }
                 //
                 //if (arg.StartsWith(TESTS_START_PATH, StringComparison.OrdinalIgnoreCase))
@@ -44,7 +44,7 @@ namespace GenDoc.Classes.Env
                 //    TestsStartPath = processStartPath(arg.Substring(TESTS_START_PATH.Length));
                 //}
             }
-            Console.WriteLine(string.Format("TestsStartPath={0}", TestsStartPath));
+            //Console.WriteLine(string.Format("TestsStartPath={0}", TestsStartPath));
 
             //string dir = Directory.GetCurrentDirectory();
             //Console.WriteLine();

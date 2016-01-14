@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace GenDoc.Classes.TestsProcessing
 {
-    class RunTests
+    class TestsProcessor
     {
-        public static void Run()
+        public static void Process()
         {
             //RunMocha.Run(@"z_core\data-object\Data_Object.spec.js");
-            RunTests runner = new RunTests();
-            runner.processDir(runner.rootNode, new DirectoryInfo(Settings.TestsSourceDir), Settings.TestsOutDir);
+            TestsProcessor runner = new TestsProcessor();
+            runner.processDir(runner.rootNode, new DirectoryInfo(Settings.TestsSourceDir), Globals.OutSettings.TestsOutDir);
             runner.writeNav();
         }
 
-        private RunTests()
+        private TestsProcessor()
         {
             //
         }
@@ -88,7 +88,7 @@ namespace GenDoc.Classes.TestsProcessing
             this.rootNode.UpdateResultsInfo();
             //
             string navHtml = this.generateNavHtml();
-            File.WriteAllText(Path.Combine(Settings.OutDir, "tests.html"), navHtml);
+            File.WriteAllText(Path.Combine(Globals.OutSettings.OutDir, "tests.html"), navHtml);
         }
 
         private string generateNavHtml()

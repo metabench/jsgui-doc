@@ -17,23 +17,27 @@ namespace GenDoc.Classes
         public bool IsDir { get; private set; }
         public bool IsFile { get { return !this.IsDir; } }
 
+        public bool UserIgnore { get; set; }
+
         public FileSystemNode(string name, bool isDir)
         {
 
             this.Name = name;
             this.IsDir = isDir;
             this.SubNodes = new List<FileSystemNode>();
+            this.UserIgnore = false;
         }
 
-        public void AddFile(string name)
+        public void AddFile(string name, bool userIgnore)
         {
             FileSystemNode subNode = new FileSystemNode(name, isDir: false);
-            this.AddSub(subNode);
+            this.AddSub(subNode, userIgnore);
         }
 
-        public void AddSub(FileSystemNode subNode)
+        public void AddSub(FileSystemNode subNode, bool userIgnore)
         {
             subNode.Parent = this;
+            subNode.UserIgnore = userIgnore;
             //
             int index = this.SubNodes.BinarySearch(subNode, nodeComparer);
             if (index < 0) index = ~index;

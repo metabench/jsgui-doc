@@ -1294,49 +1294,49 @@
 
             <@overloads title="connect_fields()">
             
-            <@item title="connect_fields(name)">
+                <@item title="connect_fields(name)">
 
-                <div class="description">
-                    <p>Creates a method allowing to get/set a field with the same name.</p>
-                </div>
+                    <div class="description">
+                        <p>Creates a method allowing to get/set a field with the same name.</p>
+                    </div>
 
-                <h5>Parameters:</h5>
-                <@parms>
-                    <@parm name="name" type="string" description="Field and method name" />
-                </@parms>
+                    <h5>Parameters:</h5>
+                    <@parms>
+                        <@parm name="name" type="string" description="Field and method name" />
+                    </@parms>
 
-                <h5>Example</h5>
-                <@codeblock src="/z_core/data-object/Data_Object.spec.js:connect_fields(name): doc example" />
+                    <h5>Example</h5>
+                    <@codeblock src="/z_core/data-object/Data_Object.spec.js:connect_fields(name): doc example" />
 
-            </@item>
+                </@item>
 
-            <!-----------------------------------------
-            |          connect_fields(array)
-            ------------------------------------------>
+                <!-----------------------------------------
+                |          connect_fields(array)
+                ------------------------------------------>
 
-            <@item title="connect_fields(array)">
+                <@item title="connect_fields(array)">
 
-                <div class="description">
-                    <p>Calls <a href="#connect_fields__name">connect_fields(name)</a> for each array item.</p>
-                </div>
+                    <div class="description">
+                        <p>Calls <a href="#connect_fields__name">connect_fields(name)</a> for each array item.</p>
+                    </div>
 
-                <h5>Example</h5>
-                <@codeblock src="/z_core/data-object/Data_Object.spec.js:connect_fields(array): doc example" />
-            </@item>
+                    <h5>Example</h5>
+                    <@codeblock src="/z_core/data-object/Data_Object.spec.js:connect_fields(array): doc example" />
+                </@item>
 
-            <!-----------------------------------------
-            |          connect_fields(obj)
-            ------------------------------------------>
+                <!-----------------------------------------
+                |          connect_fields(obj)
+                ------------------------------------------>
 
-            <@item title="connect_fields(obj)">
+                <@item title="connect_fields(obj)">
                 
-                <div class="description">
-                    <p><mark>Throws an exception when an object is passed as parameter.</mark></p>
-                </div>
+                    <div class="description">
+                        <p><mark>Throws an exception when an object is passed as parameter.</mark></p>
+                    </div>
 
-                <h5>Example</h5>
-                <@codeblock src="/z_core/data-object/Data_Object.spec.js:connect_fields(obj): doc example" />
-            </@item>
+                    <h5>Example</h5>
+                    <@codeblock src="/z_core/data-object/Data_Object.spec.js:connect_fields(obj): doc example" />
+                </@item>
            
             </@overloads>
             
@@ -1570,7 +1570,7 @@
             
             <@item title="Remarks" class="overview">
                 <p>
-                    <mark>This feature seems not working.</mark>
+                    <mark>!!!!! This feature seems not working.</mark>
                 </p>
             </@item>
                        
@@ -1581,7 +1581,8 @@
             <@item title="____requires()">
                 <div class="description">
                     <p>
-                        Returns Data_Object requirements. There is no other way to set the requirements besides <code>_requirements</code> member variable assignement.
+                        Returns Data_Object requirements. 
+                        <mark>!!!!! There is no other way to set the requirements besides <code>_requirements</code> member variable assignement.</mark>
                     </p>
                 </div>
 
@@ -1596,7 +1597,8 @@
             <@item title="_____meets_requirements()">
                 <div class="description">
                     <p>
-                        Returns <code>true</code> if the Data_Object requirements was not set, returns <code>undefined</code> in other case.
+                        Returns <code>true</code> if the Data_Object requirements was not set, 
+                        <mark>returns <code>undefined</code> in other case !!!!!</mark>
                     </p>
                 </div>
 
@@ -1611,7 +1613,7 @@
             <@item title="_____check_requirements(...)">
                 <div class="description">
                     <p>
-                        Does nothing, always returns <code>undefined</code>.
+                        <mark>!!!!! Does nothing, always returns <code>undefined</code>.</mark>
                     </p>
                 </div>
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GenDoc.Classes.DocUtils;
+using GenDoc.Classes.Env;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,6 +40,11 @@ namespace GenDoc.Classes
 
         private string doReplace(string openTag, string content, string closeTag)
         {
+            if (!Globals.OutSettings.DevOutMode)
+            {
+                if (CommentsChecker.IsStringEmptyOrComments(content)) return string.Empty;
+            }
+            //
             OpenTagParser openTagParser = new OpenTagParser("@section", openTag);
             //
             string title = openTagParser.TryGetAttribute("title");

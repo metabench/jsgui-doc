@@ -15,7 +15,7 @@ namespace GenDoc.Classes.TestsProcessing
         public static void Run(string testRelFileName)
         {
             string testDir = Settings.TestsSourceDir;
-            string outDir = Settings.TestsOutDir;
+            string outDir = Globals.OutSettings.TestsOutDir;
             //
             string testFileName = Path.Combine(testDir, testRelFileName);
             string outFileName = Path.Combine(outDir, testRelFileName) + ".html";
@@ -62,7 +62,7 @@ namespace GenDoc.Classes.TestsProcessing
                 return TestResultsInfo.CreateFromFile(outFileName);
             }
             //
-            Settings.pageTemplateProcessor.WritePageText(outFileName, error);
+            Globals.PageTemplateProcessor.WritePageText(outFileName, error);
             return TestResultsInfo.CreateError();
         }
 

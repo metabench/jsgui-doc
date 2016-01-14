@@ -26,7 +26,7 @@ namespace GenDoc.YellowIssues
             string urlHash = "";
             if (!string.IsNullOrEmpty(id)) urlHash = "#" + id;
             //
-            this.Link = Settings.DocRelPath + "/" + relFileName.Replace('\\', '/') + urlHash;
+            this.Link = Globals.OutSettings.DocRelPath + "/" + relFileName.Replace('\\', '/') + urlHash;
         }
     }
 }

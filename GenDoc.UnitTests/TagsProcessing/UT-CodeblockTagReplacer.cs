@@ -4,6 +4,7 @@ using System.Text;
 using GenDoc.Classes;
 using System.IO;
 using GenDoc.UnitTests.Classes;
+using GenDoc.Classes.Env;
 
 namespace GenDoc.UnitTests.TagsProcessing
 {
@@ -31,6 +32,8 @@ namespace GenDoc.UnitTests.TagsProcessing
         [TestMethod]
         public void TestCodeblockTagReplacer1()
         {
+            Globals.OutSettings = Globals.DevOutSettings;
+            //
             MyTestEnv env = new MyTestEnv(this.TestContext, "CodeblockTagReplacer");
             //
             Assert.IsTrue(this.checkFile(env, "1-empty.xml"));

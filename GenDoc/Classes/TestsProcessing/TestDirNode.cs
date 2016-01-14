@@ -39,7 +39,7 @@ namespace GenDoc.Classes.TestsProcessing
 
         public string CalcSitePath()
         {
-            if (this.Parent == null) return Settings.TestsRelPath;
+            if (this.Parent == null) return Globals.OutSettings.TestsRelPath;
             return this.Parent.CalcSitePath() + "/" + this.Name;
         }
 
