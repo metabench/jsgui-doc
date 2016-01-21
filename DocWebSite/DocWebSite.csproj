@@ -66,8 +66,10 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\my-mocha-reporter\page-test-template.html">
+      <Link>template\page-test-template.html</Link>
+    </Content>
     <Content Include="jsgui-doc\css\page-test.css" />
-    <Content Include="jsgui-doc\js\main.js" />
     <Content Include="jsgui-doc\js\navigation.js" />
     <Content Include="packages.config" />
     <Content Include="jsgui-doc\lib\jquery\jquery-1.10.2.min.map" />
@@ -93,10 +95,16 @@
     <Content Include="jsgui-doc\lib\jsdoc\styles\jsdoc-default.css" />
     <Content Include="jsgui-doc\lib\jsdoc\styles\prettify-jsdoc.css" />
     <Content Include="jsgui-doc\lib\jsdoc\styles\prettify-tomorrow.css" />
+    <Content Include="template\page-template-dev-old.html" />
     <Content Include="template\page-template-dev.html" />
-    <Content Include="template\page-test-template.html" />
     <Content Include="template\page-template.html" />
     <Content Include="test\codeblock.html" />
+    <Content Include="test\left-col-scroll2.html" />
+    <Content Include="test\left-col-scroll.html" />
+    <Content Include="test\test-layout-float2.html" />
+    <Content Include="test\test-layout-float.html" />
+    <Content Include="test\test-layout-table.html" />
+    <Content Include="test\test-treeview-pre.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

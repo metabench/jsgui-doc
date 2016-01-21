@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<settings>
+   
+    <!-- user's doc page template, e.g. (path)\doc\DocWebSite\template\page-template.html -->
+    <setting name="PageTemplateFileName" value="D:\WORK\RentACoder\James\Work\Doc\DocWebSite\template\page-template.html" />
+    
+    <!-- developer's doc page template, e.g. (path)\doc\DocWebSite\template\page-template-dev.html -->
+    <setting name="PageTemplateFileNameDev" value="D:\WORK\RentACoder\James\Work\Doc\DocWebSite\template\page-template-dev.html" />
+    
+    
+    <!-- documentation source directory, e.g. (path)\doc\DocSource\content -->
+    <setting name="DocSourceDir" value="D:\WORK\RentACoder\James\Work\Doc\DocSource\content" />
+    
+    <!-- library source directory, e.g. (path)\ws\js -->
+    <setting name="JsSourceDir" value="D:\WORK\RentACoder\James\Work\Main\Github-jsgui\ws\js" />
+    
+    <!-- tests directory, e.g. (path)\ws\js\test -->
+    <setting name="TestsSourceDir" value="D:\WORK\RentACoder\James\Work\Main\Github-jsgui\ws\js\test" />
+    
+    <!-- user's doc output directory, e.g. (path)\doc\DocWebSite\jsgui-doc\content -->
+    <setting name="OutDir" value="D:\WORK\RentACoder\James\Work\Doc\DocWebSite\jsgui-doc\content" />
+    
+    <!-- developer's doc output directory, e.g. (path)\doc\DocWebSite\jsgui-doc\content-dev -->
+    <setting name="DevOutDir" value="D:\WORK\RentACoder\James\Work\Doc\DocWebSite\jsgui-doc\content-dev" />
+    
+    <!-- Mocha executable (javascript) file name, e.g. C:\Users\(user)\AppData\Roaming\npm\node_modules\mocha\bin\mocha -->
+    <setting name="TestsMochaFileName" value="C:\Users\-\AppData\Roaming\npm\node_modules\mocha\bin\mocha" />
+
+    <!--
+        Also, don't forget to copy my-mocha-reporter files to global npm node_modules directory
+    -->
+
+</settings>

@@ -75,13 +75,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="header.html" />
     <Content Include="main.js" />
-    <Content Include="temp.html" />
+    <Content Include="page-test-template.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="assets\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -116,7 +118,9 @@
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>copy D:\WORK\RentACoder\James\Work\Doc\my-mocha-reporter\main.js C:\Users\-\AppData\Roaming\npm\node_modules\my-mocha-reporter\main.js</PostBuildEvent>
+    <PostBuildEvent>copy D:\WORK\RentACoder\James\Work\Doc\my-mocha-reporter\main.js C:\Users\-\AppData\Roaming\npm\node_modules\my-mocha-reporter\main.js
+copy D:\WORK\RentACoder\James\Work\Doc\my-mocha-reporter\page-test-template.html C:\Users\-\AppData\Roaming\npm\node_modules\my-mocha-reporter\page-test-template.html
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

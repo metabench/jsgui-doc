@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>autosize left treeview, autoscroll right "pre"</title>
+	<meta charset="utf-8" />
+</head>
+<body>
+    <style>
+        .page {
+            box-sizing:border-box;
+        }
+        .part-navigation {
+            box-sizing:border-box;
+            float: left;
+
+            background-color: aqua;
+            padding: 10px;
+        }
+        .part-content {
+            box-sizing:border-box;
+            margin-left: 200px;
+
+            background-color: khaki;
+            padding: 10px;
+        }
+        pre {
+            overflow: auto;
+        }
+    </style>
+
+    <div class="page">
+
+        <h1>autosize left treeview, autoscroll right "pre"</h1>
+
+        <div class="part-navigation">
+            <ul class="dir-main">
+                <li>
+                    item 1
+                    <ul style="display:none">
+                        <li>item 1.1</li>
+                    </ul>
+                </li>
+                <li>
+                    item 2
+                    <ul>
+                        <li>item 2.1</li>
+                        <li>item 2.2</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="part-content">
+            <p>text text</p>
+            <pre>
+              begin asdfasd af asfd asdfasdf asdfasd af asfd asdfasdf asdfasd af asfd asdfasdf asdfasd af asfd asdfasdf asdfasd af asfd asdfasdf asdfasd af asfd asdfasdf end
+            </pre>
+            <p>text text</p>
+            <p>text text</p>
+            <p>text text</p>
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            var $part_navigation = $(".part-navigation");
+            var $part_content = $(".part-content");
+
+            //$part_content.text("ok");
+
+            $(".dir-main li").click(function () {
+                $(this).children().toggle();
+                $part_navigation.resize();
+            });
+
+            $part_navigation.resize(function () {
+                var new_width = $part_navigation.outerWidth();
+                $part_content.css("margin-left", new_width + 10 + "px");
+            });
+
+            $part_navigation.resize();
+        });
+
+    </script>
+
+</body>
+</html>

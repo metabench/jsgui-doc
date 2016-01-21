@@ -68,7 +68,8 @@ module.exports = function(runner, options) {
 
     var onEnd = function () {
 
-        var template = fs.readFileSync('D:/WORK/RentACoder/James/Work/Doc/DocWebSite/template/page-test-template.html', "utf8");
+        //var template = fs.readFileSync('D:/WORK/RentACoder/James/Work/Doc/DocWebSite/template/page-test-template.html', "utf8");
+        var template = fs.readFileSync(path.join(__dirname, 'page-test-template.html'), "utf8");
 
         //var value = fs.readFileSync(path.join(__dirname, 'header.html'), "utf8"); // get header file
         //var doc = '<html><head>' + value + '</head><body>'; // start doc
@@ -95,7 +96,7 @@ module.exports = function(runner, options) {
             if (status.pending > 0) summary += "  pending: " + status.pending;
             if (status.big_issues > 0) summary += "  big_issues: " + status.big_issues;
             if (status.issues > 0) summary += "  issues: " + status.issues;
-            console.log(summary);
+            console.log(config.testPureFileName + " " + summary);
 
             if (filePath) {
                 try {

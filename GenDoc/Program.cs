@@ -66,15 +66,44 @@ namespace GenDoc
                 //
                 Globals.IssuesProcessor.WriteOutput();
             }
+            //catch (TypeInitializationException ex)
+            //{
+            //    if (ex.InnerException != null) printException(ex.InnerException); else printException(ex);
+            //}
             catch (Exception ex)
             {
-                Console.WriteLine(string.Format("Error: {0}", ex.Message));
-                Console.WriteLine();
-                Console.WriteLine(ex.ToString());
-                Console.WriteLine();
-                Console.WriteLine("press Enter...");
-                Console.ReadLine();
+                printException(ex);
             }
+        }
+
+        private static void printException(Exception ex)
+        {
+            Console.WriteLine();
+            Console.WriteLine(stringOfChars('-', 70));
+            //
+            TypeInitializationException typeInitializationException = ex as TypeInitializationException;
+            if ((typeInitializationException != null) && (typeInitializationException.InnerException != null))
+            {
+                Console.WriteLine(string.Format("Error: {0}", typeInitializationException.InnerException.Message));
+            }
+            else
+            {
+                Console.WriteLine(string.Format("Error: {0}", ex.Message));
+            }
+            //
+            Console.WriteLine(stringOfChars('-', 70));
+            Console.WriteLine();
+            Console.WriteLine(ex.ToString());
+            Console.WriteLine();
+            Console.WriteLine("press Enter...");
+            Console.ReadLine();
+        }
+
+        private static string stringOfChars(char c, int length)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < length; i++) sb.Append(c);
+            return sb.ToString();
         }
 
         #endregion

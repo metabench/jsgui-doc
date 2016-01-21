@@ -1,0 +1,73 @@
+{
+  "_args": [
+    [
+      "good-mocha-html-reporter",
+      ""
+    ]
+  ],
+  "_from": "good-mocha-html-reporter@*",
+  "_id": "good-mocha-html-reporter@2.0.0",
+  "_inCache": true,
+  "_location": "/good-mocha-html-reporter",
+  "_npmUser": {
+    "email": "Gauger16@gmail.com",
+    "name": "gauge"
+  },
+  "_npmVersion": "1.4.28",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "good-mocha-html-reporter",
+    "raw": "good-mocha-html-reporter",
+    "rawSpec": "",
+    "scope": null,
+    "spec": "*",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/good-mocha-html-reporter/-/good-mocha-html-reporter-2.0.0.tgz",
+  "_shasum": "1fa2e7f2835fe49eb6cebfb90ef2c22b42f419de",
+  "_shrinkwrap": null,
+  "_spec": "good-mocha-html-reporter",
+  "_where": "",
+  "author": {
+    "email": "Gauger16@gmail.com",
+    "name": "Gauge"
+  },
+  "dependencies": {
+    "chalk": "latest"
+  },
+  "description": "A visually appealing html reporter for mocha",
+  "devDependencies": {
+    "mocha": "1.6.x"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "1fa2e7f2835fe49eb6cebfb90ef2c22b42f419de",
+    "tarball": "http://registry.npmjs.org/good-mocha-html-reporter/-/good-mocha-html-reporter-2.0.0.tgz"
+  },
+  "engines": {
+    "node": ">= 0.6.0"
+  },
+  "gitHead": "c2a30c703e4a44c6daf81966d71aebf125b9a64e",
+  "installable": true,
+  "keywords": [
+    "html",
+    "mocha",
+    "reporter",
+    "selenium",
+    "visual"
+  ],
+  "main": "main.js",
+  "maintainers": [
+    {
+      "name": "gauge",
+      "email": "Gauger16@gmail.com"
+    }
+  ],
+  "name": "good-mocha-html-reporter",
+  "optionalDependencies": {},
+  "scripts": {},
+  "version": "2.0.0"
+}

@@ -19,61 +19,49 @@
 </head>
 <body>
 
+    <div class="main" data-content-suffix="-dev">
 
-    <table class="main" data-content-suffix="-dev">
-        <tbody>
-            <tr>
-                <td class="nav">
+        <div class="nav">
 
-                    <div class="cell-nav">
-                        <div class="toolbar">
-                            <button id="btnNavExpandAll">Expand All</button>
-                            <button id="btnNavCollapseAll">Collapse All</button>
-                        </div>
+            <div class="toolbar">
+                <button id="btnNavExpandAll">Expand All</button>
+                <button id="btnNavCollapseAll">Collapse All</button>
+            </div>
 
-                        <div>
-                            <p class="user-doc-link">
-                                <a href="/jsgui-doc/content/doc/index.html">User's Documentation</a>
-                            </p>
-                        </div>
+            <div>
+                <p class="user-doc-link">
+                    <a href="/jsgui-doc/content/doc/index.html">User's Documentation</a>
+                </p>
+            </div>
 
-                        <h3>Table of contents:</h3>
-                        <nav class="nav-main">
-                        </nav>
+            <h3>Table of contents:</h3>
+            <nav class="nav-main">
+            </nav>
 
-                        <h3>Tests:</h3>
-                        <nav class="nav-tests">
-                        </nav>
+            <h3>Known issues:</h3>
+            <nav class="nav-issues">
+            </nav>
 
-                        <h3>Known issues:</h3>
-                        <nav class="nav-issues">
-                        </nav>
+            <h3>Tests:</h3>
+            <nav class="nav-tests">
+            </nav>
 
-                    </div>
+        </div>
+        <div class="content" style="display:none">
 
-                </td>
-                <td class="content">
+            <div class="toolbar">
+                <button id="btnToggleNav">Toggle navigation</button>
+                <button id="btnTest">Test</button>
+                <button id="btnExpandAll">Expand All</button>
+                <button id="btnCollapseAll">Collapse All</button>
+            </div>
 
-                    <div class="toolbar">
-                        <button id="btnToggleNav">Toggle navigation</button>
-                        <button id="btnTest">Test</button>
-                        <button id="btnExpandAll">Expand All</button>
-                        <button id="btnCollapseAll">Collapse All</button>
-                    </div>
-
-                    <div class="content">
-
+            <div class="content">
 %CONTENT%
+            </div> <!-- .content -->
 
-                    </div> <!-- .content -->
-
-
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-
+        </div>
+    </div>
 
     <script> prettyPrint(); </script>
     <script src="/jsgui-doc/lib/jsdoc/scripts/linenumber.js"> </script>
