@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace GenDoc.Classes
 {
@@ -161,7 +162,7 @@ namespace GenDoc.Classes
                 newLines[i] = this.process3Exclamations(newLines[i]);
             }
             //
-            return String.Join(Environment.NewLine, newLines);
+            return this.htmlEncode(String.Join(Environment.NewLine, newLines));
         }
 
         private string[] splitToLines(string content)
@@ -223,6 +224,11 @@ namespace GenDoc.Classes
             return result;
         }
 
-
+        private string htmlEncode(string text)
+        {
+            return text.Replace("<", "&lt;").Replace(">", "&gt;").Replace("@", "&#64;");
+            //return HttpUtility.HtmlEncode(text);
+            //System.Net.Http.
+        }
 }
 }

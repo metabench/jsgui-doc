@@ -1,0 +1,48 @@
+﻿<h1>GenDoc.exe command line</h1>
+
+<p>
+    When <code>GenDoc.exe</code> launched without command-line arguments, it performs a full documentation rebuild, 
+    including the unit tests execution. But the tests execution spends many time. You can reduce the time
+    using command-line arguments:
+</p>
+
+
+<dl class="doc">
+
+    <dt>/skip-tests</dt>
+    <dd>
+        <p>
+            The unit tests will be not executed at all. <code>&lt;@codeblock src="..."&gt;</code> tags will use the results from 
+            a previous tests execution.
+            All the documentation will be rebuilt.
+        </p>
+        <h6>Example:</h6>
+        <@codeblock>
+            GenDoc.exe /skip-tests
+        </@codeblock>
+    </dd>
+
+    <dt>. (dot)</dt>
+    <dd>
+        <p>
+            Will be executed the unit tests from the current directory and nested directories only. All the documentation will be rebuilt.
+        </p>
+        <h6>Example:</h6>
+        <@codeblock>
+            GenDoc.exe .
+        </@codeblock>
+    </dd>
+
+    <dt>(filename).spec.js</dt>
+    <dd>
+        <p>
+            Will be executed the only unit test from the current directory with the specified file name.
+            All the documentation will be rebuilt.
+        </p>
+        <h6>Example:</h6>
+        <@codeblock>
+            GenDoc.exe Data_Object.spec.js
+        </@codeblock>
+    </dd>
+
+</dl>

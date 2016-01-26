@@ -1,0 +1,221 @@
+﻿<h1>Sample page: input and output code</h1>
+
+<@item title="input page code">
+
+<@codeblock>
+<h1 class="page-title">Class: Data_Object</h1>
+
+<section>
+
+    <header>
+        <h2>
+            <span class="ancestors"><a href="@link:/core/data-object.js.html">core/data-object.js</a>.</span>
+            Data_Object
+        </h2>
+
+        <div class="container-overview">
+            <div class="class-description">
+                <p>
+                    Represents a class storing a data object.                    
+                </p>
+            </div>
+            <p>Base class: <span class="ancestors">
+                <a href="@link:/core/evented-class.js/Evented_Class.html">core/evented-class.js:Evented_Class</a>
+                </span></p>
+        </div>
+    </header>
+
+    <article>
+
+        <@section title="Creation">
+
+            <@item title="new Data_Object(spec-opt)" >
+                <div class="description">
+                    <p>Creates the Data_Object object.</p>
+                </div>
+                
+                <h5>Example</h5>               
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:no spec or empty spec" />
+                
+            </@item>
+
+            <@item title="init_default_events()">
+                <div class="description">
+                    <p>
+                        Does nothing. 
+                    </p>
+                </div>
+            </@item>
+
+        </@section>
+
+    </article>
+
+</section>
+
+</@codeblock>
+</@item>
+
+<@item title="output page code">
+<@codeblock>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Class: Data_Object - jsgui documentation</title>
+	<meta charset="utf-8" />
+
+
+    <script src="/jsgui-doc/lib/jsdoc/scripts/prettify/prettify.js"> </script>
+    <script src="/jsgui-doc/lib/jsdoc/scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="/jsgui-doc/lib/jsdoc/styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="/jsgui-doc/lib/jsdoc/styles/jsdoc-default.css">
+
+    <link type="text/css" rel="stylesheet" href="/jsgui-doc/css/main.css">
+    <link type="text/css" rel="stylesheet" href="/jsgui-doc/css/navigation.css">
+    <link type="text/css" rel="stylesheet" href="/jsgui-doc/css/content.css">
+</head>
+<body>
+
+    <div class="main" data-content-suffix="-dev">
+
+        <div class="nav">
+
+            <div class="toolbar">
+                <button id="btnNavExpandAll">Expand All</button>
+                <button id="btnNavCollapseAll">Collapse All</button>
+            </div>
+
+            <div>
+                <p class="user-doc-link">
+                    <a href="/jsgui-doc/content/doc/index.html">User's Documentation</a>
+                </p>
+            </div>
+
+            <h3>Table of contents:</h3>
+            <nav class="nav-main">
+            </nav>
+
+            <h3>Known issues:</h3>
+            <nav class="nav-issues">
+            </nav>
+
+            <h3>Tests:</h3>
+            <nav class="nav-tests">
+            </nav>
+
+        </div>
+        <div class="content" style="display:none">
+
+            <div class="toolbar">
+                <button id="btnToggleNav">Toggle navigation</button>
+                <button id="btnTest">Test</button>
+                <button id="btnExpandAll">Expand All</button>
+                <button id="btnCollapseAll">Collapse All</button>
+            </div>
+
+            <div class="content">
+<h1 class="page-title">Class: Data_Object</h1>
+
+<section>
+
+    <header>
+        <h2>
+            <span class="ancestors"><a href="/jsgui-doc/content-dev/doc/core/data-object.js.html">core/data-object.js</a>.</span>
+            Data_Object
+        </h2>
+
+        <div class="container-overview">
+            <div class="class-description">
+                <p>
+                    Represents a class storing a data object.                    
+                </p>
+            </div>
+            <p>Base class: <span class="ancestors"><a href="/jsgui-doc/content-dev/doc/core/evented-class.js/Evented_Class.html">core/evented-class.js:Evented_Class</a></span></p>
+        </div>
+    </header>
+
+    <article>
+
+        
+<h3 class="subsection-title">Creation</h3>
+<dl class="doc-section">
+
+
+            <dt>
+<h4 class="name" id="newdata_object__spec">new Data_Object<span class="signature">(<span class="optional">spec</span>)</span></h4>
+</dt>
+<dd>
+
+                <div class="description">
+                    <p>Creates the Data_Object object.</p>
+                </div>
+                
+                <h5>Example</h5>               
+                <div>
+<div  class="example-wrapper">
+<p class="example-label label-ok" title="The code unit test state">√ Passed</p>
+
+<pre  class="prettyprint"><code>var data_object = null;
+//
+// no spec:
+data_object = new Data_Object();
+assert.deepEqual(data_object.__type, 'data_object');
+assert.deepEqual(data_object._, {});
+//
+// empty spec:
+data_object = new Data_Object({});
+assert.deepEqual(data_object.__type, 'data_object');
+assert.deepEqual(data_object._, {});</code></pre></div>
+</div>
+
+                
+            
+</dd>
+
+
+            <dt>
+<h4 class="name" id="init_default_events">init_default_events<span class="signature">()</span></h4>
+</dt>
+<dd>
+
+                <div class="description">
+                    <p>
+                        Does nothing. 
+                    </p>
+                </div>
+            
+</dd>
+
+
+        
+</dl>
+
+
+    </article>
+
+</section>
+
+
+            </div> <!-- .content -->
+
+        </div>
+    </div>
+
+    <script> prettyPrint(); </script>
+    <script src="/jsgui-doc/lib/jsdoc/scripts/linenumber.js"> </script>
+
+    <script src="/jsgui-doc/lib/jquery/jquery-1.10.2.min.js"></script>
+    <script src="/jsgui-doc/js/navigation.js"></script>
+    <script src="/jsgui-doc/js/content.js"></script>
+
+</body>
+</html>
+
+
+</@codeblock>
+</@item>

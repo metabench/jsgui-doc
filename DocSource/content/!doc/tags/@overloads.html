@@ -1,0 +1,75 @@
+﻿<h1>&lt;@overloads&gt; tag</h1>
+
+<p>
+    The <code>&lt;@overloads&gt;</code> tag generates an expandable block (initially collapsed) for method overloads.
+</p>
+
+<h5>Example:</h5>
+
+<@codeblock>
+    <@overloads title="field()">
+    
+            <@item title="field()">
+                <p>field() description</p>
+            </@item>
+
+            <@item title="field(field_name)">
+                <p>field(field_name) description</p>
+            </@item>
+
+            <@item title="field(obj)">
+                <p>field(obj) description</p>
+            </@item>
+
+    </@overloads>
+</@codeblock>
+
+<h5>Result (live):</h5>
+
+<div>
+    <@overloads title="field()">
+    
+            <@item title="field()">
+                <p>field() description</p>
+            </@item>
+
+            <@item title="field(field_name)">
+                <p>field(field_name) description</p>
+            </@item>
+
+            <@item title="field(obj)">
+                <p>field(obj) description</p>
+            </@item>
+
+    </@overloads>
+</div>
+
+<h5>Attributes:</h5>
+
+<dl class="doc">
+    <dt>title</dt>
+    <dd>
+        <p>
+            The overloads title, e.g. <code>"field()"</code>.
+            Usually the title is a method signature without parameters. 
+        </p>
+
+        <p>
+            The <code>&lt;@overloads&gt;</code> tag adds an HTML <code>id</code> attribute to the generated header code. 
+            It allows to refer the item like <code>&lt;a href="filename.html#item_id"&gt;</code>. The <code>id</code> is calculated
+            like <code>&lt;@item&gt;</code> tag id, also adding "__" (2 underline chars) at the end.
+        </p>
+
+        <p>
+            For example: <code>&lt;@overloads title="field()"&gt;</code> will produce the following id: <code>"field__"</code>
+        </p>
+
+        <p>
+            You can use a <code>@link</code> keyword to create a hyperlink. For example, 
+            <code>&lt;a href="&#64;link:/core/data-object.js/Data_Object.html#field__"&gt;Data_Object.field()&lt;/a&gt;</code> will produce the following result:
+            <a href="@link:/core/data-object.js/Data_Object.html#field__">Data_Object.field()</a>
+        </p>
+
+    </dd>
+
+</dl>

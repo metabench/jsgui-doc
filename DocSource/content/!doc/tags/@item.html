@@ -1,0 +1,100 @@
+﻿<h1>&lt;@item&gt; tag</h1>
+
+<p>
+    The <code>&lt;@item&gt;</code> tag generates an expandable item block (initially collapsed) for a method, remarks, etc. The generated HTML 
+    consists of <code>&lt;dt&gt;</code> and <code>&lt;dd&gt;</code> tags pair.
+</p>
+
+<h5>Example:</h5>
+
+<@codeblock>
+    <@item title="field()">
+
+        <div class="description">
+            <p>Returns an array containing fields definition.</p>
+        </div>
+
+        <h5>Example</h5>
+        <@codeblock src="/z_core/data-object/Data_Object.spec.js:field()" />
+
+    </@item>
+</@codeblock>
+
+<h5>Result (live):</h5>
+
+<div>
+    <@item title="field()">
+
+        <div class="description">
+            <p>Returns an array containing fields definition.</p>
+        </div>
+
+        <h5>Example</h5>
+        <@codeblock src="/z_core/data-object/Data_Object.spec.js:field()" />
+
+    </@item>
+</div>
+
+<h5>Attributes:</h5>
+
+<dl class="doc">
+    <dt>title</dt>
+    <dd>
+        <p>
+            The item title, e.g. <code>"Remarks"</code>, <code>"field()"</code>, <code>"static dobj(obj-opt, data_def-opt)"</code> etc.
+            Usually the title is a method signature. 
+            The first "static " word (if present) will be decorated.
+            Parameters with "-opt" suffix will be decorated.
+        </p>
+
+        <p>
+            For example: <code>&lt;@item title="static dobj(obj-opt, data_def-opt)"&gt;</code> will produce the following header:
+        </p>
+        <img src="/jsgui-doc/img/!doc/tags/out-item-title.png" />
+
+        <p>
+            The <code>&lt;@item&gt;</code> tag adds an HTML <code>id</code> attribute to the generated header code. 
+            It allows to refer the item like <code>&lt;a href="filename.html#item_id"&gt;</code>. The <code>id</code> is calculated
+            from the title on the following manner:
+        </p>
+
+        <ul>
+            <li>remove first "static" word</li>
+            <li>add the method name</li>
+            <li>if there are parameters, then add "__" (2 underline chars)</li>
+            <li>add parameter names delimited by 1 underline char</li>
+            <li>remove spaces and punctuations from the result</li>
+        </ul>
+
+        <p>
+            For example: <code>&lt;@item title="static dobj(obj-opt, data_def-opt)"&gt;</code> will produce the following id: <code>"dobj__obj_data_def"</code>
+        </p>
+
+        <p>
+            You can use a <code>@link</code> keyword to create a hyperlink. For example, 
+            <code>&lt;a href="&#64;link:/core/data-object.js/Data_Object.html#dobj__obj_data_def"&gt;Data_Object.dobj()&lt;/a&gt;</code> will produce the following result:
+            <a href="@link:/core/data-object.js/Data_Object.html#dobj__obj_data_def">Data_Object.dobj()</a>
+        </p>
+
+    </dd>
+
+    <dt>id (optional)</dt>
+    <dd>
+        <p>
+            Id attribute for the generated HTML header element (overrides the id calculated from the title)
+        </p>
+    </dd>
+
+    <dt>class (optional)</dt>
+    <dd>
+        <p>
+            Class attribute for the generated HTML header element. Possible values: <code>"overview"</code> or <code>"remark"</code>. Both produce a grayed header
+        </p>
+        <p>
+            For example: <code>&lt;@item title="Remarks" class="remark"&gt;</code> will produce the following header:
+        </p>
+        <img src="/jsgui-doc/img/!doc/tags/out-item-title-remark.png" />
+
+    </dd>
+
+</dl>

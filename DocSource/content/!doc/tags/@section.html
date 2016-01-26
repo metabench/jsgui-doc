@@ -1,0 +1,55 @@
+﻿<h1>&lt;@section&gt; tag</h1>
+
+<p>
+    The <code>&lt;@section&gt;</code> tag generates an expandable block (initially expanded) for a long page section (e.g. group of methods).
+</p>
+
+<h5>Example:</h5>
+
+<@codeblock>
+    <@section title="Fields">
+    
+        <@item title="set_field(...)">
+            <p>set_field(...) description</p>
+        </@item>
+
+        <@item title="field()">
+            <p>field() description</p>
+        </@item>
+
+    </@section>
+</@codeblock>
+
+<h5>Result (live):</h5>
+
+<div>
+    <@section title="Fields">
+    
+        <@item title="set_field(...)">
+            <p>set_field(...) description</p>
+        </@item>
+
+        <@item title="field()">
+            <p>field() description</p>
+        </@item>
+
+    </@section>
+</div>
+
+<h5>Attributes:</h5>
+
+<dl class="doc">
+    <dt>title</dt>
+    <dd>
+        <p>
+            The section title, e.g. <code>"Fields"</code>.
+        </p>
+    </dd>
+
+    <dt>id (optional)</dt>
+    <dd>
+        <p>
+            Id attribute for the generated HTML header element.
+        </p>
+    </dd>
+</dl>

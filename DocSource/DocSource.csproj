@@ -66,6 +66,20 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="content\!doc\1-overview.html" />
+    <Content Include="content\!doc\2-user-version.html" />
+    <Content Include="content\!doc\3-command-line.html" />
+    <Content Include="content\!doc\5-installation.html" />
+    <Content Include="content\!doc\6-templates.html" />
+    <Content Include="content\!doc\sample\sample-input-output.html" />
+    <Content Include="content\!doc\sample\sample-result.html" />
+    <Content Include="content\!doc\4-settings-file.html" />
+    <Content Include="content\!doc\tags\%40codeblock.html" />
+    <Content Include="content\!doc\tags\%40item.html" />
+    <Content Include="content\!doc\tags\%40link.html" />
+    <Content Include="content\!doc\tags\%40overloads.html" />
+    <Content Include="content\!doc\tags\%40parms.html" />
+    <Content Include="content\!doc\tags\%40section.html" />
     <Content Include="content\core\collection-index.js.html" />
     <Content Include="content\core\collection.js\Collection.xml">
       <SubType>Designer</SubType>
@@ -89,6 +103,7 @@
     <Content Include="content\core\jsgui-lang-enh.js.html" />
     <Content Include="content\core\jsgui-data-structures-suffix-array.js.html" />
     <Content Include="packages.config" />
+    <Content Include="templates\page.html" />
     <Content Include="_info\changes-log.txt" />
     <Content Include="_info\doc-log.txt" />
     <Content Include="_info\remarks.txt" />

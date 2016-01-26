@@ -95,7 +95,6 @@
     <Content Include="jsgui-doc\lib\jsdoc\styles\jsdoc-default.css" />
     <Content Include="jsgui-doc\lib\jsdoc\styles\prettify-jsdoc.css" />
     <Content Include="jsgui-doc\lib\jsdoc\styles\prettify-tomorrow.css" />
-    <Content Include="template\page-template-dev-old.html" />
     <Content Include="template\page-template-dev.html" />
     <Content Include="template\page-template.html" />
     <Content Include="test\codeblock.html" />
@@ -110,7 +109,9 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="jsgui-doc\img\!doc\tags\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -81,13 +81,13 @@ namespace GenDoc.Classes.DocProcessor
 
         private static string preprocessContent(string contentHtml)
         {
-            contentHtml = contentHtml.Replace("@link:", Globals.OutSettings.DocRelPath);
-            //
             contentHtml = CodeblockTagReplacer.Process(contentHtml);
             contentHtml = ItemTagReplacer.Process(contentHtml);
             contentHtml = OverloadsTagReplacer.Process(contentHtml);
             contentHtml = SectionTagReplacer.Process(contentHtml);
             contentHtml = ParmsTagReplacer.Process(contentHtml);
+            //
+            contentHtml = contentHtml.Replace("@link:", Globals.OutSettings.DocRelPath);
             //
             return contentHtml;
         }

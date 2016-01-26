@@ -1,0 +1,37 @@
+﻿<h1>GenDoc.exe install</h1>
+
+<ol>
+    <li>Install <code>Mocha</code> test framework globally: <a href="https://mochajs.org/">mochajs.org</a></li>
+
+    <li>Open the global <code>npm</code> directory, <code>node_modules</code> subdirectory.
+        Create "my-mocha-reporter" subdir inside the <code>node_modules</code> dir.
+    </li>
+
+    <li>Open the <code>doc/Doc.sln</code> Visual Studio solution from the <code>doc</code> repository.</li>
+    <li>
+        Open the <code>my-mocha-reporter</code> project properties, select the "Build Events" tab.
+        On the "Post-build event command line" box update the source and destination pathes on the following manner:
+        the copy commands must copy 2 files from the <code>my-mocha-reporter</code> project to the 
+        <code>my-mocha-reporter</code> npm directory created at step 2.
+    </li>
+    <li>
+        Copy all from <code>assets</code> directory from the <code>my-mocha-reporter</code> project to the 
+        <code>my-mocha-reporter</code> npm directory created at step 2.
+    </li>
+    <li>
+        Build the <code>my-mocha-reporter</code> project. Check the npm <code>my-mocha-reporter</code> directory,
+        it should contains the following:
+        <@codeblock>
+            node_modules (7 dirs inside)
+            .npmignore
+            main.js
+            package.json
+            page-test-template.html
+            Readme.md
+        </@codeblock>
+    </li>
+
+    <li>Update the <code>settings.xml</code> file in the GenDoc project.</li>
+    <li>Build the <code>GenDoc</code> project.</li>
+    <li>Run <code>GenDoc.exe</code>, check the output directories.</li>
+</ol>

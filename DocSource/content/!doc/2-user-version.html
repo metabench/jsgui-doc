@@ -1,0 +1,24 @@
+﻿<h1>Developer's and user's documentation versions</h1>
+
+<p>
+    The developer's version contains a link to the user's version (the "User's Documentation" hyperlink on the top left corner).
+</p>
+
+<p>
+    In general, the versions address difference is the "content-dev" vs "content" part in the URL.
+</p>
+
+<p>
+    You can hide any item (method or a remark part) from the user's version adding "!!!!!" (4 or more exclamation marks, 5 is recommended) 
+    to the item text. It can be better to enclose them to the "mark" tag in order to highlight the text (e.g. <code>&lt;mark&gt;!!!!! not work&lt;/mark&gt;</code>). 
+    If some section or overloads list became empty (all the methods are hidden), then the section or overloads will be hidden too. 
+    For example, the Data_Object documentation does not contains the "Requirements" section in the user's version 
+    because all the 4 items (remarks and 3 methods) are hidden.
+</p>
+
+<p>
+    You can exclude any page or directory from the user's version. To do this, create a ".doc-user-ignore" file in the doc source directory 
+    containing the file/directory, and add the file/directory name to the file (one name per line). 
+    For example, the "!doc" directory and "core/collection.js.html" file are excluded from the user's version.
+</p>
+

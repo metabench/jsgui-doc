@@ -1,0 +1,41 @@
+﻿<h1>&lt;@codeblock&gt; tag</h1>
+
+<h5>Example:</h5>
+
+<@codeblock>
+    <h5>Example</h5>
+    &lt;@codeblock>
+        var pow2 = function (item) { return item * item; }
+        //
+        jsgui_util.execute_on_each_simple([1, 2, 3], pow2)  ==>  [1, 4, 9]
+        jsgui_util.execute_on_each_simple({ a: 1, b: 2, c: 3 }, pow2)  ==>  [1, 4, 9]
+    &lt;/@codeblock>
+</@codeblock>
+
+<@codeblock>
+    &lt;@codeblock src="/z_core/data-object/Data_Object.spec.js:field()" />
+</@codeblock>
+
+
+<h5>Result:</h5>
+
+<img src="/jsgui-doc/img/!doc/tags/out-codeblock.png" />
+
+<img src="/jsgui-doc/img/!doc/tags/out-codeblock2.png" />
+
+<h5>Description:</h5>
+
+<p>Inserts a code block in the documentation (using PRE and CODE tags, and <code>prettyprint</code> syntax highlight capability form JsDoc).</p>
+
+<p>The code can be placed directly into the <code>&lt;@codeblock></code> tag. In this case the resulting box will contains a "Static code" badge on the top right.</p>
+
+<p> 
+    Also, the code can be read from an unit test output (the test is specified by the <code>src</code> attribute). 
+    In this case the top right badge will show the unit test passing state (Passed, Failed, Pending, or Error - if the unit test code was not found).
+</p>
+
+<p>
+    The <code>src</code> attribute value is the unit test file path, then ":" char, then unit test name. 
+    For example: <code>src="/z_core/data-object/Data_Object.spec.js:field()"</code> means:
+    insert code from <code>"field()"</code> unit test from <code>(DocWebSite)\jsgui-doc\content-dev\tests\z_core\data-object\Data_Object.spec.js.html</code> file.
+</p>

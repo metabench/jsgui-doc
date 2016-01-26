@@ -1,0 +1,103 @@
+<h1>Documentation creation overview</h1>
+
+<p>
+    JSGUI documentation builds using a <code>GenDoc.exe</code> tool. The tool performs the following tasks:
+</p>
+
+<@item title="generate doc pages">
+
+    <p>
+        The GenDoc.exe tool scans the doc source directory, and creates an output page file for each input page file. 
+        Input files are HTML files containing a page content only (without tags like <code>&lt;html&gt;</code>, <code>&lt;html&gt;</code> etc.)
+        Some input files have <code>.xml</code> file type instead of <code>.html</code> - just because I was not happy by the Visual Studio HTML editor.
+        The <code>.xml</code> source files are HTML files in fact.
+    </p>
+
+    <p>
+        GenDoc.exe wraps the source files in a page template, and processes custom tags like <code>&lt;@section&gt;</code>, <code>&lt;@item&gt;</code> etc.
+        The page template is <code>DocWebSite/templates/page-template-dev.html</code> or <code>DocWebSite/templates/page-template.html</code> file
+        (for developer's and user's versions respectively).
+    </p>
+
+    <p>
+        GenDoc.exe creates navigation links for the pages (the "Table of contents:" section in the left column). 
+        In addition to the doc source directory, it scans js source directory creating a placeholders for the files that are not documented yet.
+    </p>
+
+</@item>
+
+<@item title="generate issues pages">
+
+    <p>
+        GenDoc.exe interpretes <code>&lt;mark&gt;</code> HTML tags as issue indication. It builds the "Known issues:" section in the left column
+        referencing the issues summary pages for the output pages containing issues.
+    </p>
+
+</@item>
+
+<@item title="generate test pages">
+
+    <p>
+        GenDoc.exe executes unit test files (<code>.spec.js</code> files) from the test directory, and creates test result pages.
+        The "Tests" section on the left column contains the tests navigation.
+    </p>
+
+    <p>
+        The tests navigation contains a summary info for the test files and directories. There are the following kinds of the summary numbers:
+    </p>
+    <dl class="doc">
+
+        <dt>Passed</dt>
+        <dd>
+            <p>How many tests are passed, e.g. <span class='infoPassed' title='passed tests'>5</span></p>
+        </dd>
+
+        <dt>Failed</dt>
+        <dd>
+            <p>How many tests are failed, e.g. <span class='infoFailed' title='failed tests'>2</span></p>
+        </dd>
+
+        <dt>Pending</dt>
+        <dd>
+            <p>How many tests are pending for some reason, e.g. <span class='infoPending' title='pending tests'>1</span></p>
+        </dd>
+
+        <dt>Error</dt>
+        <dd>
+            <p>How many tests files was unable to be executed, e.g. <span class='infoError' title='error: test file not executed'>2</span></p>
+        </dd>
+
+        <dt>Issues and big issues</dt>
+        <dd>
+            <p>
+                In addition to the traditional test states (passed/failed/pending), JSGUI adds "Issues" and "Big issues" criterions.
+                They are independent from traditional ones. So, the passed/failed state indicates if the test meets the actual code behaviour, 
+                or the test is obsolete and must be updated for the new code version. The issues shows how good the tested code is.
+            </p>
+
+            <p>
+                The big issues indicate serious problems. To mark test as containing big issue you can add "!!!!!" (5 exclamation marks) to the
+                test code as a comment. Also you can add "!!!!!" to the documentation (preferably inside  <code>&lt;mark&gt;</code> HTML tag),
+                then this documentation item will be exclude4d from the user's documentation version.
+            </p>
+
+            <p>
+                "Ordinary" issues indicate problems that are not critical. To mark test as containing issue you can add "!!!" (3 exclamation marks) to the
+                test code as a comment.
+            </p>
+
+            <p>
+                If a test summary contains big issues, then it shows both big and ordinary issues count 
+                separated by "+" (even if the ordinary issues count equals to zero), e.g. <span class='infoIssues' title='tests with issues and big issues'><strong>4</strong>+84</span>
+            </p>
+
+            <p>
+                If a test summary contains ordinary issues (without big ones), then it shows just ordinary issues count,
+                e.g. <span class='infoIssues' title='tests with issues'>4</span>
+            </p>
+        </dd>
+
+    </dl>
+
+</@item>
+

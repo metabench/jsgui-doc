@@ -1,0 +1,39 @@
+﻿<h1>&lt;@parms&gt; tag</h1>
+
+
+<h5>Example:</h5>
+
+<@codeblock>
+    <h5>Parameters:</h5>
+    <@parms>
+        <@parm name="obj" type="object" description="Fields initialization object" optional />
+        <@parm name="data_def" type="?" description="Not used in fact" optional />
+    </@parms>
+</@codeblock>
+
+<h5>Result:</h5>
+
+<img src="/jsgui-doc/img/!doc/tags/out-parms.png" />
+
+<h5>Description:</h5>
+
+<p>Describes method parameters using nested <code>&lt;@parm&gt;</code> tags. </p>
+
+<p>The <code>&lt;@parm&gt;</code> tag attributes are the following:</p>
+
+<dl class="doc">
+    <dt>name</dt>
+    <dd>Parameter name</dd>
+
+    <dt>type</dt>
+    <dd>Parameter type</dd>
+
+    <dt>description</dt>
+    <dd>Parameter description</dd>
+
+    <dt>default</dt>
+    <dd>Parameter default value (if present)</dd>
+
+    <dt>optional</dt>
+    <dd>Marks this parameter as optional</dd>
+</dl>

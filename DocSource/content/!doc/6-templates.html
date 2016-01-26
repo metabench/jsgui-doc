@@ -1,0 +1,218 @@
+﻿<h1>Some templates useful for the documentation authoring</h1>
+
+<p class="remark">Intended for use by copy-paste.</p>
+
+<@section title="tags">
+
+    <@item title="@section">
+        <@codeblock>
+            <@section title="xxxxxxx">
+
+            </@section>
+
+            <@section title="xxxxxxx" id="xxx">
+
+            </@section>
+        </@codeblock>
+    </@item>
+
+    <@item title="@overloads">
+        <@codeblock>
+            <@overloads title="xxxxxxx()">
+
+            </@overloads>
+        </@codeblock>
+    </@item>
+
+    <@item title="@item">
+        <@codeblock>
+            <@item title="xxxxxxx">
+
+            </@item>
+
+            <@item title="xxxxxxx" id="xxx" class="remark">
+
+            </@item>
+        </@codeblock>
+    </@item>
+
+    <@item title="@parms">
+        <@codeblock>
+            <@parms>
+                <@parm name="xxxxx" type="xxxxx" description="xxxxx" optional />
+            </@parms>
+        </@codeblock>
+    </@item>
+
+    <@item title="@codeblock">
+        <@codeblock>
+            <@codeblock>
+
+            &lt;/@codeblock>
+
+            &lt;@codeblock src="/z_core/xxxxxx/yyyyy.spec.js:zzzzzzz" />
+
+        </@codeblock>
+    </@item>
+
+    <@item title="@link">
+        <@codeblock>
+            <a href="@link:/core/xxxxx.js.html">core/xxxxx</a>
+
+            <a href="@link:/core/constraint.js/Int_Constraint.html">core/constraint.js:Int_Constraint</a>
+        </@codeblock>
+    </@item>
+
+</@section>
+
+<@section title="samples">
+
+<@item title="class page">
+    <@codeblock>
+<h1 class="page-title">Class: Data_Object</h1>
+
+<section>
+
+    <header>
+        <h2>
+            <span class="ancestors"><a href="@link:/core/data-object.js.html">core/data-object.js</a>.</span>
+            Data_Object
+        </h2>
+
+        <div class="container-overview">
+            <div class="class-description">
+                <p>
+                    Represents a class storing a data object.                    
+                </p>
+            </div>
+            <p>Base class: <span class="ancestors"><a href="@link:/core/evented-class.js/Evented_Class.html">core/evented-class.js:Evented_Class</a></span></p>
+        </div>
+    </header>
+
+    <article>
+
+        <@section title="Creation">
+
+            <@item title="new Data_Object(spec-opt)" >
+                <div class="description">
+                    <p>Creates the Data_Object object.</p>
+                </div>
+                
+                <h5>Example</h5>               
+                <@codeblock src="/z_core/data-object/Data_Object.spec.js:no spec or empty spec" />
+                
+            </@item>
+
+            <@item title="init_default_events()">
+                <div class="description">
+                    <p>
+                        Does nothing. 
+                    </p>
+                </div>
+            </@item>
+
+        </@section>
+
+    </article>
+
+</section>
+    </@codeblock>
+</@item>
+
+<@item title="module page">
+    <@codeblock>
+<h1 class="page-title">Module: core/xxxxxxxxxxxxxx</h1>
+
+<section>
+
+    <header>
+        <h2>
+            core/xxxxxxxxxxxxxx
+        </h2>
+
+        <div class="container-overview">
+            <div class="description">
+                <p>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx:</p>
+            </div>
+            <dl class="details"></dl>
+        </div>
+    </header>
+
+    <article>
+
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="@link:/core/xxxxxxxxxxxxxx.js/xxxxxxxxxxxxxx.html">xxxxxxxxxxxxxx</a></dt>
+            <dd></dd>
+
+        </dl>
+
+    </article>
+
+</section>
+    </@codeblock>
+</@item>
+
+<@item title="section">
+    <@codeblock>
+<!--==================================================
+=                   Features
+===================================================-->
+
+<@section title="Features">
+
+    <!-----------------------------------------
+    |          Chained Fields
+    ------------------------------------------>
+
+    <@item title="Chained Fields">
+        <div class="description">
+            <p><mark>TODO...</mark></p>
+        </div>
+
+    </@item>
+
+</@section>
+
+    </@codeblock>
+</@item>
+
+<@item title="method">
+    <@codeblock>
+&lt;!-----------------------------------------
+|          xxxxxxxxxxxxxx()
+------------------------------------------>
+
+<@item title="remove_from(parent)">
+    <div class="description">
+        <p>
+            xxxxxxxxxxxxxx.
+            <a href="@link:/core/data-object.js/Data_Object.html">Data_Object</a>
+        </p>
+    </div>
+
+    <h5>Parameters:</h5>
+    <@parms>
+        <@parm name="parent" type="string" description="xxxx" default="xxx" optional />
+    </@parms>
+
+    <h5>Example</h5>
+    &lt;@codeblock>
+        var data_object = new Data_Object();
+    &lt;/@codeblock>
+
+    &lt;@codeblock src="/z_core/data-object/Data_Object.spec.js:xxxxxxxxxxxxxxxxx" />
+
+
+    <h6 class="content-part-header collapsed">data_type constraint</h6>
+    <div>
+        ....
+    </div>
+
+
+</@item>
+    </@codeblock>
+</@item>
+
+</@section>
